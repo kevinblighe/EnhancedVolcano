@@ -6,7 +6,7 @@
   <li>ggplot2</li>
   </ul>
 <h2>Execution</h2>
-<code>VolcanoPlot(topTable, NominalCutoff, AdjustedCutoff, LabellingCutoff, FCCutoff, main)</code>
+<code>EnhancedVolcano(topTable, NominalCutoff, AdjustedCutoff, LabellingCutoff, FCCutoff, main)</code>
 <br>
 <h2>Parameters</h2>
 <ul>
