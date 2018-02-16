@@ -10,7 +10,12 @@
 <br>
 <h2>Parameters</h2>
 <ul>
-<li>toptable, data-frame of test statistics with gene names as rownames</li>
+<li>toptable, data-frame of test statistics. Requires at least the following
+  <ul>
+    <li>gene names as rownames</li>
+  <li>column named 'log2FoldChange'</li>
+    <li>column named 'padj'</li>
+  </ul>
 <li>NominalCutoff, nominal p-value cut-off for statistical significance (obsolete)</li>
 <li>AdjustedCutoff, adjusted p-value cut-off for statistical significance</li>
 <li>LabellingCutoff, adjusted p-value cut-off for statistical significance for labels</li>
