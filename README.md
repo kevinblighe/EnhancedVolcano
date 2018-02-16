@@ -20,7 +20,7 @@
 <li>AdjustedCutoff, adjusted p-value cut-off for statistical significance</li>
 <li>LabellingCutoff, adjusted p-value cut-off for statistical significance for labels</li>
 <li>FCCutoff, absolute log (base 2) fold change cut-off for statistical significance</li>
-<li>main<, title/li>
+<li>main, title</li>
   </ul>
 <br>
 <img src="">
