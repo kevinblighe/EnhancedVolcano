@@ -25,4 +25,4 @@
   </ul>
 <br>
 <h2>Credits</h2>
-Myles Lewis; Sharmila Rana
+Kevin Blighe; Myles Lewis; Sharmila Rana
