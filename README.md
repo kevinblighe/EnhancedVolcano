@@ -24,3 +24,5 @@
 <li>main, title</li>
   </ul>
 <br>
+<h2>Credits</h2>
+Myles Lewis; Sharmila Rana
