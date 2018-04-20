@@ -25,4 +25,8 @@
   </ul>
 <br>
 <h2>Credits</h2>
-Kevin Blighe; Myles Lewis; Sharmila Rana
+<ul>
+  <li>Kevin Blighe (Queen Mary University of London)</li>
+  <li>Myles Lewis (Queen Mary University of London)</li>
+  <li>Sharmila Rana (Queen Mary University of London)</li>
+</ul>
