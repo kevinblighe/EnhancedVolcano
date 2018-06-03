@@ -68,4 +68,6 @@ EnhancedVolcanoEdgeR <- function(toptable, NominalCutoff, AdjustedCutoff, Labell
 
 		#Add a horizontal line for P-value cut-off
 		geom_hline(yintercept=-log10(AdjustedCutoff), linetype="longdash", colour="black", size=0.4)
+
+	return(plot)
 }
