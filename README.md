@@ -21,8 +21,8 @@
 <li>toptable, data-frame of test statistics. Requires at least the following
   <ul>
     <li>gene names as rownames</li>
-  <li>column named 'log2FoldChange'</li>
-    <li>column named 'padj'</li>
+  <li>column named 'log2FoldChange' for DESeq2 or 'logFC' for EdgeR</li>
+    <li>column named 'padj' for DESeq2 or 'FDR' for EdgeR</li>
   </ul>
 <li>NominalCutoff, nominal p-value cut-off for statistical significance (obsolete)</li>
 <li>AdjustedCutoff, adjusted p-value cut-off for statistical significance</li>
