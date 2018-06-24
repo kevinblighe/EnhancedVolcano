@@ -8,5 +8,8 @@ Description: Volcano plot with enhanced colouring and labeling
 License: GPL-3
 Imports:
 	ggplot2
+Suggets:
+	edgeR
+	DESeq2
 URL: https://github.com/kevinblighe/EnhancedVolcano
 biocViews: RNASeq, GeneExpression, Transcription, DifferentialExpression
