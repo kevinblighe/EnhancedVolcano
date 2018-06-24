@@ -7,8 +7,8 @@
   <li>ggplot2</li>
   </ul>
 <h2>Execution</h2>
-<code>EnhancedVolcanoDESeq2(topTable, NominalCutoff, AdjustedCutoff, LabellingCutoff, FCCutoff, main)</code>
-<code>EnhancedVolcanoEdgeR(topTable, NominalCutoff, AdjustedCutoff, LabellingCutoff, FCCutoff, main)</code>
+<code>EnhancedVolcanoDESeq2(topTable, AdjustedCutoff, LabellingCutoff, FCCutoff, main)</code>
+<code>EnhancedVolcanoEdgeR(topTable, AdjustedCutoff, LabellingCutoff, FCCutoff, main)</code>
 <br>
 <h2>Example</h2
 
