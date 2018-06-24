@@ -1,0 +1,4 @@
+export("EnhancedVolcanoDESeq2")
+export("EnhancedVolcanoEdgeR")
+
+importFrom(ggplot2, ggplot)
