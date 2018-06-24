@@ -1,5 +1,7 @@
 EnhancedVolcanoDESeq2 <- function(toptable, AdjustedCutoff, LabellingCutoff, FCCutoff, main, col=c("grey30", "forestgreen", "royalblue", "red2"))
 {
+	require(ggplot2)
+
 	toptable <- as.data.frame(toptable)
 
 	toptable$Significance <- "NS"
