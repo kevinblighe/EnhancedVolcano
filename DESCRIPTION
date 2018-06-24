@@ -1,13 +1,12 @@
 Package: EnhancedVolcano
 Type: Package
 Title: Volcano plot with enhanced colouring and labeling
-Version: 0.99.0 (beta)
+Version: 0.99.0
 Author: Kevin Blighe, Sharmila Rana, Myles Lewis
 Maintainer: Kevin Blighe <kevinblighe@outlook.com>
 Description: Volcano plot with enhanced colouring and labeling
-License: LGPL (>= 3)
+License: GPL-3
 Imports:
-	methods,
 	ggplot2
 URL: https://github.com/kevinblighe/EnhancedVolcano
 biocViews: RNASeq, GeneExpression, Transcription, DifferentialExpression
