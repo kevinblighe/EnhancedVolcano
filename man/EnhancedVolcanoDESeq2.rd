@@ -27,6 +27,4 @@ A \code{\link{ggplot2}} object.
 Kevin Blighe <kevinblighe@outlook.com>
 }
 \examples{
-EnhancedVolcanoDESeq2(topTable=res, AdjustedCutoff=0.05, LabellingCutoff0.05, FCCutoff=2.0, main="DESeq2 results")
-EnhancedVolcanoEdgeR(topTable=res, AdjustedCutoff=0.05, LabellingCutoff0.05, FCCutoff=2.0, main="EdgeR results") 
 }
