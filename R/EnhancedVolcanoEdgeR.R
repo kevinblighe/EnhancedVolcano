@@ -1,4 +1,4 @@
-EnhancedVolcanoEdgeR <- function(toptable, AdjustedCutoff, LabellingCutoff, FCCutoff, main)
+EnhancedVolcanoEdgeR <- function(toptable, AdjustedCutoff, LabellingCutoff, FCCutoff, main, col=c("grey30", "forestgreen", "royalblue", "red2"))
 {
 	toptable <- as.data.frame(toptable)
 
@@ -18,7 +18,7 @@ EnhancedVolcanoEdgeR <- function(toptable, AdjustedCutoff, LabellingCutoff, FCCu
 		geom_point(aes(color=factor(Significance)), alpha=1/2, size=0.8) +
 
 		#Choose which colours to use; otherwise
-		scale_color_manual(values=c(NS="grey30", FC="forestgreen", FDR="royalblue", FC_FDR="red2"), labels=c(NS="NS", FC=paste("LogFC>|", FCCutoff, "|", sep=""), FDR=paste("FDR Q<", AdjustedCutoff, sep=""), FC_FDR=paste("FDR Q<", AdjustedCutoff, " & LogFC>|", FCCutoff, "|", sep=""))) +
+		scale_color_manual(values=c(NS=col[1], FC=col[2], FDR=col[3], FC_FDR=col[4]), labels=c(NS="NS", FC=paste("LogFC>|", FCCutoff, "|", sep=""), FDR=paste("FDR Q<", AdjustedCutoff, sep=""), FC_FDR=paste("FDR Q<", AdjustedCutoff, " & LogFC>|", FCCutoff, "|", sep=""))) +
 
 		#Set the size of the plotting window
 		theme_bw(base_size=24) +
