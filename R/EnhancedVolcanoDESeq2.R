@@ -1,5 +1,7 @@
-EnhancedVolcanoDESeq2 <- function(toptable, NominalCutoff, AdjustedCutoff, LabellingCutoff, FCCutoff, main)
+EnhancedVolcanoDESeq2 <- function(toptable, AdjustedCutoff, LabellingCutoff, FCCutoff, main)
 {
+	toptable <- as.data.frame(toptable)
+
 	toptable$Significance <- "NS"
 	toptable$Significance[(abs(toptable$log2FoldChange) > FCCutoff)] <- "FC"
 	toptable$Significance[(toptable$padj<AdjustedCutoff)] <- "FDR"
@@ -15,7 +17,7 @@ EnhancedVolcanoDESeq2 <- function(toptable, NominalCutoff, AdjustedCutoff, Label
 		#	Set size of points
 		geom_point(aes(color=factor(Significance)), alpha=1/2, size=0.8) +
 
-		#Choose which colours to use; otherwise, ggplot2 choose automatically (order depends on how factors are ordered in toptable$Significance)
+		#Choose which colours to use; otherwise
 		scale_color_manual(values=c(NS="grey30", FC="forestgreen", FDR="royalblue", FC_FDR="red2"), labels=c(NS="NS", FC=paste("LogFC>|", FCCutoff, "|", sep=""), FDR=paste("FDR Q<", AdjustedCutoff, sep=""), FC_FDR=paste("FDR Q<", AdjustedCutoff, " & LogFC>|", FCCutoff, "|", sep=""))) +
 
 		#Set the size of the plotting window
