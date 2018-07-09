@@ -3,20 +3,22 @@
 \title{Publication-ready volcano plots with enhanced colouring and labeling}
 \description{Publication-ready volcano plots with enhanced colouring and labeling}
 \usage{
-EnhancedVolcanoDESeq2(topTable = res,
+EnhancedVolcanoDESeq2(toptable,
 	AdjustedCutoff = 0.05,
 	LabellingCutoff = 0.05,
 	FCCutoff = 2.0,
 	main = "DESeq2 results",
-	col = c("grey30", "forestgreen", "royalblue", "red2"))
+	col = c("grey30", "forestgreen", "royalblue", "red2"),
+	DrawConnectors = FALSE)
 }
 \arguments{
-	\item{topTable}{A data-frame of test statistics (if not a data frame, an atempt will be made to convert it to one). Requires at least the following: transcript names as rownames; a column named 'log2FoldChange' for DESeq2 or 'logFC' for EdgeR; a column named 'padj' for DESeq2 or 'FDR' for EdgeR}
+	\item{toptable}{A data-frame of test statistics (if not a data frame, an atempt will be made to convert it to one). Requires at least the following: transcript names as rownames; a column named 'log2FoldChange' for DESeq2 or 'logFC' for EdgeR; a column named 'padj' for DESeq2 or 'FDR' for EdgeR}
 	\item{AdjustedCutoff}{Adjusted p-value cut-off for statistical significance}
 	\item{LabellingCutoff}{Adjusted p-value cut-off for statistical significance for labeling of transcripts}
 	\item{FCCutoff}{absolute log2FoldChange cut-off for statistical significance}
 	\item{main}{Plot title}
 	\item{col}{Colour shading of points for: log2FoldChange <= FCCutoff && padj >= AdjustedCutoff; log2FoldChange > FCCutoff && padj >= AdjustedCutoff; log2FoldChange <= FCCutoff && padj < AdjustedCutoff, log2FoldChange > FCCutoff && padj < AdjustedCutoff}
+	\item{DrawConnectors}{Spread out labels and connect to points by lines (TRUE/FALSE)}
 }
 \details{
 ...
@@ -25,7 +27,7 @@ EnhancedVolcanoDESeq2(topTable = res,
 A \code{\link{ggplot2}} object.
 }
 \author{
-Kevin Blighe <k.blighe@ucl.ac.uk>
+Kevin Blighe <kevinblighe@outlook.com>
 }
 \examples{
 library("pasilla")
@@ -49,5 +51,6 @@ EnhancedVolcanoDESeq2(res,
 	LabellingCutoff = 1e-9,
 	FCCutoff = 1.0,
 	main = "DESeq2 results",
-	col = c("grey30", "forestgreen", "royalblue", "red2"))
+	col = c("grey30", "forestgreen", "royalblue", "red2"),
+	DrawConnectors = FALSE)
 }
