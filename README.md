@@ -1,6 +1,5 @@
 # EnhancedVolcano
 <h1>Publication-ready volcano plots with enhanced colouring and labeling</h1>
-<img src="https://github.com/kevinblighe/EnhancedVolcano/blob/master/vignettes/Volcano.png">
 <br>
 <h2>Imports</h2>
 <ul>
