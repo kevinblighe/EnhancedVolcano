@@ -1,8 +1,10 @@
 EnhancedVolcanoEdgeR <- function(toptable, AdjustedCutoff = 0.05, LabellingCutoff = 0.05, FCCutoff = 2.0, main = "EdgeR results", col=c("grey30", "forestgreen", "royalblue", "red2"), DrawConnectors = FALSE)
 {
 	if(!requireNamespace("ggplot2")) { stop( "Please install ggplot2 first.", call.=FALSE) }
+	if(!requireNamespace("ggrepel")) { stop( "Please install ggrepel first.", call.=FALSE) }
 
 	requireNamespace("ggplot2")
+	requireNamespace("ggrepel")
 
 	toptable <- as.data.frame(toptable)
 
@@ -22,7 +24,7 @@ EnhancedVolcanoEdgeR <- function(toptable, AdjustedCutoff = 0.05, LabellingCutof
 		ggplot2::geom_point(ggplot2::aes(color=factor(Significance)), alpha=1/2, size=0.8) +
 
 		#Choose which colours to use; otherwise
-		ggplot2::scale_color_manual(values=c(NS=col[1], FC=col[2], FDR=col[3], FC_FDR=col[4]), labels=c(NS="NS", FC=paste("LogFC>|", FCCutoff, "|", sep=""), FDR=paste("FDR Q<", AdjustedCutoff, sep=""), FC_FDR=paste("FDR Q<", AdjustedCutoff, " & LogFC>|", FCCutoff, "|", sep=""))) +
+		ggplot2::scale_color_manual(values=c(NS=col[1], FC=col[2], FDR=col[3], FC_FDR=col[4]), labels=c(NS="NS", FC=paste("Log2FC", sep=""), FDR=paste("FDR", sep=""), FC_FDR=paste("FDR & Log2FC", sep=""))) +
 
 		#Set the size of the plotting window
 		ggplot2::theme_bw(base_size=24) +
@@ -67,16 +69,16 @@ EnhancedVolcanoEdgeR <- function(toptable, AdjustedCutoff = 0.05, LabellingCutof
 		ggplot2::geom_hline(yintercept=-log10(AdjustedCutoff), linetype="longdash", colour="black", size=0.4)
 
 		#Tidy the text labels for a subset of genes
-		if (DrawConnectors) {
-			plot + ggplot2::geom_text(data=subset(toptable, padj<LabellingCutoff & abs(log2FoldChange)>FCCutoff),
+		if (DrawConnectors == TRUE) {
+			plot <- plot + ggrepel::geom_text_repel(data=subset(toptable, padj<LabellingCutoff & abs(log2FoldChange)>FCCutoff),
 				ggplot2::aes(label=rownames(subset(toptable, padj<LabellingCutoff & abs(log2FoldChange)>FCCutoff))),
 				size=2.25,
 				segment.color="black",
 				segment.size=0.01,
-				check_overlap=TRUE,
+				#check_overlap=TRUE,
 				vjust=1.0)
-		} else if (!DrawConnectors) {
-			plot + ggplot2::geom_text(data=subset(toptable, padj<LabellingCutoff & abs(log2FoldChange)>FCCutoff),
+		} else if (DrawConnectors == FALSE) {
+			plot <- plot + ggplot2::geom_text(data=subset(toptable, padj<LabellingCutoff & abs(log2FoldChange)>FCCutoff),
 				ggplot2::aes(label=rownames(subset(toptable, padj<LabellingCutoff & abs(log2FoldChange)>FCCutoff))),
 				size=2.25,
 				check_overlap=TRUE,

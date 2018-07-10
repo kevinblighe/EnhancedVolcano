@@ -7,7 +7,8 @@ Maintainer: Kevin Blighe <kevinblighe@outlook.com>
 Description: Volcano plot with enhanced colouring and labeling.
 License: GPL-3
 Imports:
-	ggplot2
+	ggplot2,
+	ggrepel
 Suggests:
 	edgeR,
 	DESeq2,
