@@ -3,13 +3,36 @@
 \title{Publication-ready volcano plots with enhanced colouring and labeling}
 \description{Publication-ready volcano plots with enhanced colouring and labeling}
 \usage{
-EnhancedVolcano(toptable,
-	AdjustedCutoff = 0.05,
-	LabellingCutoff = 0.05,
-	FCCutoff = 2.0,
-	main = "DESeq2 results",
-	col = c("grey30", "forestgreen", "royalblue", "red2"),
-	DrawConnectors = FALSE)
+EnhancedVolcano(
+	toptable,
+	lab,
+	x,
+	y,
+	selectLab = NULL,
+	xlim = c(min(toptable[,x], na.rm=TRUE), max(toptable[,x], na.rm=TRUE)),
+	ylim = c(0, max(-log10(toptable[,y]), na.rm=TRUE) + 5),
+	xlab = bquote(~Log[2]~ "fold change"),
+	ylab = bquote(~-Log[10]~italic(P)),
+	axisLabSize = 16,
+	pCutoff = 0.05,
+	pLabellingCutoff = pCutoff,
+	FCcutoff = 2.0,
+	title = "",
+	titleLabSize = 16,
+	transcriptPointSize = 0.8,
+	transcriptLabSize = 2.0,
+	col=c("grey30", "forestgreen", "royalblue", "red2"),
+	colAlpha = 1/2,
+	legend=c("NS", "Log2 FC", "P", "P & Log2 FC"),
+	legendPosition = "top",
+	legendLabSize = 10,
+	legendIconSize = 3.0,
+	DrawConnectors = FALSE,
+	widthConnectors = 0.5,
+	colConnectors = "black",
+	cutoffLineType = "longdash",
+	cutoffLineCol = "black",
+	cutoffLineWidth = 0.4)
 }
 \arguments{
 	\item{toptable}{A data-frame of test statistics (if not a data frame, an attempt will be made to convert it to one). Requires at least the following: transcript names as rownames; a column for log2 fold changes; a column for nominal or adjusted p-value}
@@ -46,10 +69,18 @@ mcols(dds) <- DataFrame(mcols(dds), featureData)
 dds <- DESeq(dds)
 res <- results(dds)
 
+source("R/EnhancedVolcano.R")
 EnhancedVolcano(res,
+	lab = rownames(res),
 	x = "log2FoldChange",
-	y = "padj",
-	main = "DESeq2 results",
+	y = "pvalue",
+	pCutoff = 10e-9,
+	FCcutoff = 2.5,
+	transcriptLabSize = 3.0,
+	title = "DESeq2 results",
+	legendPosition = "right",
+	legendLabSize = 14,
 	col = c("grey30", "forestgreen", "royalblue", "red2"),
-	DrawConnectors = FALSE)
+	selectLab = c("FBgn0039155","FBgn0003360","FBgn0034434"),
+	DrawConnectors = TRUE)
 }
