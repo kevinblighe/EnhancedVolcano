@@ -30,11 +30,19 @@ EnhancedVolcano <- function(
     cutoffLineWidth = 0.4)
 {
     if(!requireNamespace("ggplot2")) {
-        stop( "Please install ggplot2 first.", call.=FALSE)
+        stop("Please install ggplot2 first.", call.=FALSE)
     }
 
     if(!requireNamespace("ggrepel")) {
-        stop( "Please install ggrepel first.", call.=FALSE)
+        stop("Please install ggrepel first.", call.=FALSE)
+    }
+
+    if(!is.numeric(toptable[,x])) {
+        stop(paste(x[i], " is not numeric!", sep=""))
+    }
+
+    if(!is.numeric(toptable[,y])) {
+        stop(paste(x[i], " is not numeric!", sep=""))
     }
 
     requireNamespace("ggplot2")
