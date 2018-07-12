@@ -1,40 +1,105 @@
 # EnhancedVolcano
-<h1>Publication-ready volcano plots with enhanced colouring and labeling</h1>
-<br>
-<h2>Imports</h2>
-<ul>
-  <li>ggplot2</li>
-  </ul>
-<h2>Execution</h2>
-<code>EnhancedVolcanoDESeq2(topTable, AdjustedCutoff, LabellingCutoff, FCCutoff, main, col)</code>
-<code>EnhancedVolcanoEdgeR(topTable, AdjustedCutoff, LabellingCutoff, FCCutoff, main, col)</code>
-<br>
-<h2>Example</h2
 
-<code>EnhancedVolcanoDESeq2(topTable, AdjustedCutoff = 0.05, LabellingCutoff = 0.05, FCCutoff = 2.0, main = "DESeq2 results", col = c("grey30", "forestgreen", "royalblue", "red2"), DrawConnectors = FALSE)</code>
+<h2>Vignette</h2>
+Publication-ready volcano plots with enhanced colouring and labeling.
 
-<code>EnhancedVolcanoEdgeR(topTable, AdjustedCutoff = 0.05, LabellingCutoff = 0.05, FCCutoff = 2.0, main = "EdgeR results", col = c("grey30", "forestgreen", "royalblue", "red2"), DrawConnectors = FALSE)</code>
-<br>
-<h2>Parameters</h2>
-<ul>
-<li>toptable, data-frame of test statistics. Requires at least the following
-  <ul>
-    <li>gene names as rownames</li>
-  <li>column named 'log2FoldChange' for DESeq2 or 'logFC' for EdgeR</li>
-    <li>column named 'padj' for DESeq2 or 'FDR' for EdgeR</li>
-  </ul>
-<li>topTable, A data-frame of test statistics (if not a data frame, an atempt will be made to convert it to one). Requires at least the following: transcript names as rownames; a column named 'log2FoldChange' for DESeq2 or 'logFC' for EdgeR; a column named 'padj' for DESeq2 or 'FDR' for EdgeR</li>
-<li>AdjustedCutoff, Adjusted p-value cut-off for statistical significance</li>
-<li>LabellingCutoff, Adjusted p-value cut-off for statistical significance for labeling of transcripts</li>
-<li>FCCutoff, absolute fold change cut-off for statistical significance (assumes log base 2)</li>
-<li>main, Plot title</li>
-<li>col, Colour shading of points for: log2FoldChange <= FCCutoff && padj >= AdjustedCutoff; log2FoldChange > FCCutoff && padj >= AdjustedCutoff; log2FoldChange <= FCCutoff && padj < AdjustedCutoff, log2FoldChange > FCCutoff && padj < AdjustedCutoff</li>
-  <li>DrawConnectors, Spread out labels and connect to points by lines (TRUE/FALSE)}</li>
-  </ul>
-<br>
-<h2>Credits</h2>
-<ul>
-  <li>Kevin Blighe</li>
-  <li>Myles Lewis</li>
-  <li>Sharmila Rana</li>
-</ul>
+<hr>
+
+Following tutorial of http://master.bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html
+
+```{r}
+
+	source("https://bioconductor.org/biocLite.R")
+	biocLite("airway")
+	library(airway)
+
+	library(magrittr)
+
+	data("airway")
+	airway$dex %<>% relevel("untrt")
+	airway$dex
+
+```
+
+```{r}
+
+	[1] untrt trt   untrt trt   untrt trt   untrt trt  
+	Levels: untrt trt
+
+```
+
+```{r}
+
+	library("DESeq2")
+	dds <- DESeqDataSet(airway, design = ~ cell + dex)
+	dds <- DESeq(dds, betaPrior=FALSE)
+
+```
+
+```{r}
+
+	estimating size factors
+	estimating dispersions
+	gene-wise dispersion estimates
+	mean-dispersion relationship
+	final dispersion estimates
+	fitting model and testing
+
+```
+
+```{r}
+
+	res1 <- results(dds, contrast = c("dex","trt","untrt"))
+	res1 <- lfcShrink(dds, contrast = c("dex","trt","untrt"), res=res1)
+
+	res2 <- results(dds, contrast = c("cell", "N061011", "N61311"))
+	res2 <- lfcShrink(dds, contrast = c("cell", "N061011", "N61311"), res=res2)
+
+	res3 <- results(dds, contrast = c("cell", "N061011", "N052611"))
+	res3 <- lfcShrink(dds, contrast = c("cell", "N061011", "N052611"), res=res3)
+
+	res4 <- results(dds, contrast = c("cell", "N061011", "N052611"))
+	res4 <- lfcShrink(dds, contrast = c("cell", "N061011", "N052611"), res=res4)
+
+	biocLite("EnhancedVolcano")
+	library(EnhancedVolcano)
+
+	p1 <- EnhancedVolcano(res1,
+		x = "log2FoldChange",
+		y = "pvalue",
+		pCutoff = 10e-18,
+		FCcutoff = 2.0,
+		title = "Treated versus untreated",
+		DrawConnectors = TRUE)
+
+	p2 <- EnhancedVolcano(res2,
+		x = "log2FoldChange",
+		y = "pvalue",
+		title = "N061011 versus N61311",
+		col = c("black", "black", "black", "red3"),
+		DrawConnectors = TRUE)
+
+	p3 <- EnhancedVolcano(res3,
+		x = "log2FoldChange",
+		y = "pvalue",
+		title = "N061011 versus N052611",
+		col = c("grey30", "limegreengreen", "darkblue", "pink"),
+		DrawConnectors = FALSE)
+
+	p4 <- EnhancedVolcano(res4,
+		x = "log2FoldChange",
+		y = "padj",
+		ylab = bquote(~-Log[10]~adjusted~italic(P)),
+		title = "N061011 versus N61311",
+		col = c("black", "dodgerblue", "skyblue", "gold"),
+		DrawConnectors = FALSE)
+
+	pdf("test.pdf", width=18, height=8)
+	library(gridExtra)
+ 	library(grid)
+	grid.arrange(p1, p2, p3, p4, ncol=4, top="EnhancedVolcano")
+	grid.rect(gp=gpar(fill=NA))
+	dev.off()
+
+```
+

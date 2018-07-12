@@ -3,7 +3,7 @@ Type: Package
 Title: Publication-ready volcano plots with enhanced colouring and labeling.
 Version: 0.99.0
 Author: Kevin Blighe, Sharmila Rana, Myles Lewis
-Maintainer: Kevin Blighe <kevinblighe@outlook.com>
+Maintainer: Kevin Blighe <kevin@clinicalbioinformatics.co.uk>
 Description: Volcano plot with enhanced colouring and labeling.
 License: GPL-3
 Imports:

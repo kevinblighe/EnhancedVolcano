@@ -63,36 +63,35 @@ Following tutorial of http://master.bioconductor.org/packages/release/workflows/
 
 	biocLite("EnhancedVolcano")
 	library(EnhancedVolcano)
-	p1 <- EnhancedVolcanoDESeq2(res1,
-		AdjustedCutoff = 0.05,
-		LabellingCutoff = 0.05,
-		FCCutoff = 2.0,
-		main = "Treated versus untreated",
-		col = c("grey30", "forestgreen", "royalblue", "red2"),
+
+	p1 <- EnhancedVolcano(res1,
+		x = "log2FoldChange",
+		y = "pvalue",
+		pCutoff = 10e-18,
+		FCcutoff = 2.0,
+		title = "Treated versus untreated",
 		DrawConnectors = TRUE)
 
-	p2 <- EnhancedVolcanoDESeq2(res2,
-		AdjustedCutoff = 0.05,
-		LabellingCutoff = 0.05,
-		FCCutoff = 2.0,
-		main = "N061011 versus N61311",
-		col = c("grey30", "forestgreen", "royalblue", "red2"),
+	p2 <- EnhancedVolcano(res2,
+		x = "log2FoldChange",
+		y = "pvalue",
+		title = "N061011 versus N61311",
+		col = c("black", "black", "black", "red3"),
 		DrawConnectors = TRUE)
 
-	p3 <- EnhancedVolcanoDESeq2(res3,
-		AdjustedCutoff = 0.05,
-		LabellingCutoff = 0.05,
-		FCCutoff = 2.0,
-		main = "N061011 versus N052611",
-		col = c("grey30", "forestgreen", "royalblue", "red2"),
+	p3 <- EnhancedVolcano(res3,
+		x = "log2FoldChange",
+		y = "pvalue",
+		title = "N061011 versus N052611",
+		col = c("grey30", "limegreengreen", "darkblue", "pink"),
 		DrawConnectors = FALSE)
 
-	p4 <- EnhancedVolcanoDESeq2(res4,
-		AdjustedCutoff = 0.05,
-		LabellingCutoff = 0.05,
-		FCCutoff = 2.0,
-		main = "N061011 versus N61311",
-		col = c("grey30", "forestgreen", "royalblue", "red2"),
+	p4 <- EnhancedVolcano(res4,
+		x = "log2FoldChange",
+		y = "padj",
+		ylab = bquote(~-Log[10]~adjusted~italic(P)),
+		title = "N061011 versus N61311",
+		col = c("black", "dodgerblue", "skyblue", "gold"),
 		DrawConnectors = FALSE)
 
 	pdf("test.pdf", width=18, height=8)
