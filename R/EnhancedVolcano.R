@@ -4,7 +4,8 @@ EnhancedVolcano <- function(
     x,
     y,
     selectLab = NULL,
-    xlim = c(min(toptable[,x], na.rm=TRUE), max(toptable[,x], na.rm=TRUE)),
+    xlim = c(min(toptable[,x], na.rm=TRUE),
+        max(toptable[,x], na.rm=TRUE)),
     ylim = c(0, max(-log10(toptable[,y]), na.rm=TRUE) + 5),
     xlab = bquote(~Log[2]~ "fold change"),
     ylab = bquote(~-Log[10]~italic(P)),
@@ -49,11 +50,13 @@ EnhancedVolcano <- function(
     requireNamespace("ggrepel")
 
     toptable <- as.data.frame(toptable)
-    toptable$Significance <- "NS"
-    toptable$Significance[(abs(toptable[,x]) > FCcutoff)] <- "FC"
-    toptable$Significance[(toptable[,y]<pCutoff)] <- "P"
-    toptable$Significance[(toptable[,y]<pCutoff) & (abs(toptable[,x])>FCcutoff)] <- "FC_P"
-    toptable$Significance <- factor(toptable$Significance, levels=c("NS","FC","P","FC_P"))
+    toptable$Sig <- "NS"
+    toptable$Sig[(abs(toptable[,x]) > FCcutoff)] <- "FC"
+    toptable$Sig[(toptable[,y]<pCutoff)] <- "P"
+    toptable$Sig[(toptable[,y]<pCutoff) &
+        (abs(toptable[,x])>FCcutoff)] <- "FC_P"
+    toptable$Sig <- factor(toptable$Sig,
+        levels=c("NS","FC","P","FC_P"))
 
     toptable$lab <- lab
     toptable$xvals <- toptable[,x]
@@ -66,32 +69,52 @@ EnhancedVolcano <- function(
         toptable$lab <- names.new
     }
 
-    plot <- ggplot2::ggplot(toptable, ggplot2::aes(x=xvals, y=-log10(yvals))) +
+    plot <- ggplot2::ggplot(toptable,
+            ggplot2::aes(x=xvals, y=-log10(yvals))) +
 
-        ggplot2::geom_point(ggplot2::aes(color=factor(Significance)), alpha=colAlpha, size=transcriptPointSize) +
+        ggplot2::geom_point(ggplot2::aes(color=factor(Sig)),
+            alpha=colAlpha, size=transcriptPointSize) +
 
-        ggplot2::scale_color_manual(values=c(NS=col[1], FC=col[2], P=col[3], FC_P=col[4]), labels=c(NS=legend[1], FC=paste(legend[2], sep=""), P=paste(legend[3], sep=""), FC_P=paste(legend[4], sep=""))) +
+        ggplot2::scale_color_manual(values=c(NS=col[1],
+            FC=col[2],
+            P=col[3],
+            FC_P=col[4]),
+            labels=c(NS=legend[1],
+            FC=paste(legend[2], sep=""),
+            P=paste(legend[3], sep=""),
+            FC_P=paste(legend[4], sep=""))) +
 
         ggplot2::theme_bw(base_size=24) +
 
-        ggplot2::theme(legend.background=ggplot2::element_rect(),
-            plot.title=ggplot2::element_text(angle=0, size=titleLabSize, face="bold", vjust=1),
+        ggplot2::theme(
+            legend.background=ggplot2::element_rect(),
+            plot.title=ggplot2::element_text(angle=0,
+                size=titleLabSize,
+                face="bold",
+                vjust=1),
 
             panel.grid.major=ggplot2::element_blank(),
             panel.grid.minor=ggplot2::element_blank(),
 
-            axis.text.x=ggplot2::element_text(angle=0, size=axisLabSize, vjust=1),
-            axis.text.y=ggplot2::element_text(angle=0, size=axisLabSize, vjust=1),
+            axis.text.x=ggplot2::element_text(angle=0,
+                size=axisLabSize,
+                vjust=1),
+            axis.text.y=ggplot2::element_text(angle=0,
+                size=axisLabSize,
+                vjust=1),
             axis.title=ggplot2::element_text(size=axisLabSize),
 
             legend.position=legendPosition,
             legend.key=ggplot2::element_blank(),
             legend.key.size=ggplot2::unit(0.5, "cm"),
-            legend.text=ggplot2::element_text(size=legendLabSize),
-            title=ggplot2::element_text(size=legendLabSize),
+            legend.text=ggplot2::element_text(
+                size=legendLabSize),
+            title=ggplot2::element_text(
+                size=legendLabSize),
             legend.title=ggplot2::element_blank()) +
 
-        ggplot2::guides(colour = ggplot2::guide_legend(override.aes=list(size=legendIconSize))) +
+        ggplot2::guides(colour = ggplot2::guide_legend(
+            override.aes=list(size=legendIconSize))) +
 
         ggplot2::xlab(xlab) +
         ggplot2::ylab(ylab) +
@@ -101,25 +124,44 @@ EnhancedVolcano <- function(
 
         ggplot2::ggtitle(title) +
 
-        ggplot2::geom_vline(xintercept=c(-FCcutoff, FCcutoff), linetype=cutoffLineType, colour=cutoffLineCol, size=cutoffLineWidth) +
+        ggplot2::geom_vline(xintercept=c(-FCcutoff, FCcutoff),
+            linetype=cutoffLineType,
+            colour=cutoffLineCol,
+            size=cutoffLineWidth) +
 
-        ggplot2::geom_hline(yintercept=-log10(pCutoff), linetype=cutoffLineType, colour=cutoffLineCol, size=cutoffLineWidth)
+        ggplot2::geom_hline(yintercept=-log10(pCutoff),
+            linetype=cutoffLineType,
+            colour=cutoffLineCol,
+            size=cutoffLineWidth)
 
     if (DrawConnectors == TRUE) {
-        plot <- plot + ggrepel::geom_text_repel(data=subset(toptable, toptable[,y]<pLabellingCutoff & abs(toptable[,x])>FCcutoff),
-            ggplot2::aes(label=subset(toptable, toptable[,y]<pLabellingCutoff & abs(toptable[,x])>FCcutoff)[,"lab"]),
+        plot <- plot + ggrepel::geom_text_repel(
+            data=subset(toptable,
+                toptable[,y]<pLabellingCutoff &
+                    abs(toptable[,x])>FCcutoff),
+            ggplot2::aes(label=subset(toptable,
+                toptable[,y]<pLabellingCutoff &
+                    abs(toptable[,x])>FCcutoff)[,"lab"]),
                 size = transcriptLabSize,
                 segment.color = colConnectors,
                 segment.size = widthConnectors,
                 vjust = 1.0)
     } else if (DrawConnectors == FALSE && !is.null(selectLab)) {
-        plot <- plot + ggplot2::geom_text(data=subset(toptable, toptable[,y]<pLabellingCutoff & abs(toptable[,x])>FCcutoff),
-            ggplot2::aes(label=subset(toptable, toptable[,y]<pLabellingCutoff & abs(toptable[,x])>FCcutoff)[,"lab"]),
+        plot <- plot + ggplot2::geom_text(data=subset(toptable,
+                toptable[,y]<pLabellingCutoff &
+                    abs(toptable[,x])>FCcutoff),
+            ggplot2::aes(label=subset(toptable,
+                toptable[,y]<pLabellingCutoff &
+                    abs(toptable[,x])>FCcutoff)[,"lab"]),
                 size = transcriptLabSize,
                 vjust = 1.0)
     } else if (DrawConnectors == FALSE && is.null(selectLab)) {
-        plot <- plot + ggplot2::geom_text(data=subset(toptable, toptable[,y]<pLabellingCutoff & abs(toptable[,x])>FCcutoff),
-            ggplot2::aes(label=subset(toptable, toptable[,y]<pLabellingCutoff & abs(toptable[,x])>FCcutoff)[,"lab"]),
+        plot <- plot + ggplot2::geom_text(data=subset(toptable,
+                toptable[,y]<pLabellingCutoff &
+                    abs(toptable[,x])>FCcutoff),
+            ggplot2::aes(label=subset(toptable,
+                toptable[,y]<pLabellingCutoff &
+                    abs(toptable[,x])>FCcutoff)[,"lab"]),
                 size = transcriptLabSize,
                 check_overlap = TRUE,
                 vjust = 1.0)

@@ -1,6 +1,6 @@
 Package: EnhancedVolcano
 Type: Package
-Title: Publication-ready volcano plots with enhanced colouring and labeling.
+Title: Publication-ready volcano plots with enhanced colouring and labeling
 Version: 0.99.0
 Author: Kevin Blighe, Sharmila Rana, Myles Lewis
 Maintainer: Kevin Blighe <kevin@clinicalbioinformatics.co.uk>

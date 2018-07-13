@@ -14,7 +14,9 @@ vignette: >
     %\VignetteEngine{knitr::rmarkdown}
 ---
 
-Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots [@EnhancedVolcano].
+Volcano plots represent a useful way to visualise the results of differential
+expression analyses. Here, we present a highly-configurable function that
+produces publication-ready volcano plots [@EnhancedVolcano].
 
 
 ```{r, echo=FALSE}
@@ -52,17 +54,25 @@ Conduct differential expression using DESeq2:
     dds <- DESeqDataSet(airway, design = ~ cell + dex)
     dds <- DESeq(dds, betaPrior=FALSE)
 
-    res1 <- results(dds, contrast = c("dex","trt","untrt"))
-    res1 <- lfcShrink(dds, contrast = c("dex","trt","untrt"), res=res1)
+    res1 <- results(dds,
+        contrast = c("dex","trt","untrt"))
+    res1 <- lfcShrink(dds,
+        contrast = c("dex","trt","untrt"), res=res1)
 
-    res2 <- results(dds, contrast = c("cell", "N061011", "N61311"))
-    res2 <- lfcShrink(dds, contrast = c("cell", "N061011", "N61311"), res=res2)
+    res2 <- results(dds,
+        contrast = c("cell", "N061011", "N61311"))
+    res2 <- lfcShrink(dds,
+        contrast = c("cell", "N061011", "N61311"), res=res2)
 
-    res3 <- results(dds, contrast = c("cell", "N061011", "N052611"))
-    res3 <- lfcShrink(dds, contrast = c("cell", "N061011", "N052611"), res=res3)
+    res3 <- results(dds,
+        contrast = c("cell", "N061011", "N052611"))
+    res3 <- lfcShrink(dds,
+        contrast = c("cell", "N061011", "N052611"), res=res3)
 
-    res4 <- results(dds, contrast = c("cell", "N061011", "N052611"))
-    res4 <- lfcShrink(dds, contrast = c("cell", "N061011", "N052611"), res=res4)
+    res4 <- results(dds,
+        contrast = c("cell", "N061011", "N052611"))
+    res4 <- lfcShrink(dds,
+        contrast = c("cell", "N061011", "N052611"), res=res4)
 
 ```
 
@@ -86,7 +96,7 @@ Install and load EnhancedVolcano:
 
 ```
 
-```{r plot, fig.cap = "Example 1: plot the most basic volcano plot", echo=FALSE}
+```{r, fig.cap = "Example 1: plot the most basic volcano plot", echo=FALSE}
 
     EnhancedVolcano(res1,
         lab = rownames(res1),
@@ -110,7 +120,7 @@ Install and load EnhancedVolcano:
 
 ```
 
-```{r plot, fig.cap = "Example 2: modify cut-offs for log2FC and pvalue; add title; adjust point and label size", echo=FALSE}
+```{r, fig.cap = "Example 2: modify cut-offs for log2FC and pvalue; add title; adjust point and label size", echo=FALSE}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -142,7 +152,7 @@ Install and load EnhancedVolcano:
 
 ```
 
-```{r plot, fig.cap = "Example 3: adjust colour and alpha for point shading", echo=FALSE}
+```{r, fig.cap = "Example 3: adjust colour and alpha for point shading", echo=FALSE}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -177,7 +187,7 @@ Install and load EnhancedVolcano:
 
 ```
 
-```{r plot, fig.cap = "Example 4: adjust axis limits", echo=FALSE}
+```{r, fig.cap = "Example 4: adjust axis limits", echo=FALSE}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -216,7 +226,7 @@ Install and load EnhancedVolcano:
 
 ```
 
-```{r plot, fig.cap = "Example 5: adjust cut-off lines", echo=FALSE}
+```{r, fig.cap = "Example 5: adjust cut-off lines", echo=FALSE}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -252,14 +262,15 @@ Install and load EnhancedVolcano:
         cutoffLineType = "twodash",
         cutoffLineCol = "red4",
         cutoffLineWidth = 1.0,
-        legend=c("NS","Log (base 2) fold-change","P value","P value & Log (base 2) fold-change"),
+        legend=c("NS","Log (base 2) fold-change","P value",
+            "P value & Log (base 2) fold-change"),
         legendPosition = "right",
         legendLabSize = 14,
         legendIconSize = 5.0)
 
 ```
 
-```{r plot, fig.cap = "Example 6: adjust legend position, size, and text", echo=FALSE}
+```{r, fig.cap = "Example 6: adjust legend position, size, and text", echo=FALSE}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -273,7 +284,8 @@ Install and load EnhancedVolcano:
         cutoffLineType = "twodash",
         cutoffLineCol = "red4",
         cutoffLineWidth = 1.0,
-        legend=c("NS","Log (base 2) fold-change","P value","P value & Log (base 2) fold-change"),
+        legend=c("NS","Log (base 2) fold-change","P value",
+            "P value & Log (base 2) fold-change"),
         legendPosition = "right",
         legendLabSize = 14,
         legendIconSize = 5.0)
@@ -295,14 +307,15 @@ Install and load EnhancedVolcano:
         xlim=c(-6,6),
         transcriptLabSize = 3.0,
         colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value","Adjusted p-value & Log2 FC"),
+        legend=c("NS","Log2 FC","Adjusted p-value",
+            "Adjusted p-value & Log2 FC"),
         legendPosition = "bottom",
         legendLabSize = 10,
         legendIconSize = 3.0)
 
 ```
 
-```{r plot, fig.cap = "Example 7: plot adjusted p-values", echo=FALSE}
+```{r, fig.cap = "Example 7: plot adjusted p-values", echo=FALSE}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -315,7 +328,8 @@ Install and load EnhancedVolcano:
         xlim=c(-6,6),
         transcriptLabSize = 3.0,
         colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value","Adjusted p-value & Log2 FC"),
+        legend=c("NS","Log2 FC","Adjusted p-value",
+            "Adjusted p-value & Log2 FC"),
         legendPosition = "bottom",
         legendLabSize = 10,
         legendIconSize = 3.0)
@@ -337,7 +351,8 @@ Install and load EnhancedVolcano:
         xlim = c(-6,6),
         transcriptLabSize = 3.0,
         colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value","Adjusted p-value & Log2 FC"),
+        legend=c("NS","Log2 FC","Adjusted p-value",
+            "Adjusted p-value & Log2 FC"),
         legendPosition = "bottom",
         legendLabSize = 10,
         legendIconSize = 3.0,
@@ -347,7 +362,7 @@ Install and load EnhancedVolcano:
 
 ```
 
-```{r plot, fig.cap = "Example 8: fit more labels by adding connectors", echo=FALSE}
+```{r, fig.cap = "Example 8: fit more labels by adding connectors", echo=FALSE}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -360,7 +375,8 @@ Install and load EnhancedVolcano:
         xlim = c(-6,6),
         transcriptLabSize = 3.0,
         colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value","Adjusted p-value & Log2 FC"),
+        legend=c("NS","Log2 FC","Adjusted p-value",
+            "Adjusted p-value & Log2 FC"),
         legendPosition = "bottom",
         legendLabSize = 10,
         legendIconSize = 3.0,
@@ -386,14 +402,15 @@ Install and load EnhancedVolcano:
         xlim = c(-6,6),
         transcriptLabSize = 5.0,
         colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value","Adjusted p-value & Log2 FC"),
+        legend=c("NS","Log2 FC","Adjusted p-value",
+            "Adjusted p-value & Log2 FC"),
         legendPosition = "bottom",
         legendLabSize = 10,
         legendIconSize = 3.0)
 
 ```
 
-```{r plot, fig.cap = "Example 9: only label key transcripts", echo=FALSE}
+```{r, fig.cap = "Example 9: only label key transcripts", echo=FALSE}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -407,7 +424,8 @@ Install and load EnhancedVolcano:
         xlim = c(-6,6),
         transcriptLabSize = 5.0,
         colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value","Adjusted p-value & Log2 FC"),
+        legend=c("NS","Log2 FC","Adjusted p-value",
+            "Adjusted p-value & Log2 FC"),
         legendPosition = "bottom",
         legendLabSize = 10,
         legendIconSize = 3.0)
@@ -442,7 +460,8 @@ Install and load EnhancedVolcano:
         xlim = c(-6,6),
         transcriptLabSize = 5.0,
         colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value","Adjusted p-value & Log2 FC"),
+        legend=c("NS","Log2 FC","Adjusted p-value",
+            "Adjusted p-value & Log2 FC"),
         legendPosition = "bottom",
         legendLabSize = 10,
         legendIconSize = 3.0)
@@ -470,7 +489,7 @@ Install and load EnhancedVolcano:
 
 ```
 
-```{r plot, fig.cap = "Example 10: plot multiple volcanos on the same page", echo=FALSE}
+```{r, fig.cap = "Example 10: plot multiple volcanos on the same page", echo=FALSE}
 
     p1 <- EnhancedVolcano(res1,
         lab = rownames(res1),
@@ -496,7 +515,8 @@ Install and load EnhancedVolcano:
         xlim = c(-6,6),
         transcriptLabSize = 5.0,
         colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value","Adjusted p-value & Log2 FC"),
+        legend=c("NS","Log2 FC","Adjusted p-value",
+            "Adjusted p-value & Log2 FC"),
         legendPosition = "bottom",
         legendLabSize = 10,
         legendIconSize = 3.0)
@@ -535,9 +555,11 @@ Sharmila Rana,
 ## Session info
 
 ```{r}
+
 sessionInfo()
+
 ```
- 
+
 ## References
 
 [@EnhancedVolcano]
