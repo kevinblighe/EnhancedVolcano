@@ -22,7 +22,7 @@ produces publication-ready volcano plots [@EnhancedVolcano].
 ```{r, echo=FALSE}
 
     library(knitr)
-    opts_chunk$set(tidy=TRUE,message=FALSE)
+    opts_chunk$set(tidy = TRUE, message = FALSE, warning = FALSE)
 
 ```
 
@@ -87,16 +87,7 @@ Install and load EnhancedVolcano:
 
 ## Example 1: plot the most basic volcano plot:
 
-```{r}
-
-    EnhancedVolcano(res1,
-        lab = rownames(res1),
-        x = "log2FoldChange",
-        y = "pvalue")
-
-```
-
-```{r, fig.cap = "Example 1: plot the most basic volcano plot", echo=FALSE}
+```{r ex1, fig.height = 8, fig.width = 6, fig.cap = "Example 1: plot the most basic volcano plot"}
 
     EnhancedVolcano(res1,
         lab = rownames(res1),
@@ -106,21 +97,7 @@ Install and load EnhancedVolcano:
 
 ## Example 2: modify cut-offs for log2FC and pvalue; add title; adjust point and label size:
 
-```{r}
-
-    EnhancedVolcano(res2,
-        lab = rownames(res2),
-        x = "log2FoldChange",
-        y = "pvalue",
-        pCutoff = 10e-12,
-        FCcutoff = 1.5,
-        transcriptPointSize = 1.5,
-        transcriptLabSize = 3.0,
-        title = "N061011 versus N61311")
-
-```
-
-```{r, fig.cap = "Example 2: modify cut-offs for log2FC and pvalue; add title; adjust point and label size", echo=FALSE}
+```{r ex2, fig.height = 8, fig.width = 6, fig.cap = "Example 2: modify cut-offs for log2FC and pvalue; add title; adjust point and label size"}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -136,23 +113,7 @@ Install and load EnhancedVolcano:
 
 ## Example 3: adjust colour and alpha for point shading:
 
-```{r}
-
-    EnhancedVolcano(res2,
-        lab = rownames(res2),
-        x = "log2FoldChange",
-        y = "pvalue",
-        pCutoff = 10e-12,
-        FCcutoff = 1.5,
-        transcriptPointSize = 1.5,
-        transcriptLabSize = 3.0,
-        title = "N061011 versus N61311",
-        col=c("black", "black", "black", "red3"),
-        colAlpha = 1)
-
-```
-
-```{r, fig.cap = "Example 3: adjust colour and alpha for point shading", echo=FALSE}
+```{r ex3, fig.height = 8, fig.width = 6, fig.cap = "Example 3: adjust colour and alpha for point shading"}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -170,24 +131,7 @@ Install and load EnhancedVolcano:
 
 ## Example 4: adjust axis limits:
 
-```{r}
-
-    EnhancedVolcano(res2,
-        lab = rownames(res2),
-        x = "log2FoldChange",
-        y = "pvalue",
-        pCutoff = 10e-12,
-        FCcutoff = 1.5,
-        transcriptPointSize = 1.5,
-        transcriptLabSize = 3.0,
-        title = "N061011 versus N61311",
-        colAlpha = 1,
-        xlim = c(-8, 8),
-        ylim = c(0, -log10(10e-32)))
-
-```
-
-```{r, fig.cap = "Example 4: adjust axis limits", echo=FALSE}
+```{r ex4, fig.height = 8, fig.width = 6, fig.cap = "Example 4: adjust axis limits"}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -206,27 +150,7 @@ Install and load EnhancedVolcano:
 
 ## Example 5: adjust cut-off lines:
 
-```{r}
-
-    EnhancedVolcano(res2,
-        lab = rownames(res2),
-        x = "log2FoldChange",
-        y = "pvalue",
-        pCutoff = 10e-12,
-        FCcutoff = 1.5,
-        transcriptPointSize = 1.5,
-        transcriptLabSize = 3.0,
-        title = "N061011 versus N61311",
-        colAlpha = 1,
-        xlim = c(-8, 8),
-        ylim = c(0, -log10(10e-32)),
-        cutoffLineType = "twodash",
-        cutoffLineCol = "red3",
-        cutoffLineWidth = 1.5)
-
-```
-
-```{r, fig.cap = "Example 5: adjust cut-off lines", echo=FALSE}
+```{r ex5, fig.height = 8, fig.width = 6, fig.cap = "Example 5: adjust cut-off lines"}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -248,29 +172,7 @@ Install and load EnhancedVolcano:
 
 ## Example 6: adjust legend position, size, and text:
 
-```{r}
-
-    EnhancedVolcano(res2,
-        lab = rownames(res2),
-        x = "log2FoldChange",
-        y = "pvalue",
-        pCutoff = 10e-12,
-        FCcutoff = 1.5,
-        transcriptPointSize = 1.5,
-        transcriptLabSize = 3.0,
-        colAlpha = 1,
-        cutoffLineType = "twodash",
-        cutoffLineCol = "red4",
-        cutoffLineWidth = 1.0,
-        legend=c("NS","Log (base 2) fold-change","P value",
-            "P value & Log (base 2) fold-change"),
-        legendPosition = "right",
-        legendLabSize = 14,
-        legendIconSize = 5.0)
-
-```
-
-```{r, fig.cap = "Example 6: adjust legend position, size, and text", echo=FALSE}
+```{r ex6, fig.height = 8, fig.width = 9, fig.cap = "Example 6: adjust legend position, size, and text"}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -294,28 +196,7 @@ Install and load EnhancedVolcano:
 
 ## Example 7: plot adjusted p-values:
 
-```{r}
-
-    EnhancedVolcano(res2,
-        lab = rownames(res2),
-        x = "log2FoldChange",
-        y = "padj",
-        xlab = bquote(~Log[2]~ "fold change"),
-        ylab = bquote(~-Log[10]~adjusted~italic(P)),
-        pCutoff = 0.0001,
-        FCcutoff = 1.0,
-        xlim=c(-6,6),
-        transcriptLabSize = 3.0,
-        colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value",
-            "Adjusted p-value & Log2 FC"),
-        legendPosition = "bottom",
-        legendLabSize = 10,
-        legendIconSize = 3.0)
-
-```
-
-```{r, fig.cap = "Example 7: plot adjusted p-values", echo=FALSE}
+```{r ex7, fig.height = 8, fig.width = 6, fig.cap = "Example 7: plot adjusted p-values"}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -338,31 +219,7 @@ Install and load EnhancedVolcano:
 
 ## Example 8: fit more labels by adding connectors:
 
-```{r}
-
-    EnhancedVolcano(res2,
-        lab = rownames(res2),
-        x = "log2FoldChange",
-        y = "padj",
-        xlab = bquote(~Log[2]~ "fold change"),
-        ylab = bquote(~-Log[10]~adjusted~italic(P)),
-        pCutoff = 0.0001,
-        FCcutoff = 2.0,
-        xlim = c(-6,6),
-        transcriptLabSize = 3.0,
-        colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value",
-            "Adjusted p-value & Log2 FC"),
-        legendPosition = "bottom",
-        legendLabSize = 10,
-        legendIconSize = 3.0,
-        DrawConnectors = TRUE,
-        widthConnectors = 0.5,
-        colConnectors = "black")
-
-```
-
-```{r, fig.cap = "Example 8: fit more labels by adding connectors", echo=FALSE}
+```{r ex8, fig.height = 8, fig.width = 6.5, fig.cap = "Example 8: fit more labels by adding connectors"}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -388,29 +245,7 @@ Install and load EnhancedVolcano:
 
 ## Example 9: only label key transcripts:
 
-```{r}
-
-    EnhancedVolcano(res2,
-        lab = rownames(res2),
-        x = "log2FoldChange",
-        y = "padj",
-        selectLab = c("ENSG00000106565","ENSG00000187758"),
-        xlab = bquote(~Log[2]~ "fold change"),
-        ylab = bquote(~-Log[10]~adjusted~italic(P)),
-        pCutoff = 0.0001,
-        FCcutoff = 2.0,
-        xlim = c(-6,6),
-        transcriptLabSize = 5.0,
-        colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value",
-            "Adjusted p-value & Log2 FC"),
-        legendPosition = "bottom",
-        legendLabSize = 10,
-        legendIconSize = 3.0)
-
-```
-
-```{r, fig.cap = "Example 9: only label key transcripts", echo=FALSE}
+```{r ex9, fig.height = 8, fig.width = 6, fig.cap = "Example 9: only label key transcripts"}
 
     EnhancedVolcano(res2,
         lab = rownames(res2),
@@ -434,7 +269,7 @@ Install and load EnhancedVolcano:
 
 ## Example 10: plot multiple volcanos on the same page:
 
-```{r}
+```{r ex10, fig.height = 11, fig.width = 11, fig.cap = "Example 10: plot multiple volcanos on the same page"}
 
     p1 <- EnhancedVolcano(res1,
         lab = rownames(res1),
@@ -470,6 +305,7 @@ Install and load EnhancedVolcano:
         lab = rownames(res3),
         x = "log2FoldChange",
         y = "pvalue",
+	pCutoff = 10e-15,
         title = "N061011 versus N052611",
         DrawConnectors = FALSE)
 
@@ -477,61 +313,7 @@ Install and load EnhancedVolcano:
         lab = rownames(res4),
         x = "log2FoldChange",
         y = "padj",
-        ylab = bquote(~-Log[10]~adjusted~italic(P)),
-        title = "N061011 versus N61311",
-        col = c("black", "dodgerblue", "skyblue", "gold"),
-        DrawConnectors = FALSE)
-
-    library(gridExtra)
-    library(grid)
-    grid.arrange(p1, p2, p3, p4, ncol=2, top="EnhancedVolcano")
-    grid.rect(gp=gpar(fill=NA))
-
-```
-
-```{r, fig.cap = "Example 10: plot multiple volcanos on the same page", echo=FALSE}
-
-    p1 <- EnhancedVolcano(res1,
-        lab = rownames(res1),
-        x = "log2FoldChange",
-        y = "pvalue",
-        pCutoff = 10e-24,
-        FCcutoff = 2.0,
-        transcriptLabSize = 2.0,
-        colAlpha = 1,
-        legendPosition = "bottom",
-        legendLabSize = 10,
-        legendIconSize = 3.0)
-
-    p2 <- EnhancedVolcano(res1,
-        lab = rownames(res1),
-        x = "log2FoldChange",
-        y = "padj",
-        selectLab = c("ENSG00000106565","ENSG00000187758"),
-        xlab = bquote(~Log[2]~ "fold change"),
-        ylab = bquote(~-Log[10]~adjusted~italic(P)),
-        pCutoff = 0.0001,
-        FCcutoff = 2.0,
-        xlim = c(-6,6),
-        transcriptLabSize = 5.0,
-        colAlpha = 1,
-        legend=c("NS","Log2 FC","Adjusted p-value",
-            "Adjusted p-value & Log2 FC"),
-        legendPosition = "bottom",
-        legendLabSize = 10,
-        legendIconSize = 3.0)
-
-    p3 <- EnhancedVolcano(res3,
-        lab = rownames(res3),
-        x = "log2FoldChange",
-        y = "pvalue",
-        title = "N061011 versus N052611",
-        DrawConnectors = FALSE)
-
-    p4 <- EnhancedVolcano(res4,
-        lab = rownames(res4),
-        x = "log2FoldChange",
-        y = "padj",
+	pCutoff = 10e-12,
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
         title = "N061011 versus N61311",
         col = c("black", "dodgerblue", "skyblue", "gold"),
