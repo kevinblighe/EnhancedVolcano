@@ -49,6 +49,8 @@ EnhancedVolcano <- function(
     requireNamespace("ggplot2")
     requireNamespace("ggrepel")
 
+    i <- xvals <- yvals <- Sig <- NULL
+
     toptable <- as.data.frame(toptable)
     toptable$Sig <- "NS"
     toptable$Sig[(abs(toptable[,x]) > FCcutoff)] <- "FC"

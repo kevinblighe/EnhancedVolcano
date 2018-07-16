@@ -1,17 +1,22 @@
 Package: EnhancedVolcano
 Type: Package
 Title: Publication-ready volcano plots with enhanced colouring and labeling
-Version: 0.99.0
-Author: Kevin Blighe, Sharmila Rana, Myles Lewis
+Version: 0.99.1
+Author: Kevin Blighe
 Maintainer: Kevin Blighe <kevin@clinicalbioinformatics.co.uk>
-Description: Volcano plot with enhanced colouring and labeling.
+Description: Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots. EnhancedVolcano will attempt to fit as many transcript names in the plot window as possible, thus avoiding 'clogging' up the plot with labels that could not otherwise have been read.
 License: GPL-3
 Imports:
-	ggplot2,
-	ggrepel
+    ggplot2,
+    ggrepel,
 Suggests:
-	edgeR,
-	DESeq2,
-	pasilla
+    knitr,
+    DESeq2,
+    pasilla,
+    airway,
+    gridExtra,
+    magrittr
 URL: https://github.com/kevinblighe/EnhancedVolcano
 biocViews: RNASeq, GeneExpression, Transcription, DifferentialExpression
+VignetteBuilder:
+    knitr

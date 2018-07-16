@@ -12,11 +12,16 @@ bibliography: library.bib
 vignette: >
     %\VignetteIndexEntry{Publication-ready volcano plots with enhanced colouring and labeling}
     %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
+    %\usepackage[utf8]{inputenc}
 ---
 
 Volcano plots represent a useful way to visualise the results of differential
 expression analyses. Here, we present a highly-configurable function that
-produces publication-ready volcano plots [@EnhancedVolcano].
+produces publication-ready volcano plots [@EnhancedVolcano]. EnhancedVolcano
+will attempt to fit as many transcript names in the plot window as possible,
+thus avoiding 'clogging' up the plot with labels that could not otherwise
+have been read.
 
 
 ```{r, echo=FALSE}
@@ -63,16 +68,6 @@ Conduct differential expression using DESeq2:
         contrast = c("cell", "N061011", "N61311"))
     res2 <- lfcShrink(dds,
         contrast = c("cell", "N061011", "N61311"), res=res2)
-
-    res3 <- results(dds,
-        contrast = c("cell", "N061011", "N052611"))
-    res3 <- lfcShrink(dds,
-        contrast = c("cell", "N061011", "N052611"), res=res3)
-
-    res4 <- results(dds,
-        contrast = c("cell", "N061011", "N052611"))
-    res4 <- lfcShrink(dds,
-        contrast = c("cell", "N061011", "N052611"), res=res4)
 
 ```
 
@@ -269,7 +264,7 @@ Install and load EnhancedVolcano:
 
 ## Example 10: plot multiple volcanos on the same page:
 
-```{r ex10, fig.height = 11, fig.width = 11, fig.cap = "Example 10: plot multiple volcanos on the same page"}
+```{r ex10, fig.height = 8, fig.width = 11, fig.cap = "Example 10: plot multiple volcanos on the same page"}
 
     p1 <- EnhancedVolcano(res1,
         lab = rownames(res1),
@@ -283,8 +278,8 @@ Install and load EnhancedVolcano:
         legendLabSize = 10,
         legendIconSize = 3.0)
 
-    p2 <- EnhancedVolcano(res1,
-        lab = rownames(res1),
+    p2 <- EnhancedVolcano(res2,
+        lab = rownames(res2),
         x = "log2FoldChange",
         y = "padj",
         selectLab = c("ENSG00000106565","ENSG00000187758"),
@@ -301,27 +296,10 @@ Install and load EnhancedVolcano:
         legendLabSize = 10,
         legendIconSize = 3.0)
 
-    p3 <- EnhancedVolcano(res3,
-        lab = rownames(res3),
-        x = "log2FoldChange",
-        y = "pvalue",
-	pCutoff = 10e-15,
-        title = "N061011 versus N052611",
-        DrawConnectors = FALSE)
-
-    p4 <- EnhancedVolcano(res4,
-        lab = rownames(res4),
-        x = "log2FoldChange",
-        y = "padj",
-	pCutoff = 10e-12,
-        ylab = bquote(~-Log[10]~adjusted~italic(P)),
-        title = "N061011 versus N61311",
-        col = c("black", "dodgerblue", "skyblue", "gold"),
-        DrawConnectors = FALSE)
 
     library(gridExtra)
     library(grid)
-    grid.arrange(p1, p2, p3, p4, ncol=2, top="EnhancedVolcano")
+    grid.arrange(p1, p2, ncol=2, top="EnhancedVolcano")
     grid.rect(gp=gpar(fill=NA))
 
 ```
@@ -345,8 +323,3 @@ sessionInfo()
 ## References
 
 [@EnhancedVolcano]
-
-
-
-
-
