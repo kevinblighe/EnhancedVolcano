@@ -156,6 +156,7 @@ EnhancedVolcano <- function(
                 toptable[,y]<pLabellingCutoff &
                     abs(toptable[,x])>FCcutoff)[,"lab"]),
                 size = transcriptLabSize,
+		check_overlap = TRUE,
                 vjust = 1.0)
     } else if (DrawConnectors == FALSE && is.null(selectLab)) {
         plot <- plot + ggplot2::geom_text(data=subset(toptable,
