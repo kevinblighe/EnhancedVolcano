@@ -60,6 +60,11 @@ EnhancedVolcano <- function(
     toptable$Sig <- factor(toptable$Sig,
         levels=c("NS","FC","P","FC_P"))
 
+    if (min(toptable[,y], na.rm=TRUE) == 0) {
+        warning("One or more P values is 0. Converting to minimum possible value...", call. = FALSE)
+        toptable[which(toptable[,y] == 0), y] <- .Machine$double.xmin
+    }
+
     toptable$lab <- lab
     toptable$xvals <- toptable[,x]
     toptable$yvals <- toptable[,y]
