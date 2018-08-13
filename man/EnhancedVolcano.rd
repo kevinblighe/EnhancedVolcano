@@ -1,12 +1,18 @@
 \name{EnhancedVolcano}
+
 \alias{EnhancedVolcano}
+
+\docType{package}
+
 \title{Publication-ready volcano plots with enhanced colouring and labeling}
+
 \description{Volcano plots represent a useful way to visualise the results
 of differential expression analyses. Here, we present a highly-configurable
 function that produces publication-ready volcano plots. EnhancedVolcano
 will attempt to fit as many transcript names in the plot window as possible,
 thus avoiding 'clogging' up the plot with labels that could not otherwise
 have been read.}
+
 \usage{
 EnhancedVolcano(
     toptable,
@@ -39,8 +45,9 @@ EnhancedVolcano(
     cutoffLineCol = "black",
     cutoffLineWidth = 0.4)
 }
+
 \arguments{
-    \item{toptable}{A data-frame of test statistics (if not a data frame,
+    \item{toptable}{A data-frame of test statistics (if not, a data frame,
     an attempt will be made to convert it to one). Requires at least
     the following: column for transcript names (can be rownames); a column
     for log2 fold changes; a column for nominal or adjusted p-value.
@@ -102,6 +109,7 @@ EnhancedVolcano(
     \item{cutoffLineWidth}{Line width for FCcutoff and pCutoff. DEFAULT =
     0.4. OPTIONAL.}
 }
+
 \details{
 Volcano plots represent a useful way to visualise the results of differential
 expression analyses. Here, we present a highly-configurable function that
@@ -110,12 +118,15 @@ will attempt to fit as many transcript names in the plot window as possible,
 thus avoiding 'clogging' up the plot with labels that could not otherwise
 have been read.
 }
+
 \value{
 A \code{\link{ggplot2}} object.
 }
+
 \author{
 Kevin Blighe <kevin@clinicalbioinformatics.co.uk>
 }
+
 \examples{
 library("pasilla")
 pasCts <- system.file("extdata", "pasilla_gene_counts.tsv",

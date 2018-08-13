@@ -1,2 +1,4 @@
 CHANGES IN VERSION 1.0.0
 ------------------------
+ - the function now tolerates P vales of 0 (zero) and replaces these with the
+   lowest possible double value, given a user's specific computer architecture and R version
