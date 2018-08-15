@@ -4,12 +4,12 @@ author: "Kevin Blighe"
 date: "`r Sys.Date()`"
 package: "`r packageVersion('EnhancedVolcano')`"
 output:
-    html_document:
-        highlight: pygments
-        toc: true
-            toc_depth: 2
-            toc_float: true
-    fig_width: 6
+html_document:
+highlight: pygments
+toc: true
+toc_depth: 2
+toc_float: true
+fig_width: 7
 bibliography: library.bib
 vignette: >
     %\VignetteIndexEntry{Publication-ready volcano plots with enhanced colouring and labeling}
@@ -76,14 +76,9 @@ Load airway data:
 
 ```{r}
 
-    source("https://bioconductor.org/biocLite.R")
-
-    biocLite("airway")
-
     library(airway)
 
     library(magrittr)
-
 
     data("airway")
 
@@ -119,9 +114,9 @@ Conduct differential expression using DESeq2:
 
 ```
 
-## Example 1: plot the most basic volcano plot:
+## Plot the most basic volcano plot.
 
-```{r ex1, fig.height = 8, fig.width = 6, fig.cap = "Example 1: plot the most basic volcano plot"}
+```{r ex1, fig.height = 8, fig.width = 6, fig.cap = "Plot the most basic volcano plot."}
 
     EnhancedVolcano(res1,
 
@@ -143,9 +138,9 @@ thresholds that you set for statistical significance, i.e., 'pCutoff' and
 reasonably fit in the plot space. The user can optionally supply a vector of
 transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
-## Example 2: modify cut-offs for log2FC and pvalue; add title; adjust point and label size:
+## Modify cut-offs for log2FC and pvalue; add title; adjust point and label size.
 
-```{r ex2, fig.height = 8, fig.width = 6, fig.cap = "Example 2: modify cut-offs for log2FC and pvalue; add title; adjust point and label size"}
+```{r ex2, fig.height = 8, fig.width = 6, fig.cap = "Modify cut-offs for log2FC and pvalue; add title; adjust point and label size."}
 
     EnhancedVolcano(res2,
 
@@ -167,9 +162,9 @@ transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
 ```
 
-## Example 3: adjust colour and alpha for point shading:
+## Adjust colour and alpha for point shading.
 
-```{r ex3, fig.height = 8, fig.width = 6, fig.cap = "Example 3: adjust colour and alpha for point shading"}
+```{r ex3, fig.height = 8, fig.width = 6, fig.cap = "Adjust colour and alpha for point shading."}
 
     EnhancedVolcano(res2,
 
@@ -195,9 +190,9 @@ transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
 ```
 
-## Example 4: adjust axis limits:
+## Adjust axis limits.
 
-```{r ex4, fig.height = 8, fig.width = 6, fig.cap = "Example 4: adjust axis limits"}
+```{r ex4, fig.height = 8, fig.width = 9, fig.cap = "Adjust axis limits."}
 
     EnhancedVolcano(res2,
 
@@ -225,9 +220,9 @@ transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
 ```
 
-## Example 5: adjust cut-off lines:
+## Adjust cut-off lines.
 
-```{r ex5, fig.height = 8, fig.width = 6, fig.cap = "Example 5: adjust cut-off lines"}
+```{r ex5, fig.height = 8, fig.width = 9, fig.cap = "Adjust cut-off lines."}
 
     EnhancedVolcano(res2,
 
@@ -261,9 +256,9 @@ transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
 ```
 
-## Example 6: adjust legend position, size, and text:
+## Adjust legend position, size, and text.
 
-```{r ex6, fig.height = 8, fig.width = 9, fig.cap = "Example 6: adjust legend position, size, and text"}
+```{r ex6, fig.height = 8, fig.width = 12, fig.cap = "Adjust legend position, size, and text."}
 
     EnhancedVolcano(res2,
 
@@ -301,9 +296,9 @@ transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
 ```
 
-## Example 7: plot adjusted p-values:
+## Plot adjusted p-values.
 
-```{r ex7, fig.height = 8, fig.width = 6, fig.cap = "Example 7: plot adjusted p-values"}
+```{r ex7, fig.height = 8, fig.width = 6, fig.cap = "Plot adjusted p-values."}
 
     EnhancedVolcano(res2,
 
@@ -339,9 +334,9 @@ transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
 ```
 
-## Example 8: fit more labels by adding connectors:
+## Fit more labels by adding connectors.
 
-```{r ex8, fig.height = 8, fig.width = 6.5, fig.cap = "Example 8: fit more labels by adding connectors"}
+```{r ex8, fig.height = 8, fig.width = 6.5, fig.cap = "Fit more labels by adding connectors."}
 
     EnhancedVolcano(res2,
 
@@ -377,13 +372,13 @@ transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
         DrawConnectors = TRUE,
 
-        widthConnectors = 0.5,
+        widthConnectors = 0.2,
 
-        colConnectors = "black")
+        colConnectors = "grey30")
 
 ```
 
-## Example 9: only label key transcripts:
+## Only label key transcripts.
 
 ```{r ex9, fig.height = 8, fig.width = 6, fig.cap = "Example 9: only label key transcripts"}
 
@@ -407,6 +402,8 @@ transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
         xlim = c(-6,6),
 
+        transcriptPointSize = 1.8,
+
         transcriptLabSize = 5.0,
 
         colAlpha = 1,
@@ -423,7 +420,7 @@ transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
 ```
 
-## Example 10: plot multiple volcanos on the same page:
+## Plot multiple volcanos on the same page.
 
 ```{r ex10, fig.height = 8, fig.width = 11, fig.cap = "Example 10: plot multiple volcanos on the same page"}
 
@@ -439,7 +436,7 @@ transcript names (as 'selectLab') that s/he wishes to label in the plot.
 
         FCcutoff = 2.0,
 
-        transcriptLabSize = 2.0,
+        transcriptLabSize = 2.5,
 
         colAlpha = 1,
 

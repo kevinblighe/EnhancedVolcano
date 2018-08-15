@@ -4,7 +4,7 @@
 
 \docType{package}
 
-\title{Publication-ready volcano plots with enhanced colouring and labeling}
+\title{Publication-ready volcano plots with enhanced colouring and labeling.}
 
 \description{Volcano plots represent a useful way to visualise the results
 of differential expression analyses. Here, we present a highly-configurable
@@ -31,7 +31,7 @@ EnhancedVolcano(
     title = "",
     titleLabSize = 16,
     transcriptPointSize = 0.8,
-    transcriptLabSize = 2.0,
+    transcriptLabSize = 3.0,
     col = c("grey30", "forestgreen", "royalblue", "red2"),
     colAlpha = 1/2,
     legend = c("NS", "Log2 FC", "P", "P & Log2 FC"),
@@ -81,7 +81,7 @@ EnhancedVolcano(
     \item{transcriptPointSize}{Size of plotted points for each transcript.
     DEFAULT = 0.8. OPTIONAL.}
     \item{transcriptLabSize}{Size of labels for each transcript. DEFAULT =
-    2.0. OPTIONAL.}
+    3.0. OPTIONAL.}
     \item{col}{Colour shading for plotted points, corresponding to
     < abs(FCcutoff) && > pCutoff, > abs(FCcutoff), < pCutoff,
     > abs(FCcutoff) && < pCutoff. DEFAULT = c("grey30", "forestgreen",

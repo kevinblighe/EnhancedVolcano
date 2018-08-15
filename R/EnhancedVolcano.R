@@ -16,7 +16,7 @@ EnhancedVolcano <- function(
   title = "",
   titleLabSize = 16,
   transcriptPointSize = 0.8,
-  transcriptLabSize = 2.0,
+  transcriptLabSize = 3.0,
   col = c("grey30", "forestgreen", "royalblue", "red2"),
   colAlpha = 1/2,
   legend = c("NS","Log2 FC","P","P & Log2 FC"),
@@ -154,7 +154,7 @@ EnhancedVolcano <- function(
               toptable[,y]<pLabellingCutoff &
                 abs(toptable[,x])>FCcutoff)[,"lab"]),
               size = transcriptLabSize,
-              check_overlap = TRUE,
+              check_overlap = FALSE,
               vjust = 1.0)
   } else if (DrawConnectors == FALSE && is.null(selectLab)) {
     plot <- plot + geom_text(

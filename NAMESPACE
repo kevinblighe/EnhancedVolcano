@@ -2,5 +2,3 @@ export("EnhancedVolcano")
 
 import(ggplot2)
 import(ggrepel)
-
-importFrom(ggplot2, ggplot)
