@@ -144,7 +144,7 @@ EnhancedVolcano <- function(
               size = transcriptLabSize,
               segment.color = colConnectors,
               segment.size = widthConnectors,
-              vjust = 1.0)
+              vjust = 1.5)
   } else if (DrawConnectors == FALSE && !is.null(selectLab)) {
     plot <- plot + geom_text(
       data=subset(toptable,
@@ -155,7 +155,7 @@ EnhancedVolcano <- function(
                 abs(toptable[,x])>FCcutoff)[,"lab"]),
               size = transcriptLabSize,
               check_overlap = FALSE,
-              vjust = 1.0)
+              vjust = 1.5)
   } else if (DrawConnectors == FALSE && is.null(selectLab)) {
     plot <- plot + geom_text(
       data=subset(toptable,
@@ -166,7 +166,7 @@ EnhancedVolcano <- function(
                 abs(toptable[,x])>FCcutoff)[,"lab"]),
               size = transcriptLabSize,
               check_overlap = TRUE,
-              vjust = 1.0)
+              vjust = 1.5)
   }
 
   return(plot)
