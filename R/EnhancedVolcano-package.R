@@ -8,5 +8,5 @@
 #' have been read.
 #' 
 #' @docType package
-#' @name EnhancedVolcano
+#' @rdname EnhancedVolcano-package
 NULL
