@@ -2,8 +2,6 @@
 
 \alias{EnhancedVolcano}
 
-\docType{package}
-
 \title{Publication-ready volcano plots with enhanced colouring and labeling.}
 
 \description{Volcano plots represent a useful way to visualise the results
