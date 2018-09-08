@@ -39,11 +39,11 @@ EnhancedVolcano <- function(
   }
 
   if(!is.numeric(toptable[,x])) {
-    stop(paste(x[i], " is not numeric!", sep=""))
+    stop(paste(x, " is not numeric!", sep=""))
   }
 
   if(!is.numeric(toptable[,y])) {
-    stop(paste(x[i], " is not numeric!", sep=""))
+    stop(paste(y, " is not numeric!", sep=""))
   }
 
   i <- xvals <- yvals <- Sig <- NULL
