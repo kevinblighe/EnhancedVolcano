@@ -20,6 +20,7 @@ Kevin Blighe
     -   [Only label key transcripts](#only-label-key-transcripts)
     -   [Modify border and remove gridlines](#modify-border-and-remove-gridlines)
     -   [Plot multiple volcanos on the same page](#plot-multiple-volcanos-on-the-same-page)
+    -   [Override colouring scheme with custom key-value pairs](#override-colouring-scheme-with-custom-key-value-pairs)
 -   [Acknowledgments](#acknowledgments)
 -   [Session info](#session-info)
     -   [References](#references)
@@ -456,9 +457,17 @@ One can also modify the border by adding a complete border around the entire plo
 
         legendIconSize = 3.0,
 
-    DrawConnectors = FALSE,
+        DrawConnectors = FALSE,
 
-        border = "full", borderWidth = 1.5, borderColour = "black", gridlines.major = TRUE, gridlines.minor = FALSE)
+        border = "full",
+
+        borderWidth = 1.5,
+
+        borderColour = "black",
+
+        gridlines.major = FALSE,
+
+        gridlines.minor = FALSE)
 ```
 
 ![Modify border and remove gridlines](README_files/figure-markdown_github/ex10-1.png)
@@ -535,12 +544,149 @@ One can also plot multiple volcanos on the same plot via the use of the grid and
 
 ![Plot multiple volcanos on the same page.](README_files/figure-markdown_github/ex11-1.png)
 
+Override colouring scheme with custom key-value pairs
+-----------------------------------------------------
+
+In certain situations, one may wish to over-ride the default colour scheme with their own colour-scheme, such as colouring transcripts by pathway or group. This can be achieved by supplying a named vector as colOverride.
+
+In this example, we just wish to colour all transcripts with log2FC &gt; 2 as 'high' and those with log2FC &lt; -2 as 'low'.
+
+``` r
+    # create custom key-value pairs for high, low, mid expression
+    keyvals <- rep("black", nrow(res2))
+    names(keyvals) <- rep("Mid / NA", nrow(res2))
+
+    keyvals[which(res2$log2FoldChange > 2)] <- "gold"
+    names(keyvals)[which(res2$log2FoldChange > 2)] <- "High"
+
+    keyvals[which(res2$log2FoldChange < -2)] <- "royalblue"
+    names(keyvals)[which(res2$log2FoldChange < -2)] <- "Low"
+
+    p1 <- EnhancedVolcano(res2,
+
+        title = "Over-ride",
+
+        lab = rownames(res2),
+
+        x = "log2FoldChange",
+
+        y = "padj",
+
+        selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
+
+        xlab = bquote(~Log[2]~ "fold change"),
+
+        ylab = bquote(~-Log[10]~adjusted~italic(P)),
+
+        pCutoff = 0.00000000000000001,
+
+        FCcutoff = 1.0,
+
+        xlim = c(-6,6),
+
+        transcriptLabSize = 2.0,
+
+        colAlpha = 1,
+
+        legendPosition = "top",
+
+        transcriptPointSize = 1.2,
+
+        legendLabSize = 15,
+
+        legendIconSize = 5.0,
+
+        DrawConnectors = TRUE,
+
+        widthConnectors = 0.3,
+
+        colConnectors = "grey50",
+
+        border = "partial",
+
+        borderWidth = 1.5,
+
+        borderColour = "red4",
+
+        gridlines.major = TRUE,
+
+        gridlines.minor = FALSE,
+
+        colOverride = keyvals)
+
+    p2 <- EnhancedVolcano(res2,
+
+        title = "No over-ride",
+
+        lab = rownames(res2),
+
+        x = "log2FoldChange",
+
+        y = "padj",
+
+        selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
+
+        xlab = bquote(~Log[2]~ "fold change"),
+
+        ylab = bquote(~-Log[10]~adjusted~italic(P)),
+
+        pCutoff = 0.00000000000000001,
+
+        FCcutoff = 1.0,
+
+        xlim = c(-6,6),
+
+        transcriptLabSize = 2.0,
+
+        colAlpha = 1,
+
+        legendPosition = "top",
+
+        transcriptPointSize = 1.2,
+
+        legendLabSize = 15,
+
+        legendIconSize = 5.0,
+
+        DrawConnectors = FALSE,
+
+        widthConnectors = 0.3,
+
+        colConnectors = "grey50",
+
+        border = "full",
+
+        borderWidth = 1.5,
+
+        borderColour = "red4",
+
+        gridlines.major = TRUE,
+
+        gridlines.minor = FALSE,
+
+        colOverride = NULL)
+
+    library(gridExtra)
+
+    library(grid)
+
+    grid.arrange(p1, p2, ncol=2, top="EnhancedVolcano")
+
+    grid.rect(gp=gpar(fill=NA))
+```
+
+![Override colour](README_files/figure-markdown_github/ex12-1.png)
+
 Acknowledgments
 ===============
 
 The development of *EnhancedVolcano* has benefited from contributions and suggestions from:
 
-Sharmila Rana, [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html), Luke Dow - Assistant Professor at Weill Cornell Medicine
+Sharmila Rana,
+
+[Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html),
+
+Luke Dow - Assistant Professor at Weill Cornell Medicine
 
 Session info
 ============
@@ -577,7 +723,7 @@ sessionInfo()
     ##  [9] Biobase_2.41.2              GenomicRanges_1.33.13      
     ## [11] GenomeInfoDb_1.17.1         IRanges_2.15.17            
     ## [13] S4Vectors_0.19.19           BiocGenerics_0.27.1        
-    ## [15] EnhancedVolcano_0.99.14     ggrepel_0.8.0              
+    ## [15] EnhancedVolcano_0.99.15     ggrepel_0.8.0              
     ## [17] ggplot2_3.0.0               knitr_1.20                 
     ## 
     ## loaded via a namespace (and not attached):
