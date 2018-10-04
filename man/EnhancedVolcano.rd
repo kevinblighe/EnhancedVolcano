@@ -31,6 +31,7 @@ EnhancedVolcano(
     transcriptPointSize = 0.8,
     transcriptLabSize = 3.0,
     col = c("grey30", "forestgreen", "royalblue", "red2"),
+    colOverride = NULL,
     colAlpha = 1/2,
     legend = c("NS", "Log2 FC", "P", "P & Log2 FC"),
     legendPosition = "top",
@@ -44,7 +45,8 @@ EnhancedVolcano(
     cutoffLineWidth = 0.4,
     gridlines.major = TRUE,
     gridlines.minor = TRUE,
-    borderWidth = 1.5,
+    border = "partial",
+    borderWidth = 1.25,
     borderColour = "black")
 }
 
@@ -88,6 +90,10 @@ EnhancedVolcano(
     < abs(FCcutoff) && > pCutoff, > abs(FCcutoff), < pCutoff,
     > abs(FCcutoff) && < pCutoff. DEFAULT = c("grey30", "forestgreen",
     "royalblue", "red2"). OPTIONAL.}
+    \item{colOverride}{Named vector / key-value pairs that will over-ride the
+    default colour scheme. The order must match that of toptable. Names / keys
+    relate to groups / categories; values relate to colour. DEFAULT = NULL.
+    OPTIONAL.}
     \item{colAlpha}{Alpha for purposes of controlling colour transparency of
     transcript points. DEFAULT = 0.5. OPTIONAL.}
     \item{legend}{Plot legend text. DEFAULT = c("NS", "Log2 FC", "P",
@@ -115,7 +121,7 @@ EnhancedVolcano(
     \item{gridlines.minor}{Draw minor gridlines? (TRUE/FALSE). DEFAULT = TRUE.
     OPTIONAL}
     \item{border}{Add a border for just the x and y axes ('partial') or the
-    entire plot grid ('full')? DEFAULT = 'partail'. OPTIONAL.}
+    entire plot grid ('full')? DEFAULT = 'partial'. OPTIONAL.}
     \item{borderWidth}{Width of the border on the x and y axes. DEFAULT = 1.5.
     OPTIONAL.}
     \item{borderColour}{Colour of the border on the x and y axes. DEFAULT =

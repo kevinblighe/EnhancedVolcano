@@ -18,6 +18,7 @@ EnhancedVolcano <- function(
   transcriptPointSize = 0.8,
   transcriptLabSize = 3.0,
   col = c("grey30", "forestgreen", "royalblue", "red2"),
+  colOverride = NULL,
   colAlpha = 1/2,
   legend = c("NS","Log2 FC","P","P & Log2 FC"),
   legendPosition = "top",
@@ -31,8 +32,8 @@ EnhancedVolcano <- function(
   cutoffLineWidth = 0.4,
   gridlines.major = TRUE,
   gridlines.minor = TRUE,
-  border = "partail",
-  borderWidth = 1.5,
+  border = "partial",
+  borderWidth = 1.25,
   borderColour = "black")
 {
   if(!requireNamespace("ggplot2")) {
@@ -62,6 +63,10 @@ EnhancedVolcano <- function(
   toptable$Sig <- factor(toptable$Sig,
     levels=c("NS","FC","P","FC_P"))
 
+  # some software programs return 0 for very low p-values
+  # These throw an error in EnhancedVolcano
+  # Detect these, issue warning, and convert these to
+  # machine-lowest value possible
   if (min(toptable[,y], na.rm=TRUE) == 0) {
     warning(paste("One or more P values is 0.",
       "Converting to minimum possible value..."),
@@ -73,17 +78,16 @@ EnhancedVolcano <- function(
   toptable$xvals <- toptable[,x]
   toptable$yvals <- toptable[,y]
 
+  # If user has supplied values in selectLab, convert labels to
+  # NA and then re-set with those in selectLab
   if (!is.null(selectLab)) {
-    # v0.99.x
-    # names.new <- rep("", length(toptable$lab))
-    # v1.0.0
     names.new <- rep(NA, length(toptable$lab))
-    ###
     indices <- which(toptable$lab %in% selectLab)
     names.new[indices] <- toptable$lab[indices]
     toptable$lab <- names.new
   }
 
+  # create a base theme that will later be modified
   th <- theme_bw(base_size=24) +
 
     theme(
@@ -102,23 +106,41 @@ EnhancedVolcano <- function(
       title=element_text(size=legendLabSize),
       legend.title=element_blank())
 
-  plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
+  # Create the plot object differently based on whether colOverride is
+  # NULL or not. This helps to avoid messing up the legend.
+  if (!is.null(colOverride)) {
+    plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
 
-    guides(colour = guide_legend(
-      override.aes=list(size=legendIconSize))) +
+      guides(colour = guide_legend(
+        override.aes=list(size=legendIconSize))) +
 
-    geom_point(aes(color=factor(Sig)),
-      alpha=colAlpha,
-      size=transcriptPointSize) +
+      geom_point(aes(color=factor(names(colOverride))),
+        alpha=colAlpha,
+        size=transcriptPointSize) +
 
-    scale_color_manual(values=c(NS=col[1],
-      FC=col[2],
-      P=col[3],
-      FC_P=col[4]),
-      labels=c(NS=legend[1],
-      FC=paste(legend[2], sep=""),
-      P=paste(legend[3], sep=""),
-      FC_P=paste(legend[4], sep=""))) +
+      scale_color_manual(values=colOverride)
+  } else {
+    plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
+
+      guides(colour = guide_legend(
+        override.aes=list(size=legendIconSize))) +
+
+      geom_point(aes(color=factor(Sig)),
+        alpha=colAlpha,
+        size=transcriptPointSize) +
+
+      scale_color_manual(values=c(NS=col[1],
+        FC=col[2],
+        P=col[3],
+        FC_P=col[4]),
+        labels=c(NS=legend[1],
+        FC=paste(legend[2], sep=""),
+        P=paste(legend[3], sep=""),
+        FC_P=paste(legend[4], sep="")))
+  }
+
+  # add more elements to the plot
+  plot <- plot +
 
     xlab(xlab) +
     ylab(ylab) +
@@ -138,14 +160,18 @@ EnhancedVolcano <- function(
       colour=cutoffLineCol,
       size=cutoffLineWidth)
 
+  # Border around plot
   if (border == "full") {
     plot <- plot + theme(panel.border = element_rect(colour = borderColour, fill = NA, size = borderWidth))
   } else if (border == "partial") {
     plot <- plot + theme(axis.line = element_line(size = borderWidth, colour = borderColour),
       panel.border = element_blank(),
       panel.background = element_blank())
+  } else {
+    stop("Unrecognised value passed to 'border'. Must be 'full' or 'partial'")
   }
 
+  # Gridlines
   if (gridlines.major == TRUE) {
     plot <- plot + theme(panel.grid.major = element_line())
   } else {
@@ -157,6 +183,9 @@ EnhancedVolcano <- function(
     plot <- plot + theme(panel.grid.minor = element_blank())
   }
 
+  # For labeling with geom_text_repel (connectors) and
+  # geom_text(.., check_overlap = TRUE), 4 possible scenarios
+  # can arise
   if (DrawConnectors == TRUE && is.null(selectLab)) {
     plot <- plot + geom_text_repel(
       data=subset(toptable,
