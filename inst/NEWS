@@ -1,4 +1,11 @@
 CHANGES IN VERSION 1.0.0
 ------------------------
+ - user can now supply her/his/its own colour vector to label the points
+ - default is to now draw grid lines and only have left and bottom borders
+ - when selectLab is not NULL, even variables that do not pass the thresholds
+   are now labelled along with those that do, even when DrawConnectors is
+   either TRUE or FALSE.
+ - correctly catches non-numeric x and / or y variables, and throws error.
  - the function now tolerates P values of 0 (zero) and replaces these with the
-   lowest possible double value, given a user's specific computer architecture and R version
+   lowest possible double value, given a user's specific computer architecture
+   and R version.

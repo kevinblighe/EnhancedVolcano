@@ -28,7 +28,12 @@ EnhancedVolcano <- function(
   colConnectors = "black",
   cutoffLineType = "longdash",
   cutoffLineCol = "black",
-  cutoffLineWidth = 0.4)
+  cutoffLineWidth = 0.4,
+  gridlines.major = TRUE,
+  gridlines.minor = TRUE,
+  border = "partail",
+  borderWidth = 1.5,
+  borderColour = "black")
 {
   if(!requireNamespace("ggplot2")) {
     stop("Please install ggplot2 first.", call.=FALSE)
@@ -69,13 +74,38 @@ EnhancedVolcano <- function(
   toptable$yvals <- toptable[,y]
 
   if (!is.null(selectLab)) {
-    names.new <- rep("", length(toptable$lab))
+    # v0.99.x
+    # names.new <- rep("", length(toptable$lab))
+    # v1.0.0
+    names.new <- rep(NA, length(toptable$lab))
+    ###
     indices <- which(toptable$lab %in% selectLab)
     names.new[indices] <- toptable$lab[indices]
     toptable$lab <- names.new
   }
 
-  plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) +
+  th <- theme_bw(base_size=24) +
+
+    theme(
+      legend.background=element_rect(),
+      plot.title=element_text(angle=0, size=titleLabSize, face="bold", vjust=1),
+
+      axis.text.x=element_text(angle=0, size=axisLabSize, vjust=1),
+      axis.text.y=element_text(angle=0, size=axisLabSize, vjust=1),
+      axis.title=element_text(size=axisLabSize),
+
+      legend.position=legendPosition,
+      legend.key=element_blank(),
+      legend.key.size=unit(0.5, "cm"),
+      legend.text=element_text(size=legendLabSize),
+
+      title=element_text(size=legendLabSize),
+      legend.title=element_blank())
+
+  plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
+
+    guides(colour = guide_legend(
+      override.aes=list(size=legendIconSize))) +
 
     geom_point(aes(color=factor(Sig)),
       alpha=colAlpha,
@@ -89,31 +119,6 @@ EnhancedVolcano <- function(
       FC=paste(legend[2], sep=""),
       P=paste(legend[3], sep=""),
       FC_P=paste(legend[4], sep=""))) +
-
-    theme_bw(base_size=24) +
-
-    theme(
-      legend.background=element_rect(),
-      plot.title=element_text(angle=0, size=titleLabSize, face="bold", vjust=1),
-
-      panel.grid.major=element_blank(),
-      panel.grid.minor=element_blank(),
-
-      axis.text.x=element_text(angle=0, size=axisLabSize, vjust=1),
-      axis.text.y=element_text(angle=0, size=axisLabSize, vjust=1),
-      axis.title=element_text(size=axisLabSize),
-
-      legend.position=legendPosition,
-      legend.key=element_blank(),
-      legend.key.size=unit(0.5, "cm"),
-      legend.text=element_text(size=legendLabSize),
-
-      title=element_text(size=legendLabSize),
-      legend.title=element_blank()
-    ) +
-
-    guides(colour = guide_legend(
-      override.aes=list(size=legendIconSize))) +
 
     xlab(xlab) +
     ylab(ylab) +
@@ -133,40 +138,67 @@ EnhancedVolcano <- function(
       colour=cutoffLineCol,
       size=cutoffLineWidth)
 
-  if (DrawConnectors == TRUE) {
+  if (border == "full") {
+    plot <- plot + theme(panel.border = element_rect(colour = borderColour, fill = NA, size = borderWidth))
+  } else if (border == "partial") {
+    plot <- plot + theme(axis.line = element_line(size = borderWidth, colour = borderColour),
+      panel.border = element_blank(),
+      panel.background = element_blank())
+  }
+
+  if (gridlines.major == TRUE) {
+    plot <- plot + theme(panel.grid.major = element_line())
+  } else {
+    plot <- plot + theme(panel.grid.major = element_blank())
+  }
+  if (gridlines.minor == TRUE) {
+    plot <- plot + theme(panel.grid.minor = element_line())
+  } else {
+    plot <- plot + theme(panel.grid.minor = element_blank())
+  }
+
+  if (DrawConnectors == TRUE && is.null(selectLab)) {
     plot <- plot + geom_text_repel(
       data=subset(toptable,
         toptable[,y]<pLabellingCutoff &
           abs(toptable[,x])>FCcutoff),
-            aes(label=subset(toptable,
-              toptable[,y]<pLabellingCutoff &
-                abs(toptable[,x])>FCcutoff)[,"lab"]),
-              size = transcriptLabSize,
-              segment.color = colConnectors,
-              segment.size = widthConnectors,
-              vjust = 1.5)
+        aes(label=subset(toptable,
+          toptable[,y]<pLabellingCutoff &
+            abs(toptable[,x])>FCcutoff)[,"lab"]),
+        size = transcriptLabSize,
+        segment.color = colConnectors,
+        segment.size = widthConnectors,
+        vjust = 1.5)
+  } else if (DrawConnectors == TRUE && !is.null(selectLab)) {
+    plot <- plot + geom_text_repel(
+      data=subset(toptable,
+        !is.na(toptable[,"lab"])),
+        aes(label=subset(toptable,
+          !is.na(toptable[,"lab"]))[,"lab"]),
+        size = transcriptLabSize,
+        segment.color = colConnectors,
+        segment.size = widthConnectors,
+        vjust = 1.5)
   } else if (DrawConnectors == FALSE && !is.null(selectLab)) {
     plot <- plot + geom_text(
       data=subset(toptable,
-        toptable[,y]<pLabellingCutoff &
-          abs(toptable[,x])>FCcutoff),
-            aes(label=subset(toptable,
-              toptable[,y]<pLabellingCutoff &
-                abs(toptable[,x])>FCcutoff)[,"lab"]),
-              size = transcriptLabSize,
-              check_overlap = FALSE,
-              vjust = 1.5)
+        !is.na(toptable[,"lab"])),
+        aes(label=subset(toptable,
+          !is.na(toptable[,"lab"]))[,"lab"]),
+        size = transcriptLabSize,
+        check_overlap = TRUE,
+        vjust = 1.5)
   } else if (DrawConnectors == FALSE && is.null(selectLab)) {
     plot <- plot + geom_text(
       data=subset(toptable,
         toptable[,y]<pLabellingCutoff &
           abs(toptable[,x])>FCcutoff),
-            aes(label=subset(toptable,
-              toptable[,y]<pLabellingCutoff &
-                abs(toptable[,x])>FCcutoff)[,"lab"]),
-              size = transcriptLabSize,
-              check_overlap = TRUE,
-              vjust = 1.5)
+        aes(label=subset(toptable,
+          toptable[,y]<pLabellingCutoff &
+            abs(toptable[,x])>FCcutoff)[,"lab"]),
+        size = transcriptLabSize,
+        check_overlap = TRUE,
+        vjust = 1.5)
   }
 
   return(plot)

@@ -41,7 +41,11 @@ EnhancedVolcano(
     colConnectors = "black",
     cutoffLineType = "longdash",
     cutoffLineCol = "black",
-    cutoffLineWidth = 0.4)
+    cutoffLineWidth = 0.4,
+    gridlines.major = TRUE,
+    gridlines.minor = TRUE,
+    borderWidth = 1.5,
+    borderColour = "black")
 }
 
 \arguments{
@@ -106,6 +110,16 @@ EnhancedVolcano(
     "black". OPTIONAL.}
     \item{cutoffLineWidth}{Line width for FCcutoff and pCutoff. DEFAULT =
     0.4. OPTIONAL.}
+    \item{gridlines.major}{Draw major gridlines? (TRUE/FALSE). DEFAULT = TRUE.
+    OPTIONAL}
+    \item{gridlines.minor}{Draw minor gridlines? (TRUE/FALSE). DEFAULT = TRUE.
+    OPTIONAL}
+    \item{border}{Add a border for just the x and y axes ('partial') or the
+    entire plot grid ('full')? DEFAULT = 'partail'. OPTIONAL.}
+    \item{borderWidth}{Width of the border on the x and y axes. DEFAULT = 1.5.
+    OPTIONAL.}
+    \item{borderColour}{Colour of the border on the x and y axes. DEFAULT =
+    "black". OPTIONAL.}
 }
 
 \details{
