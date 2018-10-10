@@ -33,7 +33,7 @@ EnhancedVolcano <- function(
   gridlines.major = TRUE,
   gridlines.minor = TRUE,
   border = "partial",
-  borderWidth = 1.25,
+  borderWidth = 0.8,
   borderColour = "black")
 {
   if(!requireNamespace("ggplot2")) {

@@ -663,7 +663,7 @@ In this example, we just wish to colour all transcripts with log2FC > 2 as
 
         borderWidth = 1.5,
 
-        borderColour = "red4",
+        borderColour = "black",
 
         gridlines.major = TRUE,
 
@@ -714,9 +714,9 @@ In this example, we just wish to colour all transcripts with log2FC > 2 as
 
         border = "full",
 
-        borderWidth = 1.5,
+        borderWidth = 1.0,
 
-        borderColour = "red4",
+        borderColour = "black",
 
         gridlines.major = TRUE,
 

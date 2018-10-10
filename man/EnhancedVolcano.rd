@@ -46,7 +46,7 @@ EnhancedVolcano(
     gridlines.major = TRUE,
     gridlines.minor = TRUE,
     border = "partial",
-    borderWidth = 1.25,
+    borderWidth = 0.8,
     borderColour = "black")
 }
 
@@ -122,7 +122,7 @@ EnhancedVolcano(
     OPTIONAL}
     \item{border}{Add a border for just the x and y axes ('partial') or the
     entire plot grid ('full')? DEFAULT = 'partial'. OPTIONAL.}
-    \item{borderWidth}{Width of the border on the x and y axes. DEFAULT = 1.5.
+    \item{borderWidth}{Width of the border on the x and y axes. DEFAULT = 0.8.
     OPTIONAL.}
     \item{borderColour}{Colour of the border on the x and y axes. DEFAULT =
     "black". OPTIONAL.}
