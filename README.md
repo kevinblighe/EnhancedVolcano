@@ -1,7 +1,7 @@
 Publication-ready volcano plots with enhanced colouring and labeling
 ================
 Kevin Blighe
-2018-10-04
+2018-10-10
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -606,7 +606,7 @@ In this example, we just wish to colour all transcripts with log2FC &gt; 2 as 'h
 
         borderWidth = 1.5,
 
-        borderColour = "red4",
+        borderColour = "black",
 
         gridlines.major = TRUE,
 
@@ -656,9 +656,9 @@ In this example, we just wish to colour all transcripts with log2FC &gt; 2 as 'h
 
         border = "full",
 
-        borderWidth = 1.5,
+        borderWidth = 1.0,
 
-        borderColour = "red4",
+        borderColour = "black",
 
         gridlines.major = TRUE,
 
@@ -723,7 +723,7 @@ sessionInfo()
     ##  [9] Biobase_2.41.2              GenomicRanges_1.33.13      
     ## [11] GenomeInfoDb_1.17.1         IRanges_2.15.17            
     ## [13] S4Vectors_0.19.19           BiocGenerics_0.27.1        
-    ## [15] EnhancedVolcano_0.99.15     ggrepel_0.8.0              
+    ## [15] EnhancedVolcano_0.99.16     ggrepel_0.8.0              
     ## [17] ggplot2_3.0.0               knitr_1.20                 
     ## 
     ## loaded via a namespace (and not attached):
