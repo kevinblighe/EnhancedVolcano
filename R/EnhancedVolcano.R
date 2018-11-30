@@ -10,13 +10,15 @@ EnhancedVolcano <- function(
   xlab = bquote(~Log[2]~ "fold change"),
   ylab = bquote(~-Log[10]~italic(P)),
   axisLabSize = 16,
-  pCutoff = 0.05,
+  pCutoff = 10e-6,
   pLabellingCutoff = pCutoff,
-  FCcutoff = 2.0,
+  FCcutoff = 1.0,
   title = "",
   titleLabSize = 16,
   transcriptPointSize = 0.8,
   transcriptLabSize = 3.0,
+  labhjust = 0,
+  labvjust = 1.5,
   col = c("grey30", "forestgreen", "royalblue", "red2"),
   colOverride = NULL,
   colAlpha = 1/2,
@@ -24,7 +26,14 @@ EnhancedVolcano <- function(
   legendPosition = "top",
   legendLabSize = 10,
   legendIconSize = 3.0,
-  DrawConnectors = FALSE,
+  legendVisible = TRUE,
+  shade = NULL,
+  shadeLabel = NULL,
+  shadeAlpha = 1/2,
+  shadeFill = "grey",
+  shadeSize = 0.01,
+  shadeBins = 2,
+  drawConnectors = FALSE,
   widthConnectors = 0.5,
   colConnectors = "black",
   cutoffLineType = "longdash",
@@ -111,23 +120,26 @@ EnhancedVolcano <- function(
   if (!is.null(colOverride)) {
     plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
 
-      guides(colour = guide_legend(
+      guides(colour = guide_legend(order = 1,
         override.aes=list(size=legendIconSize))) +
 
       geom_point(aes(color=factor(names(colOverride))),
         alpha=colAlpha,
-        size=transcriptPointSize) +
+        size=transcriptPointSize,
+        na.rm = TRUE) +
 
       scale_color_manual(values=colOverride)
   } else {
     plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
 
-      guides(colour = guide_legend(
+      guides(colour = guide_legend(order = 1,
         override.aes=list(size=legendIconSize))) +
 
       geom_point(aes(color=factor(Sig)),
         alpha=colAlpha,
-        size=transcriptPointSize) +
+        size=transcriptPointSize,
+        na.rm = TRUE,
+        show.legend = legendVisible) +
 
       scale_color_manual(values=c(NS=col[1],
         FC=col[2],
@@ -186,7 +198,7 @@ EnhancedVolcano <- function(
   # For labeling with geom_text_repel (connectors) and
   # geom_text(.., check_overlap = TRUE), 4 possible scenarios
   # can arise
-  if (DrawConnectors == TRUE && is.null(selectLab)) {
+  if (drawConnectors == TRUE && is.null(selectLab)) {
     plot <- plot + geom_text_repel(
       data=subset(toptable,
         toptable[,y]<pLabellingCutoff &
@@ -197,8 +209,10 @@ EnhancedVolcano <- function(
         size = transcriptLabSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
-        vjust = 1.5)
-  } else if (DrawConnectors == TRUE && !is.null(selectLab)) {
+        hjust = labhjust,
+        vjust = labvjust,
+        na.rm = TRUE)
+  } else if (drawConnectors == TRUE && !is.null(selectLab)) {
     plot <- plot + geom_text_repel(
       data=subset(toptable,
         !is.na(toptable[,"lab"])),
@@ -207,8 +221,10 @@ EnhancedVolcano <- function(
         size = transcriptLabSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
-        vjust = 1.5)
-  } else if (DrawConnectors == FALSE && !is.null(selectLab)) {
+        hjust = labhjust,
+        vjust = labvjust,
+        na.rm = TRUE)
+  } else if (drawConnectors == FALSE && !is.null(selectLab)) {
     plot <- plot + geom_text(
       data=subset(toptable,
         !is.na(toptable[,"lab"])),
@@ -216,8 +232,10 @@ EnhancedVolcano <- function(
           !is.na(toptable[,"lab"]))[,"lab"]),
         size = transcriptLabSize,
         check_overlap = TRUE,
-        vjust = 1.5)
-  } else if (DrawConnectors == FALSE && is.null(selectLab)) {
+        hjust = labhjust,
+        vjust = labvjust,
+        na.rm = TRUE)
+  } else if (drawConnectors == FALSE && is.null(selectLab)) {
     plot <- plot + geom_text(
       data=subset(toptable,
         toptable[,y]<pLabellingCutoff &
@@ -227,7 +245,29 @@ EnhancedVolcano <- function(
             abs(toptable[,x])>FCcutoff)[,"lab"]),
         size = transcriptLabSize,
         check_overlap = TRUE,
-        vjust = 1.5)
+        hjust = labhjust,
+        vjust = labvjust,
+        na.rm = TRUE)
+  }
+
+  # shading
+  if (!is.null(shade)) {
+    plot <- plot + 
+      stat_density2d(
+        data = subset(toptable,
+          rownames(toptable) %in% shade),
+        fill = shadeFill,
+        alpha = shadeAlpha,
+        geom = "polygon",
+        contour = TRUE,
+        size = shadeSize,
+        bins = shadeBins,
+        show.legend = FALSE,
+        na.rm = TRUE) +
+
+      scale_fill_identity(name = shadeLabel,
+        labels = shadeLabel,
+        guide = "legend")
   }
 
   return(plot)
