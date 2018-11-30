@@ -108,7 +108,7 @@ test results is required, containing transcript names, log2FC, and adjusted
 or unadjusted P values. The default cut-off for log2FC is >|2|; the default
 cut-off for P value is 0.05.
 
-```{r ex1, fig.height = 8, fig.width = 6, fig.cap = "Plot the most basic volcano plot."}
+```{r ex1, fig.height = 8, fig.width = 6.5, fig.cap = "Plot the most basic volcano plot."}
 
     EnhancedVolcano(res1,
 
@@ -141,7 +141,7 @@ calculated.
 In this example, we also modify the point and label size, which can help to
 improve clarity where many transcripts went into the differential expression analysis.
 
-```{r ex2, fig.height = 8, fig.width = 6, fig.cap = "Modify cut-offs for log2FC and P value; add title; adjust point and label size."}
+```{r ex2, fig.height = 8, fig.width = 6.5, fig.cap = "Modify cut-offs for log2FC and P value; add title; adjust point and label size."}
 
     EnhancedVolcano(res2,
 
@@ -170,7 +170,7 @@ only the transcripts passing both the log2FC and P value thresholds are coloured
 with everything else black. We also adjust the value for 'alpha', which controls the
 transparency of the plotted points: 1 = 100% opaque; 0 = 100% transparent.
 
-```{r ex3, fig.height = 8, fig.width = 6, fig.cap = "Adjust colour and alpha for point shading."}
+```{r ex3, fig.height = 8, fig.width = 6.5, fig.cap = "Adjust colour and alpha for point shading."}
 
     EnhancedVolcano(res2,
 
@@ -204,7 +204,7 @@ wish to set these axis limits to the same absolute values, e.g., c(-8, 8). One c
 also modify the y-axis limits, but this should be a less common occurrence.
 
 
-```{r ex4, fig.height = 8, fig.width = 9, fig.cap = "Adjust axis limits."}
+```{r ex4, fig.height = 6, fig.width = 7, fig.cap = "Adjust axis limits."}
 
     EnhancedVolcano(res2,
 
@@ -241,7 +241,7 @@ thickness of these can also be modified with 'cutoffLineCol' and
 'cutoffLineWidth'. To disable the lines, set either cutoffLineType="blank"
 or cutoffLineWidth=0.
 
-```{r ex5, fig.height = 8, fig.width = 9, fig.cap = "Adjust cut-off lines."}
+```{r ex5, fig.height = 8, fig.width = 7, fig.cap = "Adjust cut-off lines."}
 
     EnhancedVolcano(res2,
 
@@ -263,13 +263,11 @@ or cutoffLineWidth=0.
 
         colAlpha = 1,
 
-        xlim = c(-8, 8),
-
-        ylim = c(0, -log10(10e-32)),
+        xlim = c(-6, 6),
 
         cutoffLineType = "twodash",
 
-        cutoffLineCol = "red3",
+        cutoffLineCol = "pink",
 
         cutoffLineWidth = 1.5)
 
@@ -281,7 +279,7 @@ The position of the legend can also be changed to "left" or "right"
 (and stacked vertically), or "top" or "bottom" (stacked horizontally). The
 legend text, label size, and icon size can also be modified.
 
-```{r ex6, fig.height = 8, fig.width = 12, fig.cap = "Adjust legend position, size, and text."}
+```{r ex6, fig.height = 8, fig.width = 10, fig.cap = "Adjust legend position, size, and text."}
 
     EnhancedVolcano(res2,
 
@@ -301,11 +299,11 @@ legend text, label size, and icon size can also be modified.
 
         colAlpha = 1,
 
+        xlim = c(-6, 6),
+
         cutoffLineType = "twodash",
 
-        cutoffLineCol = "red4",
-
-        cutoffLineWidth = 1.0,
+        cutoffLineWidth = 2.0,
 
         legend=c("NS","Log (base 2) fold-change","P value",
             "P value & Log (base 2) fold-change"),
@@ -322,7 +320,7 @@ Note: to make the legend completely invisible, specify:
 
 ```{r eval=FALSE}
 
-legend=c("","","",""), legendLabSize=-1, legendIconSize=-1
+legendVisible = FALSE
 
 ```
 
@@ -334,7 +332,7 @@ generate a volcano with these. In this case, the cutoff for the P value
 then relates to the adjusted P value. Here, we also modify the axis titles
 by supplying an expression via the bquote function.
 
-```{r ex7, fig.height = 8, fig.width = 6, fig.cap = "Plot adjusted p-values."}
+```{r ex7, fig.height = 8, fig.width = 6.5, fig.cap = "Plot adjusted p-values."}
 
     EnhancedVolcano(res2,
 
@@ -412,7 +410,7 @@ look overcrowded.
 
         legendIconSize = 3.0,
 
-        DrawConnectors = TRUE,
+        drawConnectors = TRUE,
 
         widthConnectors = 0.2,
 
@@ -429,7 +427,7 @@ to also be present in the vector passed to 'lab'. In addition, only
 those transcripts that pass both the cutoff for log2FC and P value will
 be labelled.
 
-```{r ex9, fig.height = 8, fig.width = 6, fig.cap = "Only label key transcripts."}
+```{r ex9, fig.height = 8, fig.width = 6.5, fig.cap = "Only label key transcripts."}
 
     EnhancedVolcano(res2,
 
@@ -474,7 +472,7 @@ One can also modify the border by adding a complete border around the
 entire plot, and also its width and colour. The gridlines can also be
 removed.
 
-```{r ex10, fig.height = 8, fig.width = 6, fig.cap = "Modify border and remove gridlines"}
+```{r ex10, fig.height = 8, fig.width = 6.5, fig.cap = "Modify border and remove gridlines"}
 
     EnhancedVolcano(res2,
 
@@ -509,7 +507,7 @@ removed.
 
         legendIconSize = 3.0,
 
-        DrawConnectors = FALSE,
+        drawConnectors = FALSE,
 
         border = "full",
 
@@ -529,7 +527,7 @@ removed.
 One can also plot multiple volcanos on the same plot via the use
 of the grid and gridExtra packages.
 
-```{r ex11, fig.height = 8, fig.width = 11, fig.cap = "Plot multiple volcanos on the same page."}
+```{r ex11, fig.height = 8, fig.width = 12, fig.cap = "Plot multiple volcanos on the same page."}
 
     p1 <- EnhancedVolcano(res1,
 
@@ -543,7 +541,9 @@ of the grid and gridExtra packages.
 
         FCcutoff = 2.0,
 
-        transcriptLabSize = 2.5,
+        xlim = c(-6.5,6.5),
+
+        transcriptLabSize = 5.0,
 
         colAlpha = 1,
 
@@ -572,7 +572,7 @@ of the grid and gridExtra packages.
 
         FCcutoff = 2.0,
 
-        xlim = c(-6,6),
+        xlim = c(-6.5,6.5),
 
         transcriptLabSize = 5.0,
 
@@ -598,26 +598,32 @@ of the grid and gridExtra packages.
 
 ```
 
+
 ## Override colouring scheme with custom key-value pairs
 
 In certain situations, one may wish to over-ride the default colour scheme
-with their own colour-scheme, such as colouring transcripts by pathway or
-group. This can be achieved by supplying a named vector as colOverride.
+with their own colour-scheme, such as colouring transcripts by pathway,
+cell-type or group. This can be achieved by supplying a named vector as
+colOverride.
 
 In this example, we just wish to colour all transcripts with log2FC > 2 as
 'high' and those with log2FC < -2 as 'low'.
 
-```{r ex12, fig.height = 8, fig.width = 11, fig.cap = "Override colour"}
+```{r ex12, fig.height = 8, fig.width = 12, fig.cap = "Override colour"}
 
     # create custom key-value pairs for high, low, mid expression
     keyvals <- rep("black", nrow(res2))
-    names(keyvals) <- rep("Mid / NA", nrow(res2))
+    names(keyvals) <- rep("Mid", nrow(res2))
 
     keyvals[which(res2$log2FoldChange > 2)] <- "gold"
     names(keyvals)[which(res2$log2FoldChange > 2)] <- "High"
 
     keyvals[which(res2$log2FoldChange < -2)] <- "royalblue"
     names(keyvals)[which(res2$log2FoldChange < -2)] <- "Low"
+
+    unique(names(keyvals))
+
+    unique(keyvals)
 
     p1 <- EnhancedVolcano(res2,
 
@@ -639,9 +645,9 @@ In this example, we just wish to colour all transcripts with log2FC > 2 as
 
         FCcutoff = 1.0,
 
-        xlim = c(-6,6),
+        xlim = c(-6.5,6.5),
 
-        transcriptLabSize = 2.0,
+        transcriptLabSize = 3.0,
 
         colAlpha = 1,
 
@@ -653,7 +659,7 @@ In this example, we just wish to colour all transcripts with log2FC > 2 as
 
         legendIconSize = 5.0,
 
-        DrawConnectors = TRUE,
+        drawConnectors = TRUE,
 
         widthConnectors = 0.3,
 
@@ -692,9 +698,9 @@ In this example, we just wish to colour all transcripts with log2FC > 2 as
 
         FCcutoff = 1.0,
 
-        xlim = c(-6,6),
+        xlim = c(-6.5,6.5),
 
-        transcriptLabSize = 2.0,
+        transcriptLabSize = 4.0,
 
         colAlpha = 1,
 
@@ -706,7 +712,7 @@ In this example, we just wish to colour all transcripts with log2FC > 2 as
 
         legendIconSize = 5.0,
 
-        DrawConnectors = FALSE,
+        drawConnectors = FALSE,
 
         widthConnectors = 0.3,
 
@@ -735,6 +741,162 @@ In this example, we just wish to colour all transcripts with log2FC > 2 as
 
 ```
 
+
+## Shade certain transcripts
+
+In this example we plot the same volcanos as in the previous step; however,
+we add an extra level of highlighting key transcripts by shading them.
+This feature can be used with or without colOverride = TRUE.
+
+```{r ex13, fig.height = 8, fig.width = 12, fig.cap = "Shade points"}
+
+    # create custom key-value pairs for high, low, mid expression
+    keyvals <- rep("black", nrow(res2))
+    names(keyvals) <- rep("Mid", nrow(res2))
+
+    keyvals[which(res2$log2FoldChange > 2)] <- "gold"
+    names(keyvals)[which(res2$log2FoldChange > 2)] <- "High"
+
+    keyvals[which(res2$log2FoldChange < -2)] <- "royalblue"
+    names(keyvals)[which(res2$log2FoldChange < -2)] <- "Low"
+
+    unique(names(keyvals))
+
+    unique(keyvals)
+
+    celltype1 <- c("ENSG00000106565", "ENSG00000002933",
+      "ENSG00000145681")
+
+    celltype2 <- c("ENSG00000230795", "ENSG00000164530",
+      "ENSG00000143153")
+
+    p1 <- EnhancedVolcano(res2,
+
+        title = "Over-ride, cell-type 1",
+
+        lab = rownames(res2),
+
+        x = "log2FoldChange",
+
+        y = "padj",
+
+        selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
+
+        xlab = bquote(~Log[2]~ "fold change"),
+
+        ylab = bquote(~-Log[10]~adjusted~italic(P)),
+
+        pCutoff = 0.00000000000000001,
+
+        FCcutoff = 1.0,
+
+        xlim = c(-6.5,6.5),
+
+        transcriptLabSize = 2.0,
+
+        colAlpha = 1,
+
+        legendPosition = "top",
+
+        transcriptPointSize = 1.2,
+
+        legendLabSize = 15,
+
+        legendIconSize = 5.0,
+
+        shade = celltype1,
+
+        shadeLabel = "Cell-type I",
+
+        shadeFill = "pink",
+
+        drawConnectors = TRUE,
+
+        widthConnectors = 0.3,
+
+        colConnectors = "grey50",
+
+        border = "partial",
+
+        borderWidth = 1.5,
+
+        borderColour = "black",
+
+        gridlines.major = TRUE,
+
+        gridlines.minor = FALSE,
+
+        colOverride = keyvals)
+
+
+    p2 <- EnhancedVolcano(res2,
+
+        title = "No over-ride, cell-type 2",
+
+        lab = rownames(res2),
+
+        x = "log2FoldChange",
+
+        y = "padj",
+
+        selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
+
+        xlab = bquote(~Log[2]~ "fold change"),
+
+        ylab = bquote(~-Log[10]~adjusted~italic(P)),
+
+        pCutoff = 0.00000000000000001,
+
+        FCcutoff = 1.0,
+
+        xlim = c(-6.5,6.5),
+
+        transcriptLabSize = 4.0,
+
+        colAlpha = 1,
+
+        legendPosition = "top",
+
+        transcriptPointSize = 1.2,
+
+        legendLabSize = 15,
+
+        legendIconSize = 5.0,
+
+        shade = celltype2,
+
+        shadeLabel = "Cell-type II",
+
+        drawConnectors = FALSE,
+
+        widthConnectors = 0.5,
+
+        colConnectors = "grey50",
+
+        border = "full",
+
+        borderWidth = 1.0,
+
+        borderColour = "black",
+
+        gridlines.major = TRUE,
+
+        gridlines.minor = FALSE,
+
+        colOverride = NULL)
+
+
+    library(gridExtra)
+
+    library(grid)
+
+    grid.arrange(p1, p2, ncol=2, top="EnhancedVolcano")
+
+    grid.rect(gp=gpar(fill=NA))
+
+```
+
+
 # Acknowledgments
 
 The development of *EnhancedVolcano* has benefited from contributions
@@ -744,7 +906,9 @@ Sharmila Rana,
 
 [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html),
 
-Luke Dow - Assistant Professor at Weill Cornell Medicine
+Luke Dow - Assistant Professor at Weill Cornell Medicine,
+
+Tokhir Dadaev - Institute of Cancer Research
 
 # Session info
 

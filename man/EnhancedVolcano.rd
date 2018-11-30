@@ -23,13 +23,15 @@ EnhancedVolcano(
     xlab = bquote(~Log[2]~ "fold change"),
     ylab = bquote(~-Log[10]~italic(P)),
     axisLabSize = 16,
-    pCutoff = 0.05,
+    pCutoff = 10e-6,
     pLabellingCutoff = pCutoff,
-    FCcutoff = 2.0,
+    FCcutoff = 1.0,
     title = "",
     titleLabSize = 16,
     transcriptPointSize = 0.8,
     transcriptLabSize = 3.0,
+    labhjust = 0,
+    labvjust = 1.5,
     col = c("grey30", "forestgreen", "royalblue", "red2"),
     colOverride = NULL,
     colAlpha = 1/2,
@@ -37,7 +39,14 @@ EnhancedVolcano(
     legendPosition = "top",
     legendLabSize = 10,
     legendIconSize = 3.0,
-    DrawConnectors = FALSE,
+    legendVisible = TRUE,
+    shade = NULL,
+    shadeLabel = NULL,
+    shadeAlpha = 1/2,
+    shadeFill = "grey",
+    shadeSize = 0.01,
+    shadeBins = 2,
+    drawConnectors = FALSE,
     widthConnectors = 0.5,
     colConnectors = "black",
     cutoffLineType = "longdash",
@@ -74,18 +83,22 @@ EnhancedVolcano(
     OPTIONAL.}
     \item{axisLabSize}{Size of x- and y-axis labels. DEFAULT = 16. OPTIONAL.}
     \item{pCutoff}{Cut-off for statistical significance. A horizontal line
-    will be drawn at -log10(pCutoff). DEFAULT = 0.05. OPTIONAL.}
+    will be drawn at -log10(pCutoff). DEFAULT = 10e-6. OPTIONAL.}
     \item{pLabellingCutoff}{Labelling cut-off for statistical significance.
     DEFAULT = pCutoff. OPTIONAL}
     \item{FCcutoff}{Cut-off for absolute log2 fold-change. Vertical lines will
-    be drawn at the negative and positive values of FCCutoff. DEFAULT =
-    2.0. OPTIONAL.}
+    be drawn at the negative and positive values of log2FCcutoff. DEFAULT =
+    1.0. OPTIONAL.}
     \item{title}{Plot title. DEFAULT = "". OPTIONAL.}
     \item{titleLabSize}{Size of plot title. DEFAULT = 16. OPTIONAL.}
     \item{transcriptPointSize}{Size of plotted points for each transcript.
     DEFAULT = 0.8. OPTIONAL.}
     \item{transcriptLabSize}{Size of labels for each transcript. DEFAULT =
     3.0. OPTIONAL.}
+    \item{labhjust}{Horizontal adjustment of label for each transcript. 
+    DEFAULT = 0. OPTIONAL.}
+    \item{labvjust}{Vertical adjustment of label for each transcript. 
+    DEFAULT = 1.5. OPTIONAL.}
     \item{col}{Colour shading for plotted points, corresponding to
     < abs(FCcutoff) && > pCutoff, > abs(FCcutoff), < pCutoff,
     > abs(FCcutoff) && < pCutoff. DEFAULT = c("grey30", "forestgreen",
@@ -103,7 +116,19 @@ EnhancedVolcano(
     \item{legendLabSize}{Size of plot legend text. DEFAULT = 10. OPTIONAL.}
     \item{legendIconSize}{Size of plot legend icons / symbols. DEFAULT = 3.0.
     OPTIONAL.}
-    \item{DrawConnectors}{Fit labels onto plot and connect to their respective
+    \item{legendVisible}{Show the legend? DEFAULT = TRUE. OPTIONAL.}
+    \item{shade}{A vector of transcript names to shade. DEFAULT = NULL.
+    OPTIONAL.}
+    \item{shadeLabel}{Label for the transcrips to shade. DEFAULT = NULL.
+    OPTIONAL.}
+    \item{shadeAlpha}{Alpha for purposes of controlling colour transparency of
+    shaded regions. DEFAULT = 0.5. OPTIONAL.}
+    \item{shadeFill}{Colour of shaded regions. DEFAULT = "grey". OPTIONAL.}
+    \item{shadeSize}{Size of the shade contour lines. DEFAULT = 0.01.
+    OPTIONAL.}
+    \item{shadeBins}{Number of bins for the density of the shade. DEFAULT = 2.
+    OPTIONAL.}
+    \item{drawConnectors}{Fit labels onto plot and connect to their respective
     points by lines (TRUE/FALSE). DEFAULT = FALSE. OPTIONAL.}
     \item{widthConnectors}{Line width of connectors to plot points. DEFAULT =
     0.5. OPTIONAL.}
@@ -173,14 +198,14 @@ EnhancedVolcano(res,
     ylab = bquote(~-Log[10]~adjusted~italic(P)),
     pCutoff = 10e-4,
     FCcutoff = 1.333,
-    xlim=c(-5.5, 5.5),
-    ylim=c(0, -log10(10e-12)),
+    xlim = c(-5.5, 5.5),
+    ylim = c(0, -log10(10e-12)),
     transcriptLabSize = 3.5,
     title = "DESeq2 results",
     legendPosition = "right",
     legendLabSize = 14,
     col = c("grey30", "forestgreen", "royalblue", "red2"),
-    colAlpha=0.9,
-    DrawConnectors = TRUE,
-    widthConnectors=0.2)
+    colAlpha = 0.9,
+    drawConnectors = TRUE,
+    widthConnectors = 0.5)
 }
