@@ -70,9 +70,8 @@ EnhancedVolcano(
     \item{x}{A column name in toptable containing log2 fold changes. REQUIRED.}
     \item{y}{A column name in toptable containing nominal or adjusted p-values.
     REQUIRED.}
-    \item{selectLab}{A vector containing a subset of lab. Only values in
-    selectLab that pass FCcutoff and pCutoff thresholds will be labelled
-    in the plot. DEFAULT = NULL. OPTIONAL.}
+    \item{selectLab}{A vector containing a subset of lab. DEFAULT = NULL.
+    OPTIONAL.}
     \item{xlim}{Limits of the x-axis. DEFAULT = c(min(toptable[,x], na.rm=TRUE),
     max(toptable[,x], na.rm=TRUE)). OPTIONAL.}
     \item{ylim}{Limits of the y-axis. DEFAULT = c(0, max(-log10(toptable[,y]),
