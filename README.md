@@ -1,7 +1,7 @@
 Publication-ready volcano plots with enhanced colouring and labeling
 ================
 Kevin Blighe
-2018-11-30
+2019-01-17
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -869,7 +869,7 @@ Session info
 sessionInfo()
 ```
 
-    ## R version 3.5.1 (2018-07-02)
+    ## R version 3.5.2 (2018-12-20)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
     ## Running under: Ubuntu 16.04.5 LTS
     ## 
@@ -894,38 +894,37 @@ sessionInfo()
     ##  [3] magrittr_1.5                airway_0.115.0             
     ##  [5] SummarizedExperiment_1.11.5 DelayedArray_0.7.48        
     ##  [7] BiocParallel_1.15.12        matrixStats_0.54.0         
-    ##  [9] Biobase_2.41.2              GenomicRanges_1.33.14      
+    ##  [9] Biobase_2.42.0              GenomicRanges_1.33.14      
     ## [11] GenomeInfoDb_1.17.4         IRanges_2.15.18            
-    ## [13] S4Vectors_0.19.22           BiocGenerics_0.27.1        
-    ## [15] EnhancedVolcano_1.1.0       ggrepel_0.8.0              
+    ## [13] S4Vectors_0.20.1            BiocGenerics_0.28.0        
+    ## [15] EnhancedVolcano_1.1.3       ggrepel_0.8.0              
     ## [17] ggplot2_3.1.0               knitr_1.20                 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] bit64_0.9-7            splines_3.5.1          Formula_1.2-3         
+    ##  [1] bit64_0.9-7            splines_3.5.2          Formula_1.2-3         
     ##  [4] assertthat_0.2.0       highr_0.7              latticeExtra_0.6-28   
     ##  [7] blob_1.1.1             GenomeInfoDbData_1.2.0 yaml_2.2.0            
-    ## [10] RSQLite_2.1.1          pillar_1.3.0           backports_1.1.2       
-    ## [13] lattice_0.20-35        glue_1.3.0             digest_0.6.18         
+    ## [10] RSQLite_2.1.1          pillar_1.3.1           backports_1.1.2       
+    ## [13] lattice_0.20-38        glue_1.3.0             digest_0.6.18         
     ## [16] RColorBrewer_1.1-2     XVector_0.21.4         checkmate_1.8.5       
-    ## [19] colorspace_1.3-2       htmltools_0.3.6        Matrix_1.2-14         
+    ## [19] colorspace_1.3-2       htmltools_0.3.6        Matrix_1.2-15         
     ## [22] plyr_1.8.4             XML_3.98-1.16          pkgconfig_2.0.1       
-    ## [25] genefilter_1.63.0      zlibbioc_1.27.0        purrr_0.2.5           
-    ## [28] xtable_1.8-2           scales_1.0.0           tibble_1.4.2          
+    ## [25] genefilter_1.63.0      zlibbioc_1.28.0        xtable_1.8-2          
+    ## [28] purrr_0.2.5            scales_1.0.0           tibble_1.4.2          
     ## [31] htmlTable_1.12         annotate_1.59.0        withr_2.1.2           
     ## [34] nnet_7.3-12            lazyeval_0.2.1         survival_2.42-6       
     ## [37] crayon_1.3.4           memoise_1.1.0          evaluate_0.12         
-    ## [40] MASS_7.3-51            foreign_0.8-70         tools_3.5.1           
+    ## [40] MASS_7.3-51.1          foreign_0.8-70         tools_3.5.2           
     ## [43] data.table_1.11.6      formatR_1.5            stringr_1.3.1         
     ## [46] locfit_1.5-9.1         munsell_0.5.0          cluster_2.0.7-1       
-    ## [49] AnnotationDbi_1.43.1   bindrcpp_0.2.2         compiler_3.5.1        
-    ## [52] rlang_0.3.0            RCurl_1.95-4.11        rstudioapi_0.7        
+    ## [49] AnnotationDbi_1.43.1   bindrcpp_0.2.2         compiler_3.5.2        
+    ## [52] rlang_0.3.1            RCurl_1.95-4.11        rstudioapi_0.7        
     ## [55] htmlwidgets_1.2        labeling_0.3           bitops_1.0-6          
-    ## [58] base64enc_0.1-3        rmarkdown_1.10         gtable_0.2.0          
+    ## [58] base64enc_0.1-3        rmarkdown_1.11.3       gtable_0.2.0          
     ## [61] DBI_1.0.0              R6_2.2.2               dplyr_0.7.7           
     ## [64] bit_1.1-14             bindr_0.1.1            Hmisc_4.1-1           
-    ## [67] rprojroot_1.3-2        stringi_1.2.4          Rcpp_0.12.19          
-    ## [70] geneplotter_1.59.0     rpart_4.1-13           acepack_1.4.1         
-    ## [73] tidyselect_0.2.5
+    ## [67] stringi_1.2.4          Rcpp_1.0.0             geneplotter_1.59.0    
+    ## [70] rpart_4.1-13           acepack_1.4.1          tidyselect_0.2.5
 
 References
 ----------
