@@ -29,8 +29,7 @@ have been read.
 ```{r, echo=FALSE}
 
     library(knitr)
-
-    opts_chunk$set(tidy = TRUE, message = FALSE, warning = FALSE)
+    opts_chunk$set(tidy = FALSE, message = FALSE, warning = FALSE)
 
 ```
 
@@ -41,9 +40,7 @@ have been read.
 ```{r getPackage, eval=FALSE}
 
     if (!requireNamespace("BiocManager", quietly = TRUE))
-
         install.packages("BiocManager")
-
         BiocManager::install("EnhancedVolcano")
 
 ```
@@ -73,11 +70,9 @@ exploratory analysis and differential expression](http://master.bioconductor.org
 ```{r}
 
     library(airway)
-
     library(magrittr)
 
     data("airway")
-
     airway$dex %<>% relevel("untrt")
 
 ```
@@ -111,11 +106,8 @@ cut-off for P value is 0.05.
 ```{r ex1, fig.height = 8, fig.width = 6.5, fig.cap = "Plot the most basic volcano plot."}
 
     EnhancedVolcano(res1,
-
         lab = rownames(res1),
-
         x = "log2FoldChange",
-
         y = "pvalue")
 
 ```
@@ -144,21 +136,13 @@ improve clarity where many transcripts went into the differential expression ana
 ```{r ex2, fig.height = 8, fig.width = 6.5, fig.cap = "Modify cut-offs for log2FC and P value; add title; adjust point and label size."}
 
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-12,
-
         FCcutoff = 1.5,
-
         transcriptPointSize = 1.5,
-
         transcriptLabSize = 3.0,
-
         title = "N061011 versus N61311")
 
 ```
@@ -173,25 +157,15 @@ transparency of the plotted points: 1 = 100% opaque; 0 = 100% transparent.
 ```{r ex3, fig.height = 8, fig.width = 6.5, fig.cap = "Adjust colour and alpha for point shading."}
 
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-12,
-
         FCcutoff = 1.5,
-
         transcriptPointSize = 1.5,
-
         transcriptLabSize = 3.0,
-
         title = "N061011 versus N61311",
-
         col=c("black", "black", "black", "red3"),
-
         colAlpha = 1)
 
 ```
@@ -207,27 +181,16 @@ also modify the y-axis limits, but this should be a less common occurrence.
 ```{r ex4, fig.height = 6, fig.width = 7, fig.cap = "Adjust axis limits."}
 
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-12,
-
         FCcutoff = 1.5,
-
         transcriptPointSize = 1.5,
-
         transcriptLabSize = 3.0,
-
         title = "N061011 versus N61311",
-
         colAlpha = 1,
-
         xlim = c(-8, 8),
-
         ylim = c(0, -log10(10e-32)))
 
 ```
@@ -244,31 +207,18 @@ or cutoffLineWidth=0.
 ```{r ex5, fig.height = 8, fig.width = 7, fig.cap = "Adjust cut-off lines."}
 
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-12,
-
         FCcutoff = 1.5,
-
         transcriptPointSize = 1.5,
-
         transcriptLabSize = 3.0,
-
         title = "N061011 versus N61311",
-
         colAlpha = 1,
-
         xlim = c(-6, 6),
-
         cutoffLineType = "twodash",
-
         cutoffLineCol = "pink",
-
         cutoffLineWidth = 1.5)
 
 ```
@@ -282,36 +232,21 @@ legend text, label size, and icon size can also be modified.
 ```{r ex6, fig.height = 8, fig.width = 10, fig.cap = "Adjust legend position, size, and text."}
 
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-12,
-
         FCcutoff = 1.5,
-
         transcriptPointSize = 1.5,
-
         transcriptLabSize = 3.0,
-
         colAlpha = 1,
-
         xlim = c(-6, 6),
-
         cutoffLineType = "twodash",
-
         cutoffLineWidth = 2.0,
-
         legend=c("NS","Log (base 2) fold-change","P value",
             "P value & Log (base 2) fold-change"),
-
         legendPosition = "right",
-
         legendLabSize = 14,
-
         legendIconSize = 5.0)
 
 ```
@@ -335,34 +270,20 @@ by supplying an expression via the bquote function.
 ```{r ex7, fig.height = 8, fig.width = 6.5, fig.cap = "Plot adjusted p-values."}
 
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.0001,
-
         FCcutoff = 1.0,
-
         xlim=c(-6,6),
-
         transcriptLabSize = 3.0,
-
         colAlpha = 1,
-
         legend=c("NS","Log2 FC","Adjusted p-value",
             "Adjusted p-value & Log2 FC"),
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0)
 
 ```
@@ -380,40 +301,23 @@ look overcrowded.
 ```{r ex8, fig.height = 8, fig.width = 6.5, fig.cap = "Fit more labels by adding connectors."}
 
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.0001,
-
         FCcutoff = 2.0,
-
         xlim = c(-6,6),
-
         transcriptLabSize = 3.0,
-
         colAlpha = 1,
-
         legend=c("NS","Log2 FC","Adjusted p-value",
             "Adjusted p-value & Log2 FC"),
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0,
-
         drawConnectors = TRUE,
-
         widthConnectors = 0.2,
-
         colConnectors = "grey30")
 
 ```
@@ -430,38 +334,22 @@ be labelled.
 ```{r ex9, fig.height = 8, fig.width = 6.5, fig.cap = "Only label key transcripts."}
 
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = c("ENSG00000106565","ENSG00000187758"),
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.0001,
-
         FCcutoff = 2.0,
-
         xlim = c(-6,6),
-
         transcriptPointSize = 1.8,
-
         transcriptLabSize = 5.0,
-
         colAlpha = 1,
-
         legend=c("NS","Log2 FC","Adjusted p-value",
             "Adjusted p-value & Log2 FC"),
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0)
 
 ```
@@ -475,48 +363,27 @@ removed.
 ```{r ex10, fig.height = 8, fig.width = 6.5, fig.cap = "Modify border and remove gridlines"}
 
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = c("ENSG00000106565","ENSG00000187758"),
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.00000000000000001,
-
         FCcutoff = 2.0,
-
         xlim = c(-6,6),
-
         transcriptLabSize = 3.0,
-
         colAlpha = 1,
-
         legend=c("NS","Log2 FC","Adjusted p-value",
             "Adjusted p-value & Log2 FC"),
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0,
-
         drawConnectors = FALSE,
-
         border = "full",
-
         borderWidth = 1.5,
-
         borderColour = "black",
-
         gridlines.major = FALSE,
-
         gridlines.minor = FALSE)
 
 ```
@@ -530,70 +397,41 @@ of the grid and gridExtra packages.
 ```{r ex11, fig.height = 8, fig.width = 12, fig.cap = "Plot multiple volcanos on the same page."}
 
     p1 <- EnhancedVolcano(res1,
-
         lab = rownames(res1),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-24,
-
         FCcutoff = 2.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 5.0,
-
         colAlpha = 1,
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0)
 
 
     p2 <- EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = c("ENSG00000106565","ENSG00000187758"),
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.0001,
-
         FCcutoff = 2.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 5.0,
-
         colAlpha = 1,
-
         legend=c("NS","Log2 FC","Adjusted p-value",
             "Adjusted p-value & Log2 FC"),
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0)
 
 
     library(gridExtra)
-
     library(grid)
-
     grid.arrange(p1, p2, ncol=2, top="EnhancedVolcano")
-
     grid.rect(gp=gpar(fill=NA))
 
 ```
@@ -622,121 +460,68 @@ In this example, we just wish to colour all transcripts with log2FC > 2 as
     names(keyvals)[which(res2$log2FoldChange < -2)] <- "Low"
 
     unique(names(keyvals))
-
     unique(keyvals)
 
     p1 <- EnhancedVolcano(res2,
 
         title = "Over-ride",
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.00000000000000001,
-
         FCcutoff = 1.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 3.0,
-
         colAlpha = 1,
-
         legendPosition = "top",
-
         transcriptPointSize = 1.2,
-
         legendLabSize = 15,
-
         legendIconSize = 5.0,
-
         drawConnectors = TRUE,
-
         widthConnectors = 0.3,
-
         colConnectors = "grey50",
-
         border = "partial",
-
         borderWidth = 1.5,
-
         borderColour = "black",
-
         gridlines.major = TRUE,
-
         gridlines.minor = FALSE,
-
         colOverride = keyvals)
 
 
     p2 <- EnhancedVolcano(res2,
-
         title = "No over-ride",
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.00000000000000001,
-
         FCcutoff = 1.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 4.0,
-
         colAlpha = 1,
-
         legendPosition = "top",
-
         transcriptPointSize = 1.2,
-
         legendLabSize = 15,
-
         legendIconSize = 5.0,
-
         drawConnectors = FALSE,
-
         widthConnectors = 0.3,
-
         colConnectors = "grey50",
-
         border = "full",
-
         borderWidth = 1.0,
-
         borderColour = "black",
-
         gridlines.major = TRUE,
-
         gridlines.minor = FALSE,
-
         colOverride = NULL)
 
 
     library(gridExtra)
-
     library(grid)
-
     grid.arrange(p1, p2, ncol=2, top="EnhancedVolcano")
-
     grid.rect(gp=gpar(fill=NA))
 
 ```
@@ -761,7 +546,6 @@ This feature can be used with or without colOverride = TRUE.
     names(keyvals)[which(res2$log2FoldChange < -2)] <- "Low"
 
     unique(names(keyvals))
-
     unique(keyvals)
 
     celltype1 <- c("ENSG00000106565", "ENSG00000002933",
@@ -771,127 +555,69 @@ This feature can be used with or without colOverride = TRUE.
       "ENSG00000143153")
 
     p1 <- EnhancedVolcano(res2,
-
         title = "Over-ride, cell-type 1",
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.00000000000000001,
-
         FCcutoff = 1.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 2.0,
-
         colAlpha = 1,
-
         legendPosition = "top",
-
         transcriptPointSize = 1.2,
-
         legendLabSize = 15,
-
         legendIconSize = 5.0,
-
         shade = celltype1,
-
         shadeLabel = "Cell-type I",
-
         shadeFill = "pink",
-
         drawConnectors = TRUE,
-
         widthConnectors = 0.3,
-
         colConnectors = "grey50",
-
         border = "partial",
-
         borderWidth = 1.5,
-
         borderColour = "black",
-
         gridlines.major = TRUE,
-
         gridlines.minor = FALSE,
-
         colOverride = keyvals)
 
 
     p2 <- EnhancedVolcano(res2,
-
         title = "No over-ride, cell-type 2",
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.00000000000000001,
-
         FCcutoff = 1.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 4.0,
-
         colAlpha = 1,
-
         legendPosition = "top",
-
         transcriptPointSize = 1.2,
-
         legendLabSize = 15,
-
         legendIconSize = 5.0,
-
         shade = celltype2,
-
         shadeLabel = "Cell-type II",
-
         drawConnectors = FALSE,
-
         widthConnectors = 0.5,
-
         colConnectors = "grey50",
-
         border = "full",
-
         borderWidth = 1.0,
-
         borderColour = "black",
-
         gridlines.major = TRUE,
-
         gridlines.minor = FALSE,
-
         colOverride = NULL)
 
 
     library(gridExtra)
-
     library(grid)
-
     grid.arrange(p1, p2, ncol=2, top="EnhancedVolcano")
-
     grid.rect(gp=gpar(fill=NA))
 
 ```

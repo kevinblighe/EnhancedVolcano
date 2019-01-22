@@ -1,7 +1,7 @@
 Publication-ready volcano plots with enhanced colouring and labeling
 ================
 Kevin Blighe
-2019-01-17
+2019-01-21
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -38,23 +38,22 @@ Installation
 -----------------------------------------
 
 ``` r
-if (!requireNamespace("BiocManager", quietly = TRUE)) 
-install.packages("BiocManager")
-
-BiocManager::install("EnhancedVolcano")
+    if (!requireNamespace("BiocManager", quietly = TRUE))
+        install.packages("BiocManager")
+        BiocManager::install("EnhancedVolcano")
 ```
 
 Note: to install development version:
 
 ``` r
-devtools::install_github("kevinblighe/EnhancedVolcano")
+    devtools::install_github("kevinblighe/EnhancedVolcano")
 ```
 
 2. Load the package into R session
 ----------------------------------
 
 ``` r
-library(EnhancedVolcano)
+    library(EnhancedVolcano)
 ```
 
 Quick start
@@ -63,26 +62,28 @@ Quick start
 For this example, we will follow the tutorial (from Section 3.1) of [RNA-seq workflow: gene-level exploratory analysis and differential expression](http://master.bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html). Specifically, we will load the 'airway' data, where different airway smooth muscle cells were treated with dexamethasone.
 
 ``` r
-library(airway)
+    library(airway)
+    library(magrittr)
 
-library(magrittr)
-
-data("airway")
-
-airway$dex %<>% relevel("untrt")
+    data("airway")
+    airway$dex %<>% relevel("untrt")
 ```
 
 Conduct differential expression using DESeq2 in order to create 2 sets of results:
 
 ``` r
-library("DESeq2")
+    library("DESeq2")
 
-dds <- DESeqDataSet(airway, design = ~cell + dex)
-dds <- DESeq(dds, betaPrior = FALSE)
-res1 <- results(dds, contrast = c("dex", "trt", "untrt"))
-res1 <- lfcShrink(dds, contrast = c("dex", "trt", "untrt"), res = res1)
-res2 <- results(dds, contrast = c("cell", "N061011", "N61311"))
-res2 <- lfcShrink(dds, contrast = c("cell", "N061011", "N61311"), res = res2)
+    dds <- DESeqDataSet(airway, design = ~ cell + dex)
+    dds <- DESeq(dds, betaPrior=FALSE)
+    res1 <- results(dds,
+        contrast = c("dex","trt","untrt"))
+    res1 <- lfcShrink(dds,
+        contrast = c("dex","trt","untrt"), res=res1)
+    res2 <- results(dds,
+        contrast = c("cell", "N061011", "N61311"))
+    res2 <- lfcShrink(dds,
+        contrast = c("cell", "N061011", "N61311"), res=res2)
 ```
 
 Plot the most basic volcano plot
@@ -92,11 +93,8 @@ For the most basic volcano plot, only a single data-frame or -matrix of test res
 
 ``` r
     EnhancedVolcano(res1,
-
         lab = rownames(res1),
-
         x = "log2FoldChange",
-
         y = "pvalue")
 ```
 
@@ -116,21 +114,13 @@ In this example, we also modify the point and label size, which can help to impr
 
 ``` r
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-12,
-
         FCcutoff = 1.5,
-
         transcriptPointSize = 1.5,
-
         transcriptLabSize = 3.0,
-
         title = "N061011 versus N61311")
 ```
 
@@ -143,25 +133,15 @@ The default colour scheme may not be to everyone's taste. Here we make it such t
 
 ``` r
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-12,
-
         FCcutoff = 1.5,
-
         transcriptPointSize = 1.5,
-
         transcriptLabSize = 3.0,
-
         title = "N061011 versus N61311",
-
         col=c("black", "black", "black", "red3"),
-
         colAlpha = 1)
 ```
 
@@ -174,27 +154,16 @@ The x-axis limits for log2FC defaults to the max and min of the log2FC values pa
 
 ``` r
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-12,
-
         FCcutoff = 1.5,
-
         transcriptPointSize = 1.5,
-
         transcriptLabSize = 3.0,
-
         title = "N061011 versus N61311",
-
         colAlpha = 1,
-
         xlim = c(-8, 8),
-
         ylim = c(0, -log10(10e-32)))
 ```
 
@@ -207,31 +176,18 @@ The lines that are drawn to indicate cut-off points are also modifiable. The par
 
 ``` r
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-12,
-
         FCcutoff = 1.5,
-
         transcriptPointSize = 1.5,
-
         transcriptLabSize = 3.0,
-
         title = "N061011 versus N61311",
-
         colAlpha = 1,
-
         xlim = c(-6, 6),
-
         cutoffLineType = "twodash",
-
         cutoffLineCol = "pink",
-
         cutoffLineWidth = 1.5)
 ```
 
@@ -244,36 +200,21 @@ The position of the legend can also be changed to "left" or "right" (and stacked
 
 ``` r
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-12,
-
         FCcutoff = 1.5,
-
         transcriptPointSize = 1.5,
-
         transcriptLabSize = 3.0,
-
         colAlpha = 1,
-
         xlim = c(-6, 6),
-
         cutoffLineType = "twodash",
-
         cutoffLineWidth = 2.0,
-
         legend=c("NS","Log (base 2) fold-change","P value",
             "P value & Log (base 2) fold-change"),
-
         legendPosition = "right",
-
         legendLabSize = 14,
-
         legendIconSize = 5.0)
 ```
 
@@ -292,34 +233,20 @@ Volcano plots do not have to be plotted with nominal (unadjusted P values). Simp
 
 ``` r
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.0001,
-
         FCcutoff = 1.0,
-
         xlim=c(-6,6),
-
         transcriptLabSize = 3.0,
-
         colAlpha = 1,
-
         legend=c("NS","Log2 FC","Adjusted p-value",
             "Adjusted p-value & Log2 FC"),
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0)
 ```
 
@@ -334,40 +261,23 @@ The result may not always be desirable as it can make the plot look overcrowded.
 
 ``` r
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.0001,
-
         FCcutoff = 2.0,
-
         xlim = c(-6,6),
-
         transcriptLabSize = 3.0,
-
         colAlpha = 1,
-
         legend=c("NS","Log2 FC","Adjusted p-value",
             "Adjusted p-value & Log2 FC"),
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0,
-
         drawConnectors = TRUE,
-
         widthConnectors = 0.2,
-
         colConnectors = "grey30")
 ```
 
@@ -380,38 +290,22 @@ In many situations, people may only wish to label their key transcripts / transc
 
 ``` r
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = c("ENSG00000106565","ENSG00000187758"),
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.0001,
-
         FCcutoff = 2.0,
-
         xlim = c(-6,6),
-
         transcriptPointSize = 1.8,
-
         transcriptLabSize = 5.0,
-
         colAlpha = 1,
-
         legend=c("NS","Log2 FC","Adjusted p-value",
             "Adjusted p-value & Log2 FC"),
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0)
 ```
 
@@ -424,48 +318,27 @@ One can also modify the border by adding a complete border around the entire plo
 
 ``` r
     EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = c("ENSG00000106565","ENSG00000187758"),
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.00000000000000001,
-
         FCcutoff = 2.0,
-
         xlim = c(-6,6),
-
         transcriptLabSize = 3.0,
-
         colAlpha = 1,
-
         legend=c("NS","Log2 FC","Adjusted p-value",
             "Adjusted p-value & Log2 FC"),
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0,
-
         drawConnectors = FALSE,
-
         border = "full",
-
         borderWidth = 1.5,
-
         borderColour = "black",
-
         gridlines.major = FALSE,
-
         gridlines.minor = FALSE)
 ```
 
@@ -478,68 +351,39 @@ One can also plot multiple volcanos on the same plot via the use of the grid and
 
 ``` r
     p1 <- EnhancedVolcano(res1,
-
         lab = rownames(res1),
-
         x = "log2FoldChange",
-
         y = "pvalue",
-
         pCutoff = 10e-24,
-
         FCcutoff = 2.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 5.0,
-
         colAlpha = 1,
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0)
 
     p2 <- EnhancedVolcano(res2,
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = c("ENSG00000106565","ENSG00000187758"),
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.0001,
-
         FCcutoff = 2.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 5.0,
-
         colAlpha = 1,
-
         legend=c("NS","Log2 FC","Adjusted p-value",
             "Adjusted p-value & Log2 FC"),
-
         legendPosition = "bottom",
-
         legendLabSize = 10,
-
         legendIconSize = 3.0)
 
     library(gridExtra)
-
     library(grid)
-
     grid.arrange(p1, p2, ncol=2, top="EnhancedVolcano")
-
     grid.rect(gp=gpar(fill=NA))
 ```
 
@@ -578,113 +422,61 @@ In this example, we just wish to colour all transcripts with log2FC &gt; 2 as 'h
     p1 <- EnhancedVolcano(res2,
 
         title = "Over-ride",
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.00000000000000001,
-
         FCcutoff = 1.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 3.0,
-
         colAlpha = 1,
-
         legendPosition = "top",
-
         transcriptPointSize = 1.2,
-
         legendLabSize = 15,
-
         legendIconSize = 5.0,
-
         drawConnectors = TRUE,
-
         widthConnectors = 0.3,
-
         colConnectors = "grey50",
-
         border = "partial",
-
         borderWidth = 1.5,
-
         borderColour = "black",
-
         gridlines.major = TRUE,
-
         gridlines.minor = FALSE,
-
         colOverride = keyvals)
 
     p2 <- EnhancedVolcano(res2,
-
         title = "No over-ride",
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.00000000000000001,
-
         FCcutoff = 1.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 4.0,
-
         colAlpha = 1,
-
         legendPosition = "top",
-
         transcriptPointSize = 1.2,
-
         legendLabSize = 15,
-
         legendIconSize = 5.0,
-
         drawConnectors = FALSE,
-
         widthConnectors = 0.3,
-
         colConnectors = "grey50",
-
         border = "full",
-
         borderWidth = 1.0,
-
         borderColour = "black",
-
         gridlines.major = TRUE,
-
         gridlines.minor = FALSE,
-
         colOverride = NULL)
 
     library(gridExtra)
-
     library(grid)
-
     grid.arrange(p1, p2, ncol=2, top="EnhancedVolcano")
-
     grid.rect(gp=gpar(fill=NA))
 ```
 
@@ -725,125 +517,67 @@ In this example we plot the same volcanos as in the previous step; however, we a
       "ENSG00000143153")
 
     p1 <- EnhancedVolcano(res2,
-
         title = "Over-ride, cell-type 1",
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.00000000000000001,
-
         FCcutoff = 1.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 2.0,
-
         colAlpha = 1,
-
         legendPosition = "top",
-
         transcriptPointSize = 1.2,
-
         legendLabSize = 15,
-
         legendIconSize = 5.0,
-
         shade = celltype1,
-
         shadeLabel = "Cell-type I",
-
         shadeFill = "pink",
-
         drawConnectors = TRUE,
-
         widthConnectors = 0.3,
-
         colConnectors = "grey50",
-
         border = "partial",
-
         borderWidth = 1.5,
-
         borderColour = "black",
-
         gridlines.major = TRUE,
-
         gridlines.minor = FALSE,
-
         colOverride = keyvals)
 
     p2 <- EnhancedVolcano(res2,
-
         title = "No over-ride, cell-type 2",
-
         lab = rownames(res2),
-
         x = "log2FoldChange",
-
         y = "padj",
-
         selectLab = rownames(res2)[which(names(keyvals) %in% c("High", "Low"))],
-
         xlab = bquote(~Log[2]~ "fold change"),
-
         ylab = bquote(~-Log[10]~adjusted~italic(P)),
-
         pCutoff = 0.00000000000000001,
-
         FCcutoff = 1.0,
-
         xlim = c(-6.5,6.5),
-
         transcriptLabSize = 4.0,
-
         colAlpha = 1,
-
         legendPosition = "top",
-
         transcriptPointSize = 1.2,
-
         legendLabSize = 15,
-
         legendIconSize = 5.0,
-
         shade = celltype2,
-
         shadeLabel = "Cell-type II",
-
         drawConnectors = FALSE,
-
         widthConnectors = 0.5,
-
         colConnectors = "grey50",
-
         border = "full",
-
         borderWidth = 1.0,
-
         borderColour = "black",
-
         gridlines.major = TRUE,
-
         gridlines.minor = FALSE,
-
         colOverride = NULL)
 
     library(gridExtra)
-
     library(grid)
-
     grid.arrange(p1, p2, ncol=2, top="EnhancedVolcano")
-
     grid.rect(gp=gpar(fill=NA))
 ```
 
@@ -890,41 +624,41 @@ sessionInfo()
     ##  [8] datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] gridExtra_2.3               DESeq2_1.21.10             
-    ##  [3] magrittr_1.5                airway_0.115.0             
-    ##  [5] SummarizedExperiment_1.11.5 DelayedArray_0.7.48        
-    ##  [7] BiocParallel_1.15.12        matrixStats_0.54.0         
-    ##  [9] Biobase_2.42.0              GenomicRanges_1.33.14      
-    ## [11] GenomeInfoDb_1.17.4         IRanges_2.15.18            
+    ##  [1] gridExtra_2.3               DESeq2_1.22.2              
+    ##  [3] magrittr_1.5                airway_1.2.0               
+    ##  [5] SummarizedExperiment_1.12.0 DelayedArray_0.8.0         
+    ##  [7] BiocParallel_1.16.5         matrixStats_0.54.0         
+    ##  [9] Biobase_2.42.0              GenomicRanges_1.34.0       
+    ## [11] GenomeInfoDb_1.18.1         IRanges_2.16.0             
     ## [13] S4Vectors_0.20.1            BiocGenerics_0.28.0        
     ## [15] EnhancedVolcano_1.1.3       ggrepel_0.8.0              
-    ## [17] ggplot2_3.1.0               knitr_1.20                 
+    ## [17] ggplot2_3.1.0               knitr_1.21                 
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] bit64_0.9-7            splines_3.5.2          Formula_1.2-3         
     ##  [4] assertthat_0.2.0       highr_0.7              latticeExtra_0.6-28   
     ##  [7] blob_1.1.1             GenomeInfoDbData_1.2.0 yaml_2.2.0            
-    ## [10] RSQLite_2.1.1          pillar_1.3.1           backports_1.1.2       
+    ## [10] RSQLite_2.1.1          pillar_1.3.1           backports_1.1.3       
     ## [13] lattice_0.20-38        glue_1.3.0             digest_0.6.18         
-    ## [16] RColorBrewer_1.1-2     XVector_0.21.4         checkmate_1.8.5       
-    ## [19] colorspace_1.3-2       htmltools_0.3.6        Matrix_1.2-15         
-    ## [22] plyr_1.8.4             XML_3.98-1.16          pkgconfig_2.0.1       
-    ## [25] genefilter_1.63.0      zlibbioc_1.28.0        xtable_1.8-2          
-    ## [28] purrr_0.2.5            scales_1.0.0           tibble_1.4.2          
-    ## [31] htmlTable_1.12         annotate_1.59.0        withr_2.1.2           
-    ## [34] nnet_7.3-12            lazyeval_0.2.1         survival_2.42-6       
+    ## [16] RColorBrewer_1.1-2     XVector_0.22.0         checkmate_1.9.1       
+    ## [19] colorspace_1.4-0       htmltools_0.3.6        Matrix_1.2-15         
+    ## [22] plyr_1.8.4             XML_3.98-1.16          pkgconfig_2.0.2       
+    ## [25] genefilter_1.64.0      zlibbioc_1.28.0        xtable_1.8-3          
+    ## [28] purrr_0.2.5            scales_1.0.0           annotate_1.60.0       
+    ## [31] tibble_2.0.1           htmlTable_1.13.1       withr_2.1.2           
+    ## [34] nnet_7.3-12            lazyeval_0.2.1         survival_2.43-3       
     ## [37] crayon_1.3.4           memoise_1.1.0          evaluate_0.12         
-    ## [40] MASS_7.3-51.1          foreign_0.8-70         tools_3.5.2           
-    ## [43] data.table_1.11.6      formatR_1.5            stringr_1.3.1         
-    ## [46] locfit_1.5-9.1         munsell_0.5.0          cluster_2.0.7-1       
-    ## [49] AnnotationDbi_1.43.1   bindrcpp_0.2.2         compiler_3.5.2        
-    ## [52] rlang_0.3.1            RCurl_1.95-4.11        rstudioapi_0.7        
-    ## [55] htmlwidgets_1.2        labeling_0.3           bitops_1.0-6          
-    ## [58] base64enc_0.1-3        rmarkdown_1.11.3       gtable_0.2.0          
-    ## [61] DBI_1.0.0              R6_2.2.2               dplyr_0.7.7           
-    ## [64] bit_1.1-14             bindr_0.1.1            Hmisc_4.1-1           
-    ## [67] stringi_1.2.4          Rcpp_1.0.0             geneplotter_1.59.0    
-    ## [70] rpart_4.1-13           acepack_1.4.1          tidyselect_0.2.5
+    ## [40] MASS_7.3-51.1          foreign_0.8-71         tools_3.5.2           
+    ## [43] data.table_1.12.0      stringr_1.3.1          locfit_1.5-9.1        
+    ## [46] munsell_0.5.0          cluster_2.0.7-1        AnnotationDbi_1.44.0  
+    ## [49] bindrcpp_0.2.2         compiler_3.5.2         rlang_0.3.1           
+    ## [52] RCurl_1.95-4.11        rstudioapi_0.9.0       htmlwidgets_1.3       
+    ## [55] labeling_0.3           bitops_1.0-6           base64enc_0.1-3       
+    ## [58] rmarkdown_1.11.3       gtable_0.2.0           DBI_1.0.0             
+    ## [61] R6_2.3.0               dplyr_0.7.8            bit_1.1-14            
+    ## [64] bindr_0.1.1            Hmisc_4.1-1            stringi_1.2.4         
+    ## [67] Rcpp_1.0.0             geneplotter_1.60.0     rpart_4.1-13          
+    ## [70] acepack_1.4.1          tidyselect_0.2.5       xfun_0.4
 
 References
 ----------
