@@ -1,10 +1,32 @@
-CHANGES IN VERSION 1.0.2
+CHANGES IN VERSION 1.1.4
 ------------------------
- - added functionality to shade specific genes in the plot space
+ - changed 'colOverride' to 'colCustom'
+ - added a new 'shape' parameter to control the shape of plotted points
+ - added a new 'shapeCustom' parameter, akin to functionality supplied by
+   'colCustom' (formerly 'colOverride')
+ - added functionality to add title, subtitle, and caption (parameters: title,
+   subtitle, caption, titleLabSize, subtitleLabSize, captionLabSize = 12)
+ - added functionality to add extra vertical and horizontal lines (parameters:
+   hline, hlineType, hlineCol, hlineWidth, vline, vlineType, vlineCol,
+   vlineWidth)
+ - changed 'colConnectors' default from "black" to "grey10"
+ - added extra parameters for line connectors (parameters: typeConnectors,
+   endsConnectors, lengthConnectors)
+ - 'labhjust' and 'labvjust' are now 'transcriptLabhjust' and
+   'transcriptLabvjust', respectively
+ - user can now specify to draw transcript labels as text and text in boxes
+   via 'boxedlabels' (TRUE/FALSE)
+
+
+CHANGES IN VERSION 1.1.2
+------------------------
+ - added functionality to shade specific genes in the plot space (parameters:
+   shade, shadeLabel, shadeAlpha, shadeFill, shadeSize, shadeBins)
  - added new parameters 'labhjust' and 'labvjust' for fine tuning position of
    labels
  - suppress warnings about removal of missing values
  - now easier to hide the legend via legendVisible = TRUE/FALSE
+
 
 CHANGES IN VERSION 1.0.0
 ------------------------
