@@ -96,11 +96,22 @@ EnhancedVolcano <- function(
   # These throw an error in EnhancedVolcano
   # Detect these, issue warning, and convert these to
   # machine-lowest value possible
+  #####
+  # New functionality in > v1.2:
+  # Now convert to 10^-1 lower than lowest non-zero p-value
   if (min(toptable[,y], na.rm=TRUE) == 0) {
-    warning(paste("One or more P values is 0.",
-      "Converting to minimum possible value..."),
+    # <= v1.2
+    #warning(paste("One or more P values is 0.",
+    #  "Converting to minimum possible value..."),
+    #  call. = FALSE)
+    #toptable[which(toptable[,y] == 0), y] <- .Machine$double.xmin
+    warning(paste("One or more p-values is 0.",
+      "Converting to 10^-1 * current",
+      "lowest non-zero p-value..."),
       call. = FALSE)
-    toptable[which(toptable[,y] == 0), y] <- .Machine$double.xmin
+    toptable[which(toptable[,y] == 0), y] <- min(
+      toptable[which(toptable[,y] != 0), y],
+      na.rm = TRUE) * 10^-1
   }
 
   toptable$lab <- lab

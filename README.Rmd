@@ -103,7 +103,7 @@ Conduct differential expression using DESeq2 in order to create 2 sets of result
 For the most basic volcano plot, only a single data-frame or -matrix of
 test results is required, containing transcript names, log2FC, and adjusted
 or unadjusted P values. The default cut-off for log2FC is >|2|; the default
-cut-off for P value is 0.05.
+cut-off for P value is 10e-6.
 
 ```{r ex1, fig.height = 8.5, fig.width = 7, fig.cap = "Plot the most basic volcano plot."}
 
@@ -760,7 +760,10 @@ Luke Dow - Assistant Professor at Weill Cornell Medicine,
 
 Tokhir Dadaev - Institute of Cancer Research,
 
-Alina Frolova
+Alina Frolova,
+
+Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center)
+
 
 # Session info
 

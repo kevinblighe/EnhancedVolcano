@@ -1,7 +1,7 @@
 Publication-ready volcano plots with enhanced colouring and labeling
 ================
 Kevin Blighe
-2019-01-26
+2019-06-02
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -89,7 +89,7 @@ Conduct differential expression using DESeq2 in order to create 2 sets of result
 Plot the most basic volcano plot
 --------------------------------
 
-For the most basic volcano plot, only a single data-frame or -matrix of test results is required, containing transcript names, log2FC, and adjusted or unadjusted P values. The default cut-off for log2FC is &gt;|2|; the default cut-off for P value is 0.05.
+For the most basic volcano plot, only a single data-frame or -matrix of test results is required, containing transcript names, log2FC, and adjusted or unadjusted P values. The default cut-off for log2FC is &gt;|2|; the default cut-off for P value is 10e-6.
 
 ``` r
   EnhancedVolcano(res1,
@@ -741,7 +741,9 @@ Luke Dow - Assistant Professor at Weill Cornell Medicine,
 
 Tokhir Dadaev - Institute of Cancer Research,
 
-Alina Frolova
+Alina Frolova,
+
+Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center)
 
 Session info
 ============
@@ -750,12 +752,12 @@ Session info
 sessionInfo()
 ```
 
-    ## R version 3.5.2 (2018-12-20)
+    ## R version 3.6.0 (2019-04-26)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Ubuntu 16.04.5 LTS
+    ## Running under: Ubuntu 16.04.6 LTS
     ## 
     ## Matrix products: default
-    ## BLAS: /usr/lib/atlas-base/atlas/libblas.so.3.0
+    ## BLAS:   /usr/lib/atlas-base/atlas/libblas.so.3.0
     ## LAPACK: /usr/lib/atlas-base/atlas/liblapack.so.3.0
     ## 
     ## locale:
@@ -771,41 +773,41 @@ sessionInfo()
     ##  [8] datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] gridExtra_2.3               DESeq2_1.22.2              
-    ##  [3] magrittr_1.5                airway_1.2.0               
-    ##  [5] SummarizedExperiment_1.12.0 DelayedArray_0.8.0         
-    ##  [7] BiocParallel_1.16.5         matrixStats_0.54.0         
-    ##  [9] Biobase_2.42.0              GenomicRanges_1.34.0       
-    ## [11] GenomeInfoDb_1.18.1         IRanges_2.16.0             
-    ## [13] S4Vectors_0.20.1            BiocGenerics_0.28.0        
-    ## [15] EnhancedVolcano_1.1.3       ggrepel_0.8.0              
-    ## [17] ggplot2_3.1.0               knitr_1.21                 
+    ##  [1] gridExtra_2.3               DESeq2_1.24.0              
+    ##  [3] magrittr_1.5                airway_1.4.0               
+    ##  [5] SummarizedExperiment_1.14.0 DelayedArray_0.10.0        
+    ##  [7] BiocParallel_1.18.0         matrixStats_0.54.0         
+    ##  [9] Biobase_2.44.0              GenomicRanges_1.36.0       
+    ## [11] GenomeInfoDb_1.20.0         IRanges_2.18.1             
+    ## [13] S4Vectors_0.22.0            BiocGenerics_0.30.0        
+    ## [15] EnhancedVolcano_1.2.1       ggrepel_0.8.1              
+    ## [17] ggplot2_3.1.1               knitr_1.23                 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] bit64_0.9-7            splines_3.5.2          Formula_1.2-3         
-    ##  [4] assertthat_0.2.0       highr_0.7              latticeExtra_0.6-28   
-    ##  [7] blob_1.1.1             GenomeInfoDbData_1.2.0 yaml_2.2.0            
-    ## [10] RSQLite_2.1.1          pillar_1.3.1           backports_1.1.3       
-    ## [13] lattice_0.20-38        glue_1.3.0             digest_0.6.18         
-    ## [16] RColorBrewer_1.1-2     XVector_0.22.0         checkmate_1.9.1       
-    ## [19] colorspace_1.4-0       htmltools_0.3.6        Matrix_1.2-15         
-    ## [22] plyr_1.8.4             XML_3.98-1.16          pkgconfig_2.0.2       
-    ## [25] genefilter_1.64.0      zlibbioc_1.28.0        xtable_1.8-3          
-    ## [28] purrr_0.2.5            scales_1.0.0           annotate_1.60.0       
-    ## [31] tibble_2.0.1           htmlTable_1.13.1       withr_2.1.2           
-    ## [34] nnet_7.3-12            lazyeval_0.2.1         survival_2.43-3       
-    ## [37] crayon_1.3.4           memoise_1.1.0          evaluate_0.12         
-    ## [40] MASS_7.3-51.1          foreign_0.8-71         tools_3.5.2           
-    ## [43] data.table_1.12.0      stringr_1.3.1          locfit_1.5-9.1        
-    ## [46] munsell_0.5.0          cluster_2.0.7-1        AnnotationDbi_1.44.0  
-    ## [49] bindrcpp_0.2.2         compiler_3.5.2         rlang_0.3.1           
-    ## [52] RCurl_1.95-4.11        rstudioapi_0.9.0       htmlwidgets_1.3       
-    ## [55] labeling_0.3           bitops_1.0-6           base64enc_0.1-3       
-    ## [58] rmarkdown_1.11.3       gtable_0.2.0           DBI_1.0.0             
-    ## [61] R6_2.3.0               dplyr_0.7.8            bit_1.1-14            
-    ## [64] bindr_0.1.1            Hmisc_4.1-1            stringi_1.2.4         
-    ## [67] Rcpp_1.0.0             geneplotter_1.60.0     rpart_4.1-13          
-    ## [70] acepack_1.4.1          tidyselect_0.2.5       xfun_0.4
+    ##  [1] bit64_0.9-7            splines_3.6.0          Formula_1.2-3         
+    ##  [4] assertthat_0.2.1       highr_0.8              latticeExtra_0.6-28   
+    ##  [7] blob_1.1.1             GenomeInfoDbData_1.2.1 yaml_2.2.0            
+    ## [10] RSQLite_2.1.1          pillar_1.4.1           backports_1.1.4       
+    ## [13] lattice_0.20-38        glue_1.3.1             digest_0.6.19         
+    ## [16] RColorBrewer_1.1-2     XVector_0.24.0         checkmate_1.9.3       
+    ## [19] colorspace_1.4-1       htmltools_0.3.6        Matrix_1.2-17         
+    ## [22] plyr_1.8.4             XML_3.98-1.19          pkgconfig_2.0.2       
+    ## [25] genefilter_1.66.0      zlibbioc_1.30.0        purrr_0.3.2           
+    ## [28] xtable_1.8-4           scales_1.0.0           tibble_2.1.2          
+    ## [31] htmlTable_1.13.1       annotate_1.62.0        withr_2.1.2           
+    ## [34] nnet_7.3-12            lazyeval_0.2.2         survival_2.44-1.1     
+    ## [37] crayon_1.3.4           memoise_1.1.0          evaluate_0.14         
+    ## [40] MASS_7.3-51.4          foreign_0.8-71         tools_3.6.0           
+    ## [43] data.table_1.12.2      stringr_1.4.0          locfit_1.5-9.1        
+    ## [46] munsell_0.5.0          cluster_2.0.9          AnnotationDbi_1.46.0  
+    ## [49] compiler_3.6.0         rlang_0.3.4            RCurl_1.95-4.12       
+    ## [52] rstudioapi_0.10        htmlwidgets_1.3        labeling_0.3          
+    ## [55] bitops_1.0-6           base64enc_0.1-3        rmarkdown_1.13        
+    ## [58] gtable_0.3.0           DBI_1.0.0              R6_2.4.0              
+    ## [61] dplyr_0.8.1            bit_1.1-14             Hmisc_4.2-0           
+    ## [64] stringi_1.4.3          Rcpp_1.0.1             geneplotter_1.62.0    
+    ## [67] rpart_4.1-15           acepack_1.4.1          tidyselect_0.2.5      
+    ## [70] xfun_0.7
 
 References
 ----------
