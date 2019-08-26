@@ -24,7 +24,7 @@ vignette: >
 Volcano plots represent a useful way to visualise the results of differential
 expression analyses. Here, we present a highly-configurable function that
 produces publication-ready volcano plots. EnhancedVolcano [@EnhancedVolcano]
-will attempt to fit as many transcript names in the plot window as possible,
+will attempt to fit as many labels in the plot window as possible,
 thus avoiding 'clogging' up the plot with labels that could not otherwise
 have been read. Other functionality allows the user to identify up to 3
 different types of attributes in the same plot space via colour, shape, and
@@ -103,10 +103,10 @@ Conduct differential expression using DESeq2 in order to create 2 sets of result
 
 ## Plot the most basic volcano plot
 
-For the most basic volcano plot, only a single data-frame or -matrix of
-test results is required, containing transcript names, log2FC, and adjusted
-or unadjusted P values. The default cut-off for log2FC is >|2|; the default
-cut-off for P value is 10e-6.
+For the most basic volcano plot, only a single data-frame, data-matrix, or
+tibble of test results is required, containing point labels, log2FC, and
+adjusted or unadjusted P values. The default cut-off for log2FC is >|2|;
+the default cut-off for P value is 10e-6.
 
 ```{r ex1, fig.height = 8.5, fig.width = 7, fig.cap = "Plot the most basic volcano plot."}
 
@@ -125,7 +125,7 @@ purposes of accommodating all types of statistical distributions and labelling
 preferences. By default, EnhancedVolcano will only attempt to label genes that
 pass the thresholds that you set for statistical significance, i.e., 'pCutoff' and
 'FCcutoff'. In addition, it will only label as many of these that can reasonably
-fit in the plot space. The user can optionally supply a vector of transcript names
+fit in the plot space. The user can optionally supply a vector of labels
 (as 'selectLab') that s/he wishes to label in the plot.
 
 ## Modify cut-offs for log2FC and P value; specify title; adjust point and label size
@@ -137,7 +137,7 @@ estimates of log2FC differences in differential expression analysis can now be
 calculated.
 
 In this example, we also modify the point and label size, which can help to
-improve clarity where many transcripts went into the differential expression analysis.
+improve clarity where many variables went into the differential expression analysis.
 
 ```{r ex2, fig.height = 8.5, fig.width = 7, fig.cap = "Modify cut-offs for log2FC and P value; specify title; adjust point and label size."}
 
@@ -149,15 +149,15 @@ improve clarity where many transcripts went into the differential expression ana
     title = 'N061011 versus N61311',
     pCutoff = 10e-16,
     FCcutoff = 1.5,
-    transcriptPointSize = 1.5,
-    transcriptLabSize = 3.0)
+    pointSize = 3.0,
+    labSize = 3.0)
 
 ```
 
 ## Adjust colour and alpha for point shading
 
 The default colour scheme may not be to everyone's taste. Here we make it such that
-only the transcripts passing both the log2FC and P value thresholds are coloured red,
+only the variables passing both the log2FC and P value thresholds are coloured red,
 with everything else black. We also adjust the value for 'alpha', which controls the
 transparency of the plotted points: 1 = 100% opaque; 0 = 100% transparent.
 
@@ -171,8 +171,8 @@ transparency of the plotted points: 1 = 100% opaque; 0 = 100% transparent.
     title = 'N061011 versus N61311',
     pCutoff = 10e-16,
     FCcutoff = 1.5,
-    transcriptPointSize = 1.5,
-    transcriptLabSize = 3.0,
+    pointSize = 3.0,
+    labSize = 3.0,
     col=c('black', 'black', 'black', 'red3'),
     colAlpha = 1)
 
@@ -199,8 +199,8 @@ For more information on shape encoding search online at
     title = 'N061011 versus N61311',
     pCutoff = 10e-16,
     FCcutoff = 1.5,
-    transcriptPointSize = 3.0,
-    transcriptLabSize = 3.0,
+    pointSize = 4.0,
+    labSize = 3.0,
     shape = 8,
     colAlpha = 1)
 
@@ -212,8 +212,8 @@ For more information on shape encoding search online at
     title = 'N061011 versus N61311',
     pCutoff = 10e-16,
     FCcutoff = 1.5,
-    transcriptPointSize = 2.0,
-    transcriptLabSize = 3.0,
+    pointSize = 3.0,
+    labSize = 3.0,
     shape = c(1, 4, 23, 25),
     colAlpha = 1)
 
@@ -242,8 +242,8 @@ To make these more visible, we will also remove the default gridlines.
     title = 'N061011 versus N61311',
     pCutoff = 10e-12,
     FCcutoff = 1.5,
-    transcriptPointSize = 1.5,
-    transcriptLabSize = 3.0,
+    pointSize = 3.0,
+    labSize = 3.0,
     colAlpha = 1,
     cutoffLineType = 'blank',
     cutoffLineCol = 'black',
@@ -274,8 +274,8 @@ legend text, label size, and icon size can also be modified.
     FCcutoff = 1.5,
     cutoffLineType = 'twodash',
     cutoffLineWidth = 0.8,
-    transcriptPointSize = 3.0,
-    transcriptLabSize = 4.0,
+    pointSize = 4.0,
+    labSize = 4.0,
     colAlpha = 1,
     legend=c('NS','Log (base 2) fold-change','P value',
       'P value & Log (base 2) fold-change'),
@@ -312,7 +312,7 @@ we also modify the axis titles by supplying an expression via the bquote functio
     ylab = bquote(~-Log[10]~adjusted~italic(P)),
     pCutoff = 0.0001,
     FCcutoff = 1.0,
-    transcriptLabSize = 4.0,
+    labSize = 4.0,
     colAlpha = 1,
     legend=c('NS','Log2 FC','Adjusted p-value',
       'Adjusted p-value & Log2 FC'),
@@ -325,7 +325,7 @@ we also modify the axis titles by supplying an expression via the bquote functio
 ## Fit more labels by adding connectors
 
 In order to maximise free space in the plot window, one can fit more
-transcript labels by adding connectors from labels to points, where
+labels by adding connectors from labels to points, where
 appropriate. The width and colour of these connectors can also be
 modified with 'widthConnectors' and 'colConnectors', respectively.
 Further configuration is achievable via 'typeConnectors' ("open",
@@ -345,8 +345,8 @@ look overcrowded.
     xlab = bquote(~Log[2]~ 'fold change'),
     pCutoff = 10e-14,
     FCcutoff = 2.0,
-    transcriptPointSize = 3.0,
-    transcriptLabSize = 4.0,
+    pointSize = 4.0,
+    labSize = 4.0,
     colAlpha = 1,
     legend=c('NS','Log (base 2) fold-change','P value',
       'P value & Log (base 2) fold-change'),
@@ -359,16 +359,16 @@ look overcrowded.
 
 ```
 
-## Only label key transcripts
+## Only label key variables
 
-In many situations, people may only wish to label their key transcripts
-/ transcripts of interest. One can therefore supply a vector of these
-transcripts via the 'selectLab' parameter, the contents of which have
+In many situations, people may only wish to label their key variables
+/ variables of interest. One can therefore supply a vector of these
+variables via the 'selectLab' parameter, the contents of which have
 to also be present in the vector passed to 'lab'. In addition, only
-those transcripts that pass both the cutoff for log2FC and P value will
+those variables that pass both the cutoff for log2FC and P value will
 be labelled.
 
-```{r ex9, fig.height = 8.5, fig.width = 11, fig.cap = "Only label key transcripts."}
+```{r ex9, fig.height = 8.5, fig.width = 11, fig.cap = "Only label key variables."}
 
   EnhancedVolcano(res2,
     lab = rownames(res2),
@@ -379,8 +379,8 @@ be labelled.
     xlab = bquote(~Log[2]~ 'fold change'),
     pCutoff = 10e-14,
     FCcutoff = 2.0,
-    transcriptPointSize = 3.0,
-    transcriptLabSize = 5.0,
+    pointSize = 4.0,
+    labSize = 5.0,
     shape = c(4, 35, 17, 18),
     colAlpha = 1,
     legend=c('NS','Log (base 2) fold-change','P value',
@@ -410,10 +410,10 @@ labels. This works much better when drawConnectors is also TRUE.
     xlab = bquote(~Log[2]~ 'fold change'),
     pCutoff = 10e-14,
     FCcutoff = 2.0,
-    transcriptPointSize = 3.0,
-    transcriptLabSize = 5.0,
-    transcriptLabCol = 'black',
-    transcriptLabFace = 'bold',
+    pointSize = 4.0,
+    labSize = 5.0,
+    labCol = 'black',
+    labFace = 'bold',
     boxedlabels = TRUE,
     colAlpha = 4/5,
     legend=c('NS','Log (base 2) fold-change','P value',
@@ -431,11 +431,11 @@ labels. This works much better when drawConnectors is also TRUE.
 ## Over-ride colouring scheme with custom key-value pairs
 
 In certain situations, one may wish to over-ride the default colour scheme
-with their own colour-scheme, such as colouring transcripts by pathway,
+with their own colour-scheme, such as colouring variables by pathway,
 cell-type or group. This can be achieved by supplying a named vector as
 'colCustom'.
 
-In this example, we just wish to colour all transcripts with log2FC > 2.5 as
+In this example, we just wish to colour all variables with log2FC > 2.5 as
 'high' and those with log2FC < -2.5 as 'low'.
 
 ```{r eval = TRUE}
@@ -447,11 +447,11 @@ In this example, we just wish to colour all transcripts with log2FC > 2.5 as
     # set the base name/label as 'Mid'
     names(keyvals) <- rep('Mid', nrow(res2))
 
-    # modify keyvals for transcripts with fold change > 2.5
+    # modify keyvals for variables with fold change > 2.5
     keyvals[which(res2$log2FoldChange > 2.5)] <- 'gold'
     names(keyvals)[which(res2$log2FoldChange > 2.5)] <- 'high'
 
-    # modify keyvals for transcripts with fold change < -2.5
+    # modify keyvals for variables with fold change < -2.5
     keyvals[which(res2$log2FoldChange < -2.5)] <- 'royalblue'
     names(keyvals)[which(res2$log2FoldChange < -2.5)] <- 'low'
 
@@ -461,7 +461,7 @@ In this example, we just wish to colour all transcripts with log2FC > 2.5 as
 
 ```
 
-```{r ex11, fig.height = 9.5, fig.width = 15, fig.cap = "Over-ride colouring scheme with custom key-value pairs."}
+```{r ex11, fig.height = 9.5, fig.width = 17, fig.cap = "Over-ride colouring scheme with custom key-value pairs."}
 
   p1 <- EnhancedVolcano(res2,
     lab = rownames(res2),
@@ -473,12 +473,12 @@ In this example, we just wish to colour all transcripts with log2FC > 2.5 as
     title = 'Custom colour over-ride',
     pCutoff = 10e-14,
     FCcutoff = 1.0,
-    transcriptPointSize = 3.5,
-    transcriptLabSize = 4.5,
+    pointSize = 4.5,
+    labSize = 4.5,
     shape = c(6, 4, 2, 11),
     colCustom = keyvals,
     colAlpha = 1,
-    legendPosition = 'top',
+    legendPosition = 'left',
     legendLabSize = 15,
     legendIconSize = 5.0,
     drawConnectors = TRUE,
@@ -500,8 +500,8 @@ In this example, we just wish to colour all transcripts with log2FC > 2.5 as
     title = 'No custom colour over-ride',
     pCutoff = 10e-14,
     FCcutoff = 1.0,
-    transcriptPointSize = 3.5,
-    transcriptLabSize = 4.5,
+    pointSize = 4.5,
+    labSize = 4.5,
     colCustom = NULL,
     colAlpha = 1,
     legendPosition = 'top',
@@ -576,8 +576,8 @@ both the colour and shape scheme at the same time.
     title = 'Custom shape over-ride',
     pCutoff = 10e-14,
     FCcutoff = 1.0,
-    transcriptPointSize = 3.5,
-    transcriptLabSize = 4.5,
+    pointSize = 4.5,
+    labSize = 4.5,
     shapeCustom = keyvals.shape,
     colCustom = NULL,
     colAlpha = 1,
@@ -600,11 +600,11 @@ both the colour and shape scheme at the same time.
     # set the base name/label as 'Mid'
     names(keyvals.colour) <- rep('Mid', nrow(res2))
 
-    # modify keyvals for transcripts with fold change > 2.5
+    # modify keyvals for variables with fold change > 2.5
     keyvals.colour[which(res2$log2FoldChange > 2.5)] <- 'gold'
     names(keyvals.colour)[which(res2$log2FoldChange > 2.5)] <- 'high'
 
-    # modify keyvals for transcripts with fold change < -2.5
+    # modify keyvals for variables with fold change < -2.5
     keyvals.colour[which(res2$log2FoldChange < -2.5)] <- 'royalblue'
     names(keyvals.colour)[which(res2$log2FoldChange < -2.5)] <- 'low'
 
@@ -621,8 +621,8 @@ both the colour and shape scheme at the same time.
     title = 'Custom shape & colour over-ride',
     pCutoff = 10e-14,
     FCcutoff = 1.0,
-    transcriptPointSize = 5.5,
-    transcriptLabSize = 0.0,
+    pointSize = 5.5,
+    labSize = 0.0,
     shapeCustom = keyvals.shape,
     colCustom = keyvals.colour,
     colAlpha = 1,
@@ -649,14 +649,14 @@ both the colour and shape scheme at the same time.
 
 ```
 
-## Shade certain transcripts
+## Shade certain variables
 
-In this example we add an extra level of highlighting key transcripts by
+In this example we add an extra level of highlighting key variables by
 shading.
 
-This feature works best for shading just 1 or 2 key transcripts. It is
+This feature works best for shading just 1 or 2 key variables. It is
 expected that the user can use the 'shapeCustom' parameter for more in depth
-identification of different types of transcripts.
+identification of different types of variables.
 
 ```{r eval = TRUE}
 
@@ -666,7 +666,7 @@ identification of different types of transcripts.
 
 ```
 
-```{r ex13, fig.height = 9, fig.width = 16, fig.cap = "Shade certain transcripts."}
+```{r ex13, fig.height = 9, fig.width = 16, fig.cap = "Shade certain variables."}
 
   p1 <- EnhancedVolcano(res2,
     lab = rownames(res2),
@@ -678,10 +678,10 @@ identification of different types of transcripts.
     title = 'Shading cell-type 1',
     pCutoff = 10e-14,
     FCcutoff = 1.0,
-    transcriptPointSize = 8.0,
-    transcriptLabSize = 5.0,
-    transcriptLabCol = 'purple',
-    transcriptLabFace = 'bold',
+    pointSize = 8.0,
+    labSize = 5.0,
+    labCol = 'purple',
+    labFace = 'bold',
     boxedlabels = TRUE,
     shape = 42,
     colCustom = keyvals,
@@ -714,14 +714,14 @@ identification of different types of transcripts.
     title = 'Shading cell-type 2',
     pCutoff = 10e-14,
     FCcutoff = 1.0,
-    transcriptLabSize = 5.0,
-    transcriptLabCol = 'forestgreen',
-    transcriptLabFace = 'bold',
+    labSize = 5.0,
+    labCol = 'forestgreen',
+    labFace = 'bold',
     shapeCustom = keyvals.shape,
     colCustom = keyvals.colour,
     colAlpha = 1,
-    legendPosition = 'top',
-    transcriptPointSize = 4.0,
+    legendPosition = 'right',
+    pointSize = 4.0,
     legendLabSize = 15,
     legendIconSize = 5.0,
     shade = celltype2,
@@ -755,21 +755,7 @@ identification of different types of transcripts.
 The development of *EnhancedVolcano* has benefited from contributions
 and suggestions from:
 
-Sharmila Rana
-
-[Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html)
-
-Luke Dow - Assistant Professor at Weill Cornell Medicine
-
-Tokhir Dadaev - Institute of Cancer Research
-
-Alina Frolova
-
-Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center)
-
-David Wheeler - Montana State University
-
-David Kulp
+Sharmila Rana, [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html), Luke Dow - Assistant Professor at Weill Cornell Medicine, Tokhir Dadaev - Institute of Cancer Research, Alina Frolova, Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center), David Wheeler - Montana State University, David Kulp
 
 # Session info
 

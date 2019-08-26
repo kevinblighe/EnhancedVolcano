@@ -14,15 +14,15 @@ test_that("datatypes", {
     gridlines.major, gridlines.minor),
      c("logical"))
   expect_type(EnhancedVolcano(subtitleLabSize, captionLabSize, pCutoff,
-    cutoffLineWidth, pLabellingCutoff, FCcutoff, transcriptPointSize,
-    transcriptLabSize, transcriptLabhjust, transcriptLabvjust, shape,
+    cutoffLineWidth, pLabellingCutoff, FCcutoff, pointSize,
+    labSize, labhjust, labvjust, shape,
     colAlpha, legendLabSize, legendIconSize, shadeAlpha, shadeSize,
     shadeBins, widthConnectors, lengthConnectors, hline, hlineWidth,
     vline, vlineWidth, borderWidth),
     c("integer", "double"))
   expect_gt(EnhancedVolcano(subtitleLabSize, captionLabSize, pCutoff,
     cutoffLineWidth, pLabellingCutoff, FCcutoff, transcriptPointSize,
-    transcriptLabSize, transcriptLabhjust, transcriptLabvjust, shape,
+    transcriptLabSize, labhjust, labvjust, shape,
     colAlpha, legendLabSize, legendIconSize, shadeAlpha, shadeSize,
     shadeBins, widthConnectors, lengthConnectors, hlineWidth, vlineWidth,
     borderWidth),

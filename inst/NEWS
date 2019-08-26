@@ -5,6 +5,12 @@ CHANGES IN VERSION 1.4
  - added new paremeter 'legendLabels', which allows user
    to use expressions in the legend label
  - added support for tibbles
+ - transcriptPointSize, transcriptLabSize, transcriptLabCol,
+   transcriptLabFace, transcriptLabhjust, and
+   transcriptLabvjust now deprecated. Use pointSize, labSize,
+   labCol, labFace, labhjust, and labvjust, respectively,
+   instead
+ - pointSize default changed to 2.0
 
 
 CHANGES IN VERSION 1.2
@@ -31,6 +37,7 @@ CHANGES IN VERSION 1.2
    'transcriptLabvjust', respectively
  - user can now specify to draw transcript labels as text and text in boxes
    via 'boxedlabels' (TRUE/FALSE)
+ - drawconnectors now deprecated. Use drawConnectors
 
 
 CHANGES IN VERSION 1.0.0

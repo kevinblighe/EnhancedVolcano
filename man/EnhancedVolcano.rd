@@ -7,7 +7,7 @@
 \description{Volcano plots represent a useful way to visualise the results
 of differential expression analyses. Here, we present a highly-configurable
 function that produces publication-ready volcano plots. EnhancedVolcano
-will attempt to fit as many transcript names in the plot window as possible,
+will attempt to fit as many point labels in the plot window as possible,
 thus avoiding 'clogging' up the plot with labels that could not otherwise
 have been read.  Other functionality allows the user to identify up to 3
 different types of attributes in the same plot space via colour, shape, and
@@ -44,6 +44,12 @@ EnhancedVolcano(
   transcriptLabFace = 'plain',
   transcriptLabhjust = 0,
   transcriptLabvjust = 1.5,
+  pointSize = 2.0,
+  labSize = 3.0,
+  labCol = 'black',
+  labFace = 'plain',
+  labhjust = 0,
+  labvjust = 1.5,
   boxedlabels = FALSE,
   shape = 19,
   shapeCustom = NULL,
@@ -63,6 +69,7 @@ EnhancedVolcano(
   shadeFill = "grey",
   shadeSize = 0.01,
   shadeBins = 2,
+  drawconnectors = FALSE,
   drawConnectors = FALSE,
   widthConnectors = 0.5,
   typeConnectors = 'closed',
@@ -127,17 +134,29 @@ EnhancedVolcano(
   "black". OPTIONAL.}
   \item{cutoffLineWidth}{Line width for FCcutoff and pCutoff. DEFAULT =
   0.4. OPTIONAL.}
-  \item{transcriptPointSize}{Size of plotted points for each transcript.
-  DEFAULT = 0.8. OPTIONAL.}
-  \item{transcriptLabSize}{Size of labels for each transcript. DEFAULT =
+  \item{transcriptPointSize}{transcriptPointSize argument deprecated in
+  v1.4 - please use pointSize. DEFAULT = 0.8. OPTIONAL.}
+  \item{transcriptLabSize}{transcriptLabSize argument deprecated in
+  v1.4 - please use labSize. DEFAULT = 3.0. OPTIONAL.}
+  \item{transcriptLabCol}{transcriptLabCol argument deprecated in
+  v1.4 - please use labCol. DEFAULT = 'black'. OPTIONAL.}
+  \item{transcriptLabFace}{transcriptLabFace argument deprecated in
+  v1.4 - please use labFace. DEFAULT = 'plain'. OPTIONAL.}
+  \item{transcriptLabhjust}{transcriptLabhjust argument deprecated in
+  v1.4 - please use labhjust. DEFAULT = 0. OPTIONAL.}
+  \item{transcriptLabvjust}{transcriptLabvjust argument deprecated in
+  v1.4 - please use labvjust. DEFAULT = 1.5. OPTIONAL.}
+  \item{pointSize}{Size of plotted points for each transcript.
+  DEFAULT = 2.0. OPTIONAL.}
+  \item{labSize}{Size of labels for each transcript. DEFAULT =
   3.0. OPTIONAL.}
-  \item{transcriptLabCol}{Colour of labels for each transcript. DEFAULT =
+  \item{labCol}{Colour of labels for each transcript. DEFAULT =
   'black'. OPTIONAL.}
-  \item{transcriptLabFace}{Font face of labels for each transcript. DEFAULT
+  \item{labFace}{Font face of labels for each transcript. DEFAULT
   = 'plain'. OPTIONAL.}
-  \item{transcriptLabhjust}{Horizontal adjustment of label for each
+  \item{labhjust}{Horizontal adjustment of label for each
   transcript. DEFAULT = 0. OPTIONAL.}
-  \item{transcriptLabvjust}{Vertical adjustment of label for each
+  \item{labvjust}{Vertical adjustment of label for each
   transcript. DEFAULT = 1.5. OPTIONAL.}
   \item{boxedlabels}{Logical, indicating whether or not to draw labels in
   boxes. DEFAULT = FALSE. OPTIONAL.}
@@ -180,6 +199,9 @@ EnhancedVolcano(
   \item{shadeSize}{Size of the shade contour lines. DEFAULT = 0.01.
   OPTIONAL.}
   \item{shadeBins}{Number of bins for the density of the shade. DEFAULT = 2.
+  OPTIONAL.}
+  \item{drawconnectors}{drawconnectors argument deprecated since v1.2 - 
+  please use drawConnectors. DEFAULT = FALSE.
   OPTIONAL.}
   \item{drawConnectors}{Logical, indicating whether or not to connect plot
   labels to their corresponding points by line connectors. DEFAULT = FALSE.
@@ -266,8 +288,8 @@ EnhancedVolcano(res,
   FCcutoff = 1.333,
   xlim = c(-5.5, 5.5),
   ylim = c(0, -log10(10e-12)),
-  transcriptPointSize = 1.5,
-  transcriptLabSize = 2.5,
+  pointSize = 1.5,
+  labSize = 2.5,
   shape = c(6, 6, 19, 16),
   title = "DESeq2 results",
   subtitle = "Differential expression",
