@@ -22,6 +22,8 @@ Kevin Blighe
     -   [Over-ride colouring scheme with custom key-value pairs](#over-ride-colouring-scheme-with-custom-key-value-pairs)
     -   [Over-ride colour and/or shape scheme with custom key-value pairs](#over-ride-colour-andor-shape-scheme-with-custom-key-value-pairs)
     -   [Shade certain variables](#shade-certain-variables)
+    -   [Highlighting key variables via custom point sizes](#highlighting-key-variables-via-custom-point-sizes)
+    -   [Custom axis tick marks](#custom-axis-tick-marks)
 -   [Acknowledgments](#acknowledgments)
 -   [Session info](#session-info)
 -   [References](#references)
@@ -29,7 +31,7 @@ Kevin Blighe
 Introduction
 ============
 
-Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots. EnhancedVolcano (Blighe 2018) will attempt to fit as many labels in the plot window as possible, thus avoiding 'clogging' up the plot with labels that could not otherwise have been read. Other functionality allows the user to identify up to 3 different types of attributes in the same plot space via colour, shape, and shade parameter configurations.
+Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots. EnhancedVolcano (Blighe 2018) will attempt to fit as many labels in the plot window as possible, thus avoiding 'clogging' up the plot with labels that could not otherwise have been read. Other functionality allows the user to identify up to 3 different types of attributes in the same plot space via colour, shape, size, and shade parameter configurations.
 
 Installation
 ============
@@ -364,7 +366,7 @@ To improve label clarity, we can draw simple boxes around the plots labels. This
     labSize = 5.0,
     labCol = 'black',
     labFace = 'bold',
-    boxedlabels = TRUE,
+    boxedLabels = TRUE,
     colAlpha = 4/5,
     legend=c('NS','Log (base 2) fold-change','P value',
       'P value & Log (base 2) fold-change'),
@@ -659,7 +661,7 @@ This feature works best for shading just 1 or 2 key variables. It is expected th
     labSize = 5.0,
     labCol = 'purple',
     labFace = 'bold',
-    boxedlabels = TRUE,
+    boxedLabels = TRUE,
     shape = 42,
     colCustom = keyvals,
     colAlpha = 1,
@@ -728,12 +730,81 @@ This feature works best for shading just 1 or 2 key variables. It is expected th
 
 ![Shade certain variables.](README_files/figure-markdown_github/ex13-1.png)
 
+Highlighting key variables via custom point sizes
+-------------------------------------------------
+
+One can also supply a vector of sizes to pointSize for the purpose of having a different size for each poin. For example, if we want to change the size of just those variables with log2FC&gt;2:
+
+``` r
+  library("pasilla")
+  pasCts <- system.file("extdata", "pasilla_gene_counts.tsv",
+    package="pasilla", mustWork=TRUE)
+  pasAnno <- system.file("extdata", "pasilla_sample_annotation.csv",
+    package="pasilla", mustWork=TRUE)
+  cts <- as.matrix(read.csv(pasCts,sep="\t",row.names="gene_id"))
+  coldata <- read.csv(pasAnno, row.names=1)
+  coldata <- coldata[,c("condition","type")]
+  rownames(coldata) <- sub("fb", "", rownames(coldata))
+  cts <- cts[, rownames(coldata)]
+  library("DESeq2")
+  dds <- DESeqDataSetFromMatrix(countData = cts,
+    colData = coldata,
+    design = ~ condition)
+
+  featureData <- data.frame(gene=rownames(cts))
+  mcols(dds) <- DataFrame(mcols(dds), featureData)
+  dds <- DESeq(dds)
+  res <- results(dds)
+
+  p1 <- EnhancedVolcano(res,
+    lab = rownames(res),
+    x = "log2FoldChange",
+    y = "pvalue",
+    pCutoff = 10e-4,
+    FCcutoff = 2,
+    xlim = c(-5.5, 5.5),
+    ylim = c(0, -log10(10e-12)),
+    pointSize = c(ifelse(res$log2FoldChange>2, 8, 1)),
+    labSize = 2.5,
+    shape = c(6, 6, 19, 16),
+    title = "DESeq2 results",
+    subtitle = "Differential expression",
+    caption = "FC cutoff, 1.333; p-value cutoff, 10e-4",
+    legendPosition = "right",
+    legendLabSize = 14,
+    col = c("grey30", "forestgreen", "royalblue", "red2"),
+    colAlpha = 0.9,
+    drawConnectors = TRUE,
+    hline = c(10e-8),
+    widthConnectors = 0.5)
+
+  p1
+```
+
+![Highlighting key variabvles via custom point sizes.](README_files/figure-markdown_github/ex14-1.png)
+
+Custom axis tick marks
+----------------------
+
+Custom axis ticks can be added in a 'plug and play' fashion via *ggplot2* functionality, as follows:
+
+``` r
+  p1 +
+    ggplot2::coord_cartesian(xlim=c(-6, 6)) +
+    ggplot2::scale_x_continuous(
+      breaks=seq(-6,6, 1))
+```
+
+![Custom axis tick marks](README_files/figure-markdown_github/ex15-1.png)
+
+More information on this can be found here: <http://www.sthda.com/english/wiki/ggplot2-axis-ticks-a-guide-to-customize-tick-marks-and-labels>
+
 Acknowledgments
 ===============
 
 The development of *EnhancedVolcano* has benefited from contributions and suggestions from:
 
-Sharmila Rana, [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html), Luke Dow - Assistant Professor at Weill Cornell Medicine, Tokhir Dadaev - Institute of Cancer Research, Alina Frolova, Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center), David Wheeler - Montana State University, David Kulp
+Sharmila Rana, [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html), Luke Dow (Assistant Professor at Weill Cornell Medicine), Tokhir Dadaev (Institute of Cancer Research), Alina Frolova, Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center), David Wheeler (Montana State University), David Kulp
 
 Session info
 ============
@@ -763,15 +834,16 @@ sessionInfo()
     ##  [8] datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] gridExtra_2.3               DESeq2_1.25.10             
-    ##  [3] magrittr_1.5                airway_1.5.0               
-    ##  [5] SummarizedExperiment_1.15.6 DelayedArray_0.11.4        
-    ##  [7] BiocParallel_1.19.2         matrixStats_0.54.0         
-    ##  [9] Biobase_2.45.0              GenomicRanges_1.37.14      
-    ## [11] GenomeInfoDb_1.21.1         IRanges_2.19.10            
-    ## [13] S4Vectors_0.23.18           BiocGenerics_0.31.5        
-    ## [15] EnhancedVolcano_1.3.3       ggrepel_0.8.1              
-    ## [17] ggplot2_3.2.1               knitr_1.24                 
+    ##  [1] pasilla_1.13.0              gridExtra_2.3              
+    ##  [3] DESeq2_1.25.10              magrittr_1.5               
+    ##  [5] airway_1.5.0                SummarizedExperiment_1.15.6
+    ##  [7] DelayedArray_0.11.4         BiocParallel_1.19.2        
+    ##  [9] matrixStats_0.54.0          Biobase_2.45.0             
+    ## [11] GenomicRanges_1.37.14       GenomeInfoDb_1.21.1        
+    ## [13] IRanges_2.19.10             S4Vectors_0.23.18          
+    ## [15] BiocGenerics_0.31.5         EnhancedVolcano_1.3.4      
+    ## [17] ggrepel_0.8.1               ggplot2_3.2.1              
+    ## [19] knitr_1.24                 
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] bit64_0.9-7            splines_3.6.1          Formula_1.2-3         

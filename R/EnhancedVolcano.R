@@ -4,9 +4,9 @@ EnhancedVolcano <- function(
   x,
   y,
   selectLab = NULL,
-  xlim = c(min(toptable[,x], na.rm=TRUE),
-    max(toptable[,x], na.rm=TRUE)),
-  ylim = c(0, max(-log10(toptable[,y]), na.rm=TRUE) + 5),
+  xlim = c(min(toptable[[x]], na.rm=TRUE),
+    max(toptable[[x]], na.rm=TRUE)),
+  ylim = c(0, max(-log10(toptable[[y]]), na.rm=TRUE) + 5),
   xlab = bquote(~Log[2]~ "fold change"),
   ylab = bquote(~-Log[10]~italic(P)),
   axisLabSize = 18,
@@ -35,6 +35,7 @@ EnhancedVolcano <- function(
   labhjust = 0,
   labvjust = 1.5,
   boxedlabels = FALSE,
+  boxedLabels = FALSE,
   shape = 19,
   shapeCustom = NULL,
   col = c("grey30", "forestgreen", "royalblue", "red2"),
@@ -121,6 +122,12 @@ EnhancedVolcano <- function(
     labvjust <- transcriptLabvjust
   }
 
+  if (!missing('boxedlabels')) {
+    warning(paste0('boxedlabels argument deprecated in v1.4',
+      ' - please use boxedLabels'))
+    boxedLabels <- boxedlabels
+  }
+
   if (!missing('drawconnectors')) {
     warning(paste0('drawconnectors argument deprecated since v1.2',
       ' - please use drawConnectors'))
@@ -148,7 +155,7 @@ EnhancedVolcano <- function(
     #warning(paste("One or more P values is 0.",
     #  "Converting to minimum possible value..."),
     #  call. = FALSE)
-    #toptable[which(toptable[,y] == 0), y] <- .Machine$double.xmin
+    #toptable[which(toptable[[y]] == 0), y] <- .Machine$double.xmin
     warning(paste("One or more p-values is 0.",
       "Converting to 10^-1 * current",
       "lowest non-zero p-value..."),
@@ -523,18 +530,18 @@ EnhancedVolcano <- function(
   }
 
   # user has specified to draw with geom_text or geom_label?
-  if (boxedlabels == FALSE) {
+  if (boxedLabels == FALSE) {
     # For labeling with geom_text/label_repel (connectors) and
     # geom_text/label (.., check_overlap = TRUE), 4 possible
     # scenarios can arise
     if (drawConnectors == TRUE && is.null(selectLab)) {
       plot <- plot + geom_text_repel(
         data=subset(toptable,
-          toptable[,y] < pLabellingCutoff &
-            abs(toptable[,x]) > FCcutoff),
+          toptable[[y]] < pLabellingCutoff &
+            abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
-          toptable[,y] < pLabellingCutoff &
-            abs(toptable[,x]) > FCcutoff)[,"lab"]),
+          toptable[[y]] < pLabellingCutoff &
+            abs(toptable[[x]]) > FCcutoff)[["lab"]]),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
@@ -548,9 +555,9 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == TRUE && !is.null(selectLab)) {
       plot <- plot + geom_text_repel(
         data=subset(toptable,
-          !is.na(toptable[,"lab"])),
+          !is.na(toptable[["lab"]])),
         aes(label=subset(toptable,
-          !is.na(toptable[,"lab"]))[,"lab"]),
+          !is.na(toptable[["lab"]]))[["lab"]]),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
@@ -564,10 +571,10 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == FALSE && !is.null(selectLab)) {
       plot <- plot + geom_text(
         data=subset(toptable,
-          !is.na(toptable[,"lab"])),
+          !is.na(toptable[["lab"]])),
         aes(
           label=subset(toptable,
-            !is.na(toptable[,"lab"]))[,"lab"]),
+            !is.na(toptable[["lab"]]))[["lab"]]),
         size = labSize,
         check_overlap = TRUE,
         hjust = labhjust,
@@ -578,11 +585,11 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == FALSE && is.null(selectLab)) {
       plot <- plot + geom_text(
         data=subset(toptable,
-          toptable[,y] < pLabellingCutoff &
-            abs(toptable[,x]) > FCcutoff),
+          toptable[[y]] < pLabellingCutoff &
+            abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
-          toptable[,y] < pLabellingCutoff &
-            abs(toptable[,x]) > FCcutoff)[,"lab"]),
+          toptable[[y]] < pLabellingCutoff &
+            abs(toptable[[x]]) > FCcutoff)[["lab"]]),
         size = labSize,
         check_overlap = TRUE,
         hjust = labhjust,
@@ -598,11 +605,11 @@ EnhancedVolcano <- function(
     if (drawConnectors == TRUE && is.null(selectLab)) {
       plot <- plot + geom_label_repel(
         data=subset(toptable,
-          toptable[,y] < pLabellingCutoff &
-            abs(toptable[,x]) > FCcutoff),
+          toptable[[y]] < pLabellingCutoff &
+            abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
-          toptable[,y]<pLabellingCutoff &
-            abs(toptable[,x]) > FCcutoff)[,"lab"]),
+          toptable[[y]]<pLabellingCutoff &
+            abs(toptable[[x]]) > FCcutoff)[["lab"]]),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
@@ -616,9 +623,9 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == TRUE && !is.null(selectLab)) {
       plot <- plot + geom_label_repel(
         data=subset(toptable,
-          !is.na(toptable[,"lab"])),
+          !is.na(toptable[["lab"]])),
         aes(label=subset(toptable,
-          !is.na(toptable[,"lab"]))[,"lab"]),
+          !is.na(toptable[["lab"]]))[["lab"]]),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
@@ -632,10 +639,10 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == FALSE && !is.null(selectLab)) {
       plot <- plot + geom_label(
         data=subset(toptable,
-          !is.na(toptable[,"lab"])),
+          !is.na(toptable[["lab"]])),
         aes(
           label=subset(toptable,
-            !is.na(toptable[,"lab"]))[,"lab"]),
+            !is.na(toptable[["lab"]]))[["lab"]]),
         size = labSize,
         #check_overlap = TRUE,
         hjust = labhjust,
@@ -646,11 +653,11 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == FALSE && is.null(selectLab)) {
       plot <- plot + geom_label(
         data=subset(toptable,
-          toptable[,y] < pLabellingCutoff &
-            abs(toptable[,x]) > FCcutoff),
+          toptable[[y]] < pLabellingCutoff &
+            abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
-          toptable[,y] < pLabellingCutoff &
-            abs(toptable[,x]) > FCcutoff)[,"lab"]),
+          toptable[[y]] < pLabellingCutoff &
+            abs(toptable[[x]]) > FCcutoff)[["lab"]]),
         size = labSize,
         #check_overlap = TRUE,
         hjust = labhjust,

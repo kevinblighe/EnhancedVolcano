@@ -4,13 +4,13 @@
 
 \title{Publication-ready volcano plots with enhanced colouring and labeling.}
 
-\description{Volcano plots represent a useful way to visualise the results
-of differential expression analyses. Here, we present a highly-configurable
-function that produces publication-ready volcano plots. EnhancedVolcano
-will attempt to fit as many point labels in the plot window as possible,
+\description{Volcano plots represent a useful way to visualise the results of differential
+expression analyses. Here, we present a highly-configurable function that
+produces publication-ready volcano plots. EnhancedVolcano [@EnhancedVolcano]
+will attempt to fit as many labels in the plot window as possible,
 thus avoiding 'clogging' up the plot with labels that could not otherwise
-have been read.  Other functionality allows the user to identify up to 3
-different types of attributes in the same plot space via colour, shape, and
+have been read. Other functionality allows the user to identify up to 3
+different types of attributes in the same plot space via colour, shape, size, and
 shade parameter configurations.}
 
 \usage{
@@ -20,9 +20,9 @@ EnhancedVolcano(
   x,
   y,
   selectLab = NULL,
-  xlim = c(min(toptable[,x], na.rm=TRUE),
-    max(toptable[,x], na.rm=TRUE)),
-  ylim = c(0, max(-log10(toptable[,y]), na.rm=TRUE) + 5),
+  xlim = c(min(toptable[[x]], na.rm=TRUE),
+    max(toptable[[x]], na.rm=TRUE)),
+  ylim = c(0, max(-log10(toptable[[y]]), na.rm=TRUE) + 5),
   xlab = bquote(~Log[2]~ "fold change"),
   ylab = bquote(~-Log[10]~italic(P)),
   axisLabSize = 18,
@@ -51,6 +51,7 @@ EnhancedVolcano(
   labhjust = 0,
   labvjust = 1.5,
   boxedlabels = FALSE,
+  boxedLabels = FALSE,
   shape = 19,
   shapeCustom = NULL,
   col = c("grey30", "forestgreen", "royalblue", "red2"),
@@ -146,8 +147,8 @@ EnhancedVolcano(
   v1.4 - please use labhjust. DEFAULT = 0. OPTIONAL.}
   \item{transcriptLabvjust}{transcriptLabvjust argument deprecated in
   v1.4 - please use labvjust. DEFAULT = 1.5. OPTIONAL.}
-  \item{pointSize}{Size of plotted points for each transcript.
-  DEFAULT = 2.0. OPTIONAL.}
+  \item{pointSize}{Size of plotted points for each transcript. Can be
+  a single value or a vector of sizes. DEFAULT = 2.0. OPTIONAL.}
   \item{labSize}{Size of labels for each transcript. DEFAULT =
   3.0. OPTIONAL.}
   \item{labCol}{Colour of labels for each transcript. DEFAULT =
@@ -158,7 +159,9 @@ EnhancedVolcano(
   transcript. DEFAULT = 0. OPTIONAL.}
   \item{labvjust}{Vertical adjustment of label for each
   transcript. DEFAULT = 1.5. OPTIONAL.}
-  \item{boxedlabels}{Logical, indicating whether or not to draw labels in
+  \item{boxedlabels}{boxedlabels argument deprecated in
+  v1.4 - please use boxedLabels. DEFAULT = FALSE. OPTIONAL.}
+  \item{boxedLabels}{Logical, indicating whether or not to draw labels in
   boxes. DEFAULT = FALSE. OPTIONAL.}
   \item{shape}{Shape of the plotted points. Either a single value for
   all points, or 4 values corresponding to < abs(FCcutoff) && > pCutoff,

@@ -11,6 +11,7 @@ CHANGES IN VERSION 1.4
    labCol, labFace, labhjust, and labvjust, respectively,
    instead
  - pointSize default changed to 2.0
+ - boxedlabels now deprecated. Use boxedLabels
 
 
 CHANGES IN VERSION 1.2

@@ -10,7 +10,7 @@ test_that("datatypes", {
     colConnectors, hlineType, hlineCol, vlineType, vlineCol, border,
     borderColour),
     c("language", "character"))
-  expect_type(EnhancedVolcano(boxedlabels, legendVisible, drawConnectors,
+  expect_type(EnhancedVolcano(boxedLabels, legendVisible, drawConnectors,
     gridlines.major, gridlines.minor),
      c("logical"))
   expect_type(EnhancedVolcano(subtitleLabSize, captionLabSize, pCutoff,
