@@ -1,5 +1,5 @@
 ---
-title: "Publication-ready volcano plots with enhanced colouring and labeling"
+title: "EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling"
 author: "Kevin Blighe"
 date: "`r Sys.Date()`"
 package: "`r packageVersion('EnhancedVolcano')`"
@@ -752,18 +752,21 @@ identification of different types of transcripts.
 The development of *EnhancedVolcano* has benefited from contributions
 and suggestions from:
 
-Sharmila Rana,
+Sharmila Rana
 
-[Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html),
+[Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html)
 
-Luke Dow - Assistant Professor at Weill Cornell Medicine,
+Luke Dow - Assistant Professor at Weill Cornell Medicine
 
-Tokhir Dadaev - Institute of Cancer Research,
+Tokhir Dadaev - Institute of Cancer Research
 
-Alina Frolova,
+Alina Frolova
 
 Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center)
 
+David Wheeler - Montana State University
+
+David Kulp
 
 # Session info
 
@@ -773,6 +776,5 @@ sessionInfo()
 
 ```
 
-## References
+# References
 
-@EnhancedVolcano

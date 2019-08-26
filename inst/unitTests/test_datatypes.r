@@ -2,7 +2,7 @@ test_that("datatypes", {
   expect_type(EnhancedVolcano(toptable),
     c("S4", "list"))
   expect_type(EnhancedVolcano(lab, x, y, selectLab, shapeCustom, col,
-    colCustom, legend, shade, shadeLabel),
+    colCustom, legend, legendLabels, shade, shadeLabel),
     c("character"))
   expect_type(EnhancedVolcano(xlab, ylab, title, subtitle, caption,
     cutoffLineType, cutoffLineCol, transcriptLabCol, transcriptLabFace,

@@ -11,7 +11,7 @@ EnhancedVolcano <- function(
   ylab = bquote(~-Log[10]~italic(P)),
   axisLabSize = 18,
   title = 'Volcano plot',
-  subtitle = 'Bioconductor package EnhancedVolcano',
+  subtitle = 'EnhancedVolcano',
   caption = paste0('Total = ', nrow(toptable), ' variables'),
   titleLabSize = 18,
   subtitleLabSize = 14,
@@ -35,6 +35,8 @@ EnhancedVolcano <- function(
   colCustom = NULL,
   colAlpha = 1/2,
   legend = c("NS","Log2 FC","P","P & Log2 FC"),
+  legendLabels = c('NS', expression(Log[2]~FC),
+    "p-value", expression(p-value~and~log[2]~FC)),
   legendPosition = "top",
   legendLabSize = 14,
   legendIconSize = 4.0,
@@ -65,19 +67,11 @@ EnhancedVolcano <- function(
   borderWidth = 0.8,
   borderColour = "black")
 {
-  if(!requireNamespace("ggplot2")) {
-    stop("Please install ggplot2 first.", call.=FALSE)
-  }
-
-  if(!requireNamespace("ggrepel")) {
-    stop("Please install ggrepel first.", call.=FALSE)
-  }
-
-  if(!is.numeric(toptable[,x])) {
+  if(!is.numeric(toptable[[x]])) {
     stop(paste(x, " is not numeric!", sep=""))
   }
 
-  if(!is.numeric(toptable[,y])) {
+  if(!is.numeric(toptable[[y]])) {
     stop(paste(y, " is not numeric!", sep=""))
   }
 
@@ -85,10 +79,10 @@ EnhancedVolcano <- function(
 
   toptable <- as.data.frame(toptable)
   toptable$Sig <- "NS"
-  toptable$Sig[(abs(toptable[,x]) > FCcutoff)] <- "FC"
-  toptable$Sig[(toptable[,y] < pCutoff)] <- "P"
-  toptable$Sig[(toptable[,y] < pCutoff) &
-    (abs(toptable[,x]) > FCcutoff)] <- "FC_P"
+  toptable$Sig[(abs(toptable[[x]]) > FCcutoff)] <- "FC"
+  toptable$Sig[(toptable[[y]] < pCutoff)] <- "P"
+  toptable$Sig[(toptable[[y]] < pCutoff) &
+    (abs(toptable[[x]]) > FCcutoff)] <- "FC_P"
   toptable$Sig <- factor(toptable$Sig,
     levels=c("NS","FC","P","FC_P"))
 
@@ -99,7 +93,7 @@ EnhancedVolcano <- function(
   #####
   # New functionality in > v1.2:
   # Now convert to 10^-1 lower than lowest non-zero p-value
-  if (min(toptable[,y], na.rm=TRUE) == 0) {
+  if (min(toptable[[y]], na.rm=TRUE) == 0) {
     # <= v1.2
     #warning(paste("One or more P values is 0.",
     #  "Converting to minimum possible value..."),
@@ -109,14 +103,14 @@ EnhancedVolcano <- function(
       "Converting to 10^-1 * current",
       "lowest non-zero p-value..."),
       call. = FALSE)
-    toptable[which(toptable[,y] == 0), y] <- min(
-      toptable[which(toptable[,y] != 0), y],
+    toptable[which(toptable[[y]] == 0), y] <- min(
+      toptable[which(toptable[[y]] != 0), y],
       na.rm = TRUE) * 10^-1
   }
 
   toptable$lab <- lab
-  toptable$xvals <- toptable[,x]
-  toptable$yvals <- toptable[,y]
+  toptable$xvals <- toptable[[x]]
+  toptable$yvals <- toptable[[y]]
 
   # If user has supplied values in selectLab, convert labels to
   # NA and then re-set with those in selectLab
@@ -281,16 +275,16 @@ EnhancedVolcano <- function(
           FC = shape[2],
           P = shape[3],
           FC_P = shape[4]),
-        labels=c(
-          NS=legend[1],
-          FC=paste(legend[2], sep=""),
-          P=paste(legend[3], sep=""),
-          FC_P=paste(legend[4], sep="")),
+        labels = c(
+          NS = legendLabels[1],
+          FC = legendLabels[2],
+          P = legendLabels[3],
+          FC_P = legendLabels[4]),
         guide = TRUE)
 
   # 4, only shapeCustom is activated
   } else if (is.null(colCustom) & !is.null(shapeCustom)) {
-    plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
+    plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
 
       # over-ride legend icon sizes for colour and shape.
       # guide_legends are separate for colour and shape;
@@ -326,10 +320,10 @@ EnhancedVolcano <- function(
           P=col[3],
           FC_P=col[4]),
         labels=c(
-          NS=legend[1],
-          FC=paste(legend[2], sep=""),
-          P=paste(legend[3], sep=""),
-          FC_P=paste(legend[4], sep=""))) +
+          NS=legendLabels[1],
+          FC=legendLabels[2],
+          P=legendLabels[3],
+          FC_P=legendLabels[4])) +
 
       # specify the shape with the supplied encoding
       scale_shape_manual(values = shapeCustom)
@@ -363,10 +357,10 @@ EnhancedVolcano <- function(
           P = col[3],
           FC_P = col[4]),
         labels = c(
-          NS = legend[1],
-          FC = paste(legend[2], sep=""),
-          P = paste(legend[3], sep=""),
-          FC_P = paste(legend[4], sep="")))
+          NS = legendLabels[1],
+          FC = legendLabels[2],
+          P = legendLabels[3],
+          FC_P = legendLabels[4]))
 
   # 6, both colCustom and shapeCustom are null;
   # four shape values are specified
@@ -402,10 +396,10 @@ EnhancedVolcano <- function(
           P = col[3],
           FC_P = col[4]),
         labels = c(
-          NS = legend[1],
-          FC = paste(legend[2], sep=""),
-          P = paste(legend[3], sep=""),
-          FC_P = paste(legend[4], sep=""))) +
+          NS = legendLabels[1],
+          FC = legendLabels[2],
+          P = legendLabels[3],
+          FC_P = legendLabels[4])) +
 
       scale_shape_manual(
         values = c(

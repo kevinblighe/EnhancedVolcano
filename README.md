@@ -1,7 +1,7 @@
-Publication-ready volcano plots with enhanced colouring and labeling
+EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling
 ================
 Kevin Blighe
-2019-06-02
+2019-08-26
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -24,7 +24,7 @@ Kevin Blighe
     -   [Shade certain transcripts](#shade-certain-transcripts)
 -   [Acknowledgments](#acknowledgments)
 -   [Session info](#session-info)
-    -   [References](#references)
+-   [References](#references)
 
 Introduction
 ============
@@ -733,17 +733,21 @@ Acknowledgments
 
 The development of *EnhancedVolcano* has benefited from contributions and suggestions from:
 
-Sharmila Rana,
+Sharmila Rana
 
-[Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html),
+[Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html)
 
-Luke Dow - Assistant Professor at Weill Cornell Medicine,
+Luke Dow - Assistant Professor at Weill Cornell Medicine
 
-Tokhir Dadaev - Institute of Cancer Research,
+Tokhir Dadaev - Institute of Cancer Research
 
-Alina Frolova,
+Alina Frolova
 
 Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center)
+
+David Wheeler - Montana State University
+
+David Kulp
 
 Session info
 ============
@@ -752,7 +756,7 @@ Session info
 sessionInfo()
 ```
 
-    ## R version 3.6.0 (2019-04-26)
+    ## R version 3.6.1 (2019-07-05)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
     ## Running under: Ubuntu 16.04.6 LTS
     ## 
@@ -773,45 +777,43 @@ sessionInfo()
     ##  [8] datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] gridExtra_2.3               DESeq2_1.24.0              
-    ##  [3] magrittr_1.5                airway_1.4.0               
-    ##  [5] SummarizedExperiment_1.14.0 DelayedArray_0.10.0        
-    ##  [7] BiocParallel_1.18.0         matrixStats_0.54.0         
-    ##  [9] Biobase_2.44.0              GenomicRanges_1.36.0       
-    ## [11] GenomeInfoDb_1.20.0         IRanges_2.18.1             
-    ## [13] S4Vectors_0.22.0            BiocGenerics_0.30.0        
-    ## [15] EnhancedVolcano_1.3.1       ggrepel_0.8.1              
-    ## [17] ggplot2_3.1.1               knitr_1.23                 
+    ##  [1] gridExtra_2.3               DESeq2_1.25.10             
+    ##  [3] magrittr_1.5                airway_1.5.0               
+    ##  [5] SummarizedExperiment_1.15.6 DelayedArray_0.11.4        
+    ##  [7] BiocParallel_1.19.2         matrixStats_0.54.0         
+    ##  [9] Biobase_2.45.0              GenomicRanges_1.37.14      
+    ## [11] GenomeInfoDb_1.21.1         IRanges_2.19.10            
+    ## [13] S4Vectors_0.23.18           BiocGenerics_0.31.5        
+    ## [15] EnhancedVolcano_1.3.2       ggrepel_0.8.1              
+    ## [17] ggplot2_3.2.1               knitr_1.24                 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] bit64_0.9-7            splines_3.6.0          Formula_1.2-3         
+    ##  [1] bit64_0.9-7            splines_3.6.1          Formula_1.2-3         
     ##  [4] assertthat_0.2.1       highr_0.8              latticeExtra_0.6-28   
-    ##  [7] blob_1.1.1             GenomeInfoDbData_1.2.1 yaml_2.2.0            
-    ## [10] RSQLite_2.1.1          pillar_1.4.1           backports_1.1.4       
-    ## [13] lattice_0.20-38        glue_1.3.1             digest_0.6.19         
-    ## [16] RColorBrewer_1.1-2     XVector_0.24.0         checkmate_1.9.3       
+    ##  [7] blob_1.2.0             GenomeInfoDbData_1.2.1 yaml_2.2.0            
+    ## [10] RSQLite_2.1.2          pillar_1.4.2           backports_1.1.4       
+    ## [13] lattice_0.20-38        glue_1.3.1             digest_0.6.20         
+    ## [16] RColorBrewer_1.1-2     XVector_0.25.0         checkmate_1.9.4       
     ## [19] colorspace_1.4-1       htmltools_0.3.6        Matrix_1.2-17         
-    ## [22] plyr_1.8.4             XML_3.98-1.19          pkgconfig_2.0.2       
-    ## [25] genefilter_1.66.0      zlibbioc_1.30.0        purrr_0.3.2           
-    ## [28] xtable_1.8-4           scales_1.0.0           tibble_2.1.2          
-    ## [31] htmlTable_1.13.1       annotate_1.62.0        withr_2.1.2           
-    ## [34] nnet_7.3-12            lazyeval_0.2.2         survival_2.44-1.1     
-    ## [37] crayon_1.3.4           memoise_1.1.0          evaluate_0.14         
-    ## [40] MASS_7.3-51.4          foreign_0.8-71         tools_3.6.0           
-    ## [43] data.table_1.12.2      stringr_1.4.0          locfit_1.5-9.1        
-    ## [46] munsell_0.5.0          cluster_2.0.9          AnnotationDbi_1.46.0  
-    ## [49] compiler_3.6.0         rlang_0.3.4            RCurl_1.95-4.12       
-    ## [52] rstudioapi_0.10        htmlwidgets_1.3        labeling_0.3          
-    ## [55] bitops_1.0-6           base64enc_0.1-3        rmarkdown_1.13        
-    ## [58] gtable_0.3.0           DBI_1.0.0              R6_2.4.0              
-    ## [61] dplyr_0.8.1            bit_1.1-14             Hmisc_4.2-0           
-    ## [64] stringi_1.4.3          Rcpp_1.0.1             geneplotter_1.62.0    
-    ## [67] rpart_4.1-15           acepack_1.4.1          tidyselect_0.2.5      
-    ## [70] xfun_0.7
+    ## [22] XML_3.98-1.20          pkgconfig_2.0.2        genefilter_1.67.1     
+    ## [25] zlibbioc_1.31.0        purrr_0.3.2            xtable_1.8-4          
+    ## [28] scales_1.0.0           tibble_2.1.3           htmlTable_1.13.1      
+    ## [31] annotate_1.63.0        withr_2.1.2            nnet_7.3-12           
+    ## [34] lazyeval_0.2.2         survival_2.44-1.1      crayon_1.3.4          
+    ## [37] memoise_1.1.0          evaluate_0.14          MASS_7.3-51.4         
+    ## [40] foreign_0.8-72         tools_3.6.1            data.table_1.12.2     
+    ## [43] stringr_1.4.0          locfit_1.5-9.1         munsell_0.5.0         
+    ## [46] cluster_2.1.0          AnnotationDbi_1.47.0   compiler_3.6.1        
+    ## [49] rlang_0.4.0            RCurl_1.95-4.12        rstudioapi_0.10       
+    ## [52] htmlwidgets_1.3        labeling_0.3           bitops_1.0-6          
+    ## [55] base64enc_0.1-3        rmarkdown_1.14         gtable_0.3.0          
+    ## [58] DBI_1.0.0              R6_2.4.0               dplyr_0.8.3           
+    ## [61] zeallot_0.1.0          bit_1.1-14             Hmisc_4.2-0           
+    ## [64] stringi_1.4.3          Rcpp_1.0.2             geneplotter_1.63.0    
+    ## [67] vctrs_0.2.0            rpart_4.1-15           acepack_1.4.1         
+    ## [70] tidyselect_0.2.5       xfun_0.8
 
 References
-----------
-
-Blighe (2018)
+==========
 
 Blighe, Kevin. 2018. “EnhancedVolcano: Publication-ready volcano plots with enhanced colouring and labeling.” <https://github.com/kevinblighe>.

@@ -27,7 +27,7 @@ EnhancedVolcano(
   ylab = bquote(~-Log[10]~italic(P)),
   axisLabSize = 18,
   title = 'Volcano plot',
-  subtitle = 'Bioconductor package EnhancedVolcano',
+  subtitle = 'EnhancedVolcano',
   caption = paste0('Total = ', nrow(toptable), ' variables'),
   titleLabSize = 18,
   subtitleLabSize = 14,
@@ -51,6 +51,8 @@ EnhancedVolcano(
   colCustom = NULL,
   colAlpha = 1/2,
   legend = c("NS","Log2 FC","P","P & Log2 FC"),
+  legendLabels = c('NS', expression(Log[2]~FC),
+    "p-value", expression(p-value~and~log[2]~FC)),
   legendPosition = "top",
   legendLabSize = 14,
   legendIconSize = 4.0,
@@ -105,7 +107,7 @@ EnhancedVolcano(
   OPTIONAL.}
   \item{axisLabSize}{Size of x- and y-axis labels. DEFAULT = 18. OPTIONAL.}
   \item{title}{Plot title. DEFAULT = 'Volcano plot'. OPTIONAL.}
-  \item{subtitle}{Plot subtitle. DEFAULT = 'Bioconductor package, EnhancedVolcano'. OPTIONAL.}
+  \item{subtitle}{Plot subtitle. DEFAULT = 'EnhancedVolcano'. OPTIONAL.}
   \item{caption}{Plot caption. DEFAULT =
   paste0('Total = ', nrow(toptable), ' variables'). OPTIONAL.}
   \item{titleLabSize}{Size of plot title. DEFAULT = 18. OPTIONAL.}
@@ -157,8 +159,10 @@ EnhancedVolcano(
   OPTIONAL.}
   \item{colAlpha}{Alpha for purposes of controlling colour transparency of
   transcript points. DEFAULT = 1/2. OPTIONAL.}
-  \item{legend}{Plot legend text. DEFAULT = c("NS", "Log2 FC", "P",
+  \item{legend}{Plot legend key. DEFAULT = c("NS", "Log2 FC", "P",
   "P & Log2 FC"). OPTIONAL.}
+  \item{legendLabels}{Plot legend text labels. DEFAULT = c('NS', expression(Log[2]~FC),
+    "p-value", expression(p-value~and~log[2]~FC). OPTIONAL}
   \item{legendPosition}{Position of legend ("top", "bottom", "left",
   "right"). DEFAULT = "top". OPTIONAL.}
   \item{legendLabSize}{Size of plot legend text. DEFAULT = 14. OPTIONAL.}
