@@ -1,7 +1,7 @@
 EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling
 ================
 Kevin Blighe
-2019-08-26
+2019-09-05
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -31,7 +31,7 @@ Kevin Blighe
 Introduction
 ============
 
-Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots. EnhancedVolcano (Blighe 2018) will attempt to fit as many labels in the plot window as possible, thus avoiding 'clogging' up the plot with labels that could not otherwise have been read. Other functionality allows the user to identify up to 3 different types of attributes in the same plot space via colour, shape, size, and shade parameter configurations.
+Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots. EnhancedVolcano (Blighe, Rana, and Lewis 2018) will attempt to fit as many labels in the plot window as possible, thus avoiding 'clogging' up the plot with labels that could not otherwise have been read. Other functionality allows the user to identify up to 3 different types of attributes in the same plot space via colour, shape, size, and shade parameter configurations.
 
 Installation
 ============
@@ -874,4 +874,4 @@ sessionInfo()
 References
 ==========
 
-Blighe, Kevin. 2018. “EnhancedVolcano: Publication-ready volcano plots with enhanced colouring and labeling.” <https://github.com/kevinblighe>.
+Blighe, K, S Rana, and M Lewis. 2018. “EnhancedVolcano: Publication-ready volcano plots with enhanced colouring and labeling.” <https://github.com/kevinblighe>.
