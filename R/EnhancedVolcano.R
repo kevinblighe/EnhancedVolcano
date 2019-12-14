@@ -4,8 +4,8 @@ EnhancedVolcano <- function(
   x,
   y,
   selectLab = NULL,
-  xlim = c(min(toptable[[x]], na.rm=TRUE),
-    max(toptable[[x]], na.rm=TRUE)),
+  xlim = c(min(toptable[[x]], na.rm=TRUE) - 1,
+    max(toptable[[x]], na.rm=TRUE) + 1),
   ylim = c(0, max(-log10(toptable[[y]]), na.rm=TRUE) + 5),
   xlab = bquote(~Log[2]~ "fold change"),
   ylab = bquote(~-Log[10]~italic(P)),
@@ -17,44 +17,34 @@ EnhancedVolcano <- function(
   subtitleLabSize = 14,
   captionLabSize = 14,
   pCutoff = 10e-6,
-  pLabellingCutoff = pCutoff,
   FCcutoff = 1.0,
   cutoffLineType = 'longdash',
   cutoffLineCol = 'black',
   cutoffLineWidth = 0.4,
-  transcriptPointSize = 0.8,
-  transcriptLabSize = 3.0,
-  transcriptLabCol = 'black',
-  transcriptLabFace = 'plain',
-  transcriptLabhjust = 0,
-  transcriptLabvjust = 1.5,
   pointSize = 2.0,
   labSize = 3.0,
   labCol = 'black',
   labFace = 'plain',
-  labhjust = 0,
+  labhjust = 0.5,
   labvjust = 1.5,
-  boxedlabels = FALSE,
   boxedLabels = FALSE,
   shape = 19,
   shapeCustom = NULL,
   col = c("grey30", "forestgreen", "royalblue", "red2"),
   colCustom = NULL,
   colAlpha = 1/2,
-  legend = c("NS","Log2 FC","P","P & Log2 FC"),
+  .legend = c("NS","Log2 FC","P","P & Log2 FC"),
   legendLabels = c('NS', expression(Log[2]~FC),
     "p-value", expression(p-value~and~log[2]~FC)),
   legendPosition = "top",
   legendLabSize = 14,
   legendIconSize = 4.0,
-  legendVisible = TRUE,
   shade = NULL,
   shadeLabel = NULL,
   shadeAlpha = 1/2,
   shadeFill = "grey",
   shadeSize = 0.01,
   shadeBins = 2,
-  drawconnectors = FALSE,
   drawConnectors = FALSE,
   widthConnectors = 0.5,
   typeConnectors = 'closed',
@@ -84,55 +74,6 @@ EnhancedVolcano <- function(
   }
 
   i <- xvals <- yvals <- Sig <- NULL
-
-  # deprecated arguments
-  if (!missing('transcriptPointSize')) {
-    warning(paste0('transcriptPointSize argument deprecated in v1.4',
-      ' - please use pointSize'))
-    pointSize <- transcriptPointSize
-  }
-
-  if (!missing('transcriptLabSize')) {
-    warning(paste0('transcriptLabSize argument deprecated in v1.4',
-      ' - please use labSize'))
-    labSize <- transcriptLabSize
-  }
-
-  if (!missing('transcriptLabCol')) {
-    warning(paste0('transcriptLabCol argument deprecated in v1.4',
-      ' - please use labCol'))
-    labCol <- transcriptLabCol
-  }
-
-  if (!missing('transcriptLabFace')) {
-    warning(paste0('transcriptLabFace argument deprecated in v1.4',
-      ' - please use labFace'))
-    labFace <- transcriptLabFace
-  }
-
-  if (!missing('transcriptLabhjust')) {
-    warning(paste0('transcriptLabhjust argument deprecated in v1.4',
-      ' - please use labhjust'))
-    labhjust <- transcriptLabhjust
-  }
-
-  if (!missing('transcriptLabvjust')) {
-    warning(paste0('transcriptLabvjust argument deprecated in v1.4',
-      ' - please use labvjust'))
-    labvjust <- transcriptLabvjust
-  }
-
-  if (!missing('boxedlabels')) {
-    warning(paste0('boxedlabels argument deprecated in v1.4',
-      ' - please use boxedLabels'))
-    boxedLabels <- boxedlabels
-  }
-
-  if (!missing('drawconnectors')) {
-    warning(paste0('drawconnectors argument deprecated since v1.2',
-      ' - please use drawConnectors'))
-    drawConnectors <- drawconnectors
-  }
 
   toptable <- as.data.frame(toptable)
   toptable$Sig <- "NS"
@@ -404,8 +345,7 @@ EnhancedVolcano <- function(
         alpha = colAlpha,
         shape = shape,
         size = pointSize,
-        na.rm = TRUE,
-        show.legend = legendVisible) +
+        na.rm = TRUE) +
 
       scale_color_manual(
         values = c(
@@ -443,8 +383,7 @@ EnhancedVolcano <- function(
           shape = factor(Sig)),
         alpha = colAlpha,
         size = pointSize,
-        na.rm = TRUE,
-        show.legend = legendVisible) +
+        na.rm = TRUE) +
 
       scale_color_manual(
         values = c(
@@ -537,10 +476,10 @@ EnhancedVolcano <- function(
     if (drawConnectors == TRUE && is.null(selectLab)) {
       plot <- plot + geom_text_repel(
         data=subset(toptable,
-          toptable[[y]] < pLabellingCutoff &
+          toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
-          toptable[[y]] < pLabellingCutoff &
+          toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff)[["lab"]]),
         size = labSize,
         segment.color = colConnectors,
@@ -585,10 +524,10 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == FALSE && is.null(selectLab)) {
       plot <- plot + geom_text(
         data=subset(toptable,
-          toptable[[y]] < pLabellingCutoff &
+          toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
-          toptable[[y]] < pLabellingCutoff &
+          toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff)[["lab"]]),
         size = labSize,
         check_overlap = TRUE,
@@ -605,10 +544,10 @@ EnhancedVolcano <- function(
     if (drawConnectors == TRUE && is.null(selectLab)) {
       plot <- plot + geom_label_repel(
         data=subset(toptable,
-          toptable[[y]] < pLabellingCutoff &
+          toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
-          toptable[[y]]<pLabellingCutoff &
+          toptable[[y]]<pCutoff &
             abs(toptable[[x]]) > FCcutoff)[["lab"]]),
         size = labSize,
         segment.color = colConnectors,
@@ -653,10 +592,10 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == FALSE && is.null(selectLab)) {
       plot <- plot + geom_label(
         data=subset(toptable,
-          toptable[[y]] < pLabellingCutoff &
+          toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
-          toptable[[y]] < pLabellingCutoff &
+          toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff)[["lab"]]),
         size = labSize,
         #check_overlap = TRUE,

@@ -20,8 +20,8 @@ EnhancedVolcano(
   x,
   y,
   selectLab = NULL,
-  xlim = c(min(toptable[[x]], na.rm=TRUE),
-    max(toptable[[x]], na.rm=TRUE)),
+  xlim = c(min(toptable[[x]], na.rm=TRUE) - 1,
+    max(toptable[[x]], na.rm=TRUE) + 1),
   ylim = c(0, max(-log10(toptable[[y]]), na.rm=TRUE) + 5),
   xlab = bquote(~Log[2]~ "fold change"),
   ylab = bquote(~-Log[10]~italic(P)),
@@ -33,44 +33,34 @@ EnhancedVolcano(
   subtitleLabSize = 14,
   captionLabSize = 14,
   pCutoff = 10e-6,
-  pLabellingCutoff = pCutoff,
   FCcutoff = 1.0,
   cutoffLineType = 'longdash',
   cutoffLineCol = 'black',
   cutoffLineWidth = 0.4,
-  transcriptPointSize = 0.8,
-  transcriptLabSize = 3.0,
-  transcriptLabCol = 'black',
-  transcriptLabFace = 'plain',
-  transcriptLabhjust = 0,
-  transcriptLabvjust = 1.5,
   pointSize = 2.0,
   labSize = 3.0,
   labCol = 'black',
   labFace = 'plain',
-  labhjust = 0,
+  labhjust = 0.5,
   labvjust = 1.5,
-  boxedlabels = FALSE,
   boxedLabels = FALSE,
   shape = 19,
   shapeCustom = NULL,
   col = c("grey30", "forestgreen", "royalblue", "red2"),
   colCustom = NULL,
   colAlpha = 1/2,
-  legend = c("NS","Log2 FC","P","P & Log2 FC"),
+  .legend = c("NS","Log2 FC","P","P & Log2 FC"),
   legendLabels = c('NS', expression(Log[2]~FC),
     "p-value", expression(p-value~and~log[2]~FC)),
   legendPosition = "top",
   legendLabSize = 14,
   legendIconSize = 4.0,
-  legendVisible = TRUE,
   shade = NULL,
   shadeLabel = NULL,
   shadeAlpha = 1/2,
   shadeFill = "grey",
   shadeSize = 0.01,
   shadeBins = 2,
-  drawconnectors = FALSE,
   drawConnectors = FALSE,
   widthConnectors = 0.5,
   typeConnectors = 'closed',
@@ -123,8 +113,6 @@ EnhancedVolcano(
   \item{captionLabSize}{Size of plot caption. DEFAULT = 14. OPTIONAL.}
   \item{pCutoff}{Cut-off for statistical significance. A horizontal line
   will be drawn at -log10(pCutoff). DEFAULT = 10e-6. OPTIONAL.}
-  \item{pLabellingCutoff}{Labelling cut-off for statistical significance.
-  DEFAULT = pCutoff. OPTIONAL}
   \item{FCcutoff}{Cut-off for absolute log2 fold-change. Vertical lines will
   be drawn at the negative and positive values of log2FCcutoff. DEFAULT =
   1.0. OPTIONAL.}
@@ -135,18 +123,6 @@ EnhancedVolcano(
   "black". OPTIONAL.}
   \item{cutoffLineWidth}{Line width for FCcutoff and pCutoff. DEFAULT =
   0.4. OPTIONAL.}
-  \item{transcriptPointSize}{transcriptPointSize argument deprecated in
-  v1.4 - please use pointSize. DEFAULT = 0.8. OPTIONAL.}
-  \item{transcriptLabSize}{transcriptLabSize argument deprecated in
-  v1.4 - please use labSize. DEFAULT = 3.0. OPTIONAL.}
-  \item{transcriptLabCol}{transcriptLabCol argument deprecated in
-  v1.4 - please use labCol. DEFAULT = 'black'. OPTIONAL.}
-  \item{transcriptLabFace}{transcriptLabFace argument deprecated in
-  v1.4 - please use labFace. DEFAULT = 'plain'. OPTIONAL.}
-  \item{transcriptLabhjust}{transcriptLabhjust argument deprecated in
-  v1.4 - please use labhjust. DEFAULT = 0. OPTIONAL.}
-  \item{transcriptLabvjust}{transcriptLabvjust argument deprecated in
-  v1.4 - please use labvjust. DEFAULT = 1.5. OPTIONAL.}
   \item{pointSize}{Size of plotted points for each transcript. Can be
   a single value or a vector of sizes. DEFAULT = 2.0. OPTIONAL.}
   \item{labSize}{Size of labels for each transcript. DEFAULT =
@@ -156,11 +132,9 @@ EnhancedVolcano(
   \item{labFace}{Font face of labels for each transcript. DEFAULT
   = 'plain'. OPTIONAL.}
   \item{labhjust}{Horizontal adjustment of label for each
-  transcript. DEFAULT = 0. OPTIONAL.}
+  transcript. DEFAULT = 0.5. OPTIONAL.}
   \item{labvjust}{Vertical adjustment of label for each
   transcript. DEFAULT = 1.5. OPTIONAL.}
-  \item{boxedlabels}{boxedlabels argument deprecated in
-  v1.4 - please use boxedLabels. DEFAULT = FALSE. OPTIONAL.}
   \item{boxedLabels}{Logical, indicating whether or not to draw labels in
   boxes. DEFAULT = FALSE. OPTIONAL.}
   \item{shape}{Shape of the plotted points. Either a single value for
@@ -181,7 +155,7 @@ EnhancedVolcano(
   OPTIONAL.}
   \item{colAlpha}{Alpha for purposes of controlling colour transparency of
   transcript points. DEFAULT = 1/2. OPTIONAL.}
-  \item{legend}{Plot legend key. DEFAULT = c("NS", "Log2 FC", "P",
+  \item{.legend}{Plot legend key. DEFAULT = c("NS", "Log2 FC", "P",
   "P & Log2 FC"). OPTIONAL.}
   \item{legendLabels}{Plot legend text labels. DEFAULT = c('NS', expression(Log[2]~FC),
     "p-value", expression(p-value~and~log[2]~FC). OPTIONAL}
@@ -190,8 +164,6 @@ EnhancedVolcano(
   \item{legendLabSize}{Size of plot legend text. DEFAULT = 14. OPTIONAL.}
   \item{legendIconSize}{Size of plot legend icons / symbols. DEFAULT = 4.0.
   OPTIONAL.}
-  \item{legendVisible}{Logical, indicating whether or not to show the
-  legend. DEFAULT = TRUE. OPTIONAL.}
   \item{shade}{A vector of transcript names to shade. DEFAULT = NULL.
   OPTIONAL.}
   \item{shadeLabel}{Label for the transcrips to shade. DEFAULT = NULL.
@@ -202,9 +174,6 @@ EnhancedVolcano(
   \item{shadeSize}{Size of the shade contour lines. DEFAULT = 0.01.
   OPTIONAL.}
   \item{shadeBins}{Number of bins for the density of the shade. DEFAULT = 2.
-  OPTIONAL.}
-  \item{drawconnectors}{drawconnectors argument deprecated since v1.2 - 
-  please use drawConnectors. DEFAULT = FALSE.
   OPTIONAL.}
   \item{drawConnectors}{Logical, indicating whether or not to connect plot
   labels to their corresponding points by line connectors. DEFAULT = FALSE.

@@ -1,3 +1,17 @@
+
+CHANGES IN VERSION 1.6
+------------------------
+ - removed legendVisible and pLabellingCutoff parameters
+ - deprecated transcriptPointSize, transcriptLabSize,
+   transcriptLabCol, transcriptLabFace,
+   transcriptLabhjust, transcriptLabvjust,
+   boxedlabels, and drawconnectors parameters
+ - now pad xlim by +/- 1
+ - moved default position of labels to be central to
+   its respective point
+ - tidied vignette to simplify code
+
+
 CHANGES IN VERSION 1.4
 ------------------------
  - modified behaviour where a p-value of 0 is found: now

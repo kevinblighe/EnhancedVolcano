@@ -30,7 +30,6 @@ have been read. Other functionality allows the user to identify up to 3
 different types of attributes in the same plot space via colour, shape, size, and
 shade parameter configurations.
 
-
 ```{r, echo=FALSE}
 
   library(knitr)
@@ -46,7 +45,8 @@ shade parameter configurations.
 
   if (!requireNamespace('BiocManager', quietly = TRUE))
     install.packages('BiocManager')
-    BiocManager::install('EnhancedVolcano')
+
+  BiocManager::install('EnhancedVolcano')
 
 ```
 
@@ -277,8 +277,8 @@ legend text, label size, and icon size can also be modified.
     pointSize = 4.0,
     labSize = 4.0,
     colAlpha = 1,
-    legend=c('NS','Log (base 2) fold-change','P value',
-      'P value & Log (base 2) fold-change'),
+    legendLabels=c('Not sig.','Log (base 2) FC','p-value',
+      'p-value & Log (base 2) FC'),
     legendPosition = 'right',
     legendLabSize = 16,
     legendIconSize = 5.0)
@@ -289,38 +289,10 @@ Note: to make the legend completely invisible, specify:
 
 ```{r eval=FALSE}
 
-legendVisible = FALSE
+legendPosition = 'none'
 
 ```
 
-## Plot adjusted p-values
-
-Volcano plots do not have to be produced with nominal (unadjusted P values),
-even if this is the common practice. Simply provide a column name relating
-to adjusted P values and you can also generate a volcano with these. In this
-case, the cutoff for the P value then relates to the adjusted P value. Here,
-we also modify the axis titles by supplying an expression via the bquote function.
-
-```{r ex7, fig.height = 8.5, fig.width = 7, fig.cap = "Plot adjusted p-values."}
-
-  EnhancedVolcano(res2,
-    lab = rownames(res2),
-    x = 'log2FoldChange',
-    y = 'padj',
-    xlim=c(-6,6),
-    xlab = bquote(~Log[2]~ 'fold change'),
-    ylab = bquote(~-Log[10]~adjusted~italic(P)),
-    pCutoff = 0.0001,
-    FCcutoff = 1.0,
-    labSize = 4.0,
-    colAlpha = 1,
-    legend=c('NS','Log2 FC','Adjusted p-value',
-      'Adjusted p-value & Log2 FC'),
-    legendPosition = 'bottom',
-    legendLabSize = 10,
-    legendIconSize = 3.0)
-
-```
 
 ## Fit more labels by adding connectors
 
@@ -335,7 +307,7 @@ lengthConnectors (default = unit(0.01, 'npc')).
 The result may not always be desirable as it can make the plot
 look overcrowded.
 
-```{r ex8, fig.height = 8.5, fig.width = 11, fig.cap = "Fit more labels by adding connectors."}
+```{r ex7, fig.height = 8.5, fig.width = 11, fig.cap = "Fit more labels by adding connectors."}
 
   EnhancedVolcano(res2,
     lab = rownames(res2),
@@ -348,8 +320,6 @@ look overcrowded.
     pointSize = 4.0,
     labSize = 4.0,
     colAlpha = 1,
-    legend=c('NS','Log (base 2) fold-change','P value',
-      'P value & Log (base 2) fold-change'),
     legendPosition = 'right',
     legendLabSize = 12,
     legendIconSize = 4.0,
@@ -368,7 +338,7 @@ to also be present in the vector passed to 'lab'. In addition, only
 those variables that pass both the cutoff for log2FC and P value will
 be labelled.
 
-```{r ex9, fig.height = 8.5, fig.width = 11, fig.cap = "Only label key variables."}
+```{r ex8, fig.height = 8.5, fig.width = 11, fig.cap = "Only label key variables."}
 
   EnhancedVolcano(res2,
     lab = rownames(res2),
@@ -383,8 +353,6 @@ be labelled.
     labSize = 5.0,
     shape = c(4, 35, 17, 18),
     colAlpha = 1,
-    legend=c('NS','Log (base 2) fold-change','P value',
-      'P value & Log (base 2) fold-change'),
     legendPosition = 'right',
     legendLabSize = 14,
     legendIconSize = 5.0)
@@ -397,7 +365,7 @@ be labelled.
 To improve label clarity, we can draw simple boxes around the plots
 labels. This works much better when drawConnectors is also TRUE.
 
-```{r ex10, fig.height = 8.5, fig.width = 12, fig.cap = "Draw labels in boxes."}
+```{r ex9, fig.height = 8.5, fig.width = 12, fig.cap = "Draw labels in boxes."}
 
   EnhancedVolcano(res2,
     lab = rownames(res2),
@@ -416,8 +384,6 @@ labels. This works much better when drawConnectors is also TRUE.
     labFace = 'bold',
     boxedLabels = TRUE,
     colAlpha = 4/5,
-    legend=c('NS','Log (base 2) fold-change','P value',
-      'P value & Log (base 2) fold-change'),
     legendPosition = 'right',
     legendLabSize = 14,
     legendIconSize = 4.0,
@@ -441,27 +407,18 @@ In this example, we just wish to colour all variables with log2FC > 2.5 as
 ```{r eval = TRUE}
 
   # create custom key-value pairs for 'high', 'low', 'mid' expression by fold-change
-    # set the base colour as 'black'
-    keyvals <- rep('black', nrow(res2))
-
-    # set the base name/label as 'Mid'
-    names(keyvals) <- rep('Mid', nrow(res2))
-
-    # modify keyvals for variables with fold change > 2.5
-    keyvals[which(res2$log2FoldChange > 2.5)] <- 'gold'
-    names(keyvals)[which(res2$log2FoldChange > 2.5)] <- 'high'
-
-    # modify keyvals for variables with fold change < -2.5
-    keyvals[which(res2$log2FoldChange < -2.5)] <- 'royalblue'
-    names(keyvals)[which(res2$log2FoldChange < -2.5)] <- 'low'
-
-    unique(names(keyvals))
-    unique(keyvals)
-    keyvals[1:20]
+  # this can be achieved with nested ifelse statements
+  keyvals <- ifelse(
+    res2$log2FoldChange < -2.5, 'royalblue',
+      ifelse(res2$log2FoldChange > 2.5, 'gold',
+        'black'))
+  names(keyvals)[keyvals == 'gold'] <- 'high'
+  names(keyvals)[keyvals == 'black'] <- 'mid'
+  names(keyvals)[keyvals == 'royalblue'] <- 'low'
 
 ```
 
-```{r ex11, fig.height = 9.5, fig.width = 17, fig.cap = "Over-ride colouring scheme with custom key-value pairs."}
+```{r ex10, fig.height = 8.5, fig.width = 18, fig.cap = "Over-ride colouring scheme with custom key-value pairs."}
 
   p1 <- EnhancedVolcano(res2,
     lab = rownames(res2),
@@ -504,7 +461,7 @@ In this example, we just wish to colour all variables with log2FC > 2.5 as
     labSize = 4.5,
     colCustom = NULL,
     colAlpha = 1,
-    legendPosition = 'top',
+    legendPosition = 'right',
     legendLabSize = 15,
     legendIconSize = 5.0,
     drawConnectors = FALSE,
@@ -523,7 +480,6 @@ In this example, we just wish to colour all variables with log2FC > 2.5 as
     top = textGrob('EnhancedVolcano',
       just = c('center'),
       gp = gpar(fontsize = 32)))
-  grid.rect(gp=gpar(fill=NA))
 
 ```
 
@@ -544,27 +500,18 @@ both the colour and shape scheme at the same time.
     'ENSG00000231924', 'ENSG00000145681')
 
   # create custom key-value pairs for different cell-types
-    # set the base shape as '3'
-    keyvals.shape <- rep(3, nrow(res2))
-
-    # set the base name/label as 'PBC'
-    names(keyvals.shape) <- rep('PBC', nrow(res2))
-
-    # modify the keyvals for cell-type 1
-    keyvals.shape[which(rownames(res2) %in% celltype1)] <- 17
-    names(keyvals.shape)[which(rownames(res2) %in% celltype1)] <- 'Cell-type 1'
-
-    # modify the keyvals for cell-type 2
-    keyvals.shape[which(rownames(res2) %in% celltype2)] <- 64
-    names(keyvals.shape)[which(rownames(res2) %in% celltype2)] <- 'Cell-type 2'
-
-    unique(names(keyvals.shape))
-    unique(keyvals.shape)
-    keyvals.shape[1:20]
+  # this can be achieved with nested ifelse statements
+  keyvals.shape <- ifelse(
+    rownames(res2) %in% celltype1, 17,
+      ifelse(rownames(res2) %in% celltype2, 64,
+        3))
+  names(keyvals.shape)[keyvals.shape == 3] <- 'PBMC'
+  names(keyvals.shape)[keyvals.shape == 17] <- 'Cell-type 1'
+  names(keyvals.shape)[keyvals.shape == 64] <- 'Cell-type 2'
 
 ```
 
-```{r ex12, fig.height = 9, fig.width = 17, fig.cap = "Over-ride colour and/or shape scheme with custom key-value pairs."}
+```{r ex11, fig.height = 8.5, fig.width = 18, fig.cap = "Over-ride colour and/or shape scheme with custom key-value pairs."}
 
   p1 <- EnhancedVolcano(res2,
     lab = rownames(res2),
@@ -594,22 +541,14 @@ both the colour and shape scheme at the same time.
     borderColour = 'black')
 
   # create custom key-value pairs for 'high', 'low', 'mid' expression by fold-change
-    # set the base colour as 'black'
-    keyvals.colour <- rep('black', nrow(res2))
-
-    # set the base name/label as 'Mid'
-    names(keyvals.colour) <- rep('Mid', nrow(res2))
-
-    # modify keyvals for variables with fold change > 2.5
-    keyvals.colour[which(res2$log2FoldChange > 2.5)] <- 'gold'
-    names(keyvals.colour)[which(res2$log2FoldChange > 2.5)] <- 'high'
-
-    # modify keyvals for variables with fold change < -2.5
-    keyvals.colour[which(res2$log2FoldChange < -2.5)] <- 'royalblue'
-    names(keyvals.colour)[which(res2$log2FoldChange < -2.5)] <- 'low'
-
-    unique(names(keyvals.colour))
-    unique(keyvals.colour)
+  # this can be achieved with nested ifelse statements
+  keyvals.colour <- ifelse(
+    res2$log2FoldChange < -2.5, 'royalblue',
+      ifelse(res2$log2FoldChange > 2.5, 'gold',
+        'black'))
+  names(keyvals.colour)[keyvals.colour == 'gold'] <- 'high'
+  names(keyvals.colour)[keyvals.colour == 'black'] <- 'mid'
+  names(keyvals.colour)[keyvals.colour == 'royalblue'] <- 'low'
 
   p2 <- EnhancedVolcano(res2,
     lab = rownames(res2),
@@ -626,7 +565,7 @@ both the colour and shape scheme at the same time.
     shapeCustom = keyvals.shape,
     colCustom = keyvals.colour,
     colAlpha = 1,
-    legendPosition = 'top',
+    legendPosition = 'right',
     legendLabSize = 15,
     legendIconSize = 5.0,
     drawConnectors = TRUE,
@@ -645,7 +584,6 @@ both the colour and shape scheme at the same time.
     top = textGrob('EnhancedVolcano',
       just = c('center'),
       gp = gpar(fontsize = 32)))
-  grid.rect(gp=gpar(fill=NA))
 
 ```
 
@@ -666,7 +604,7 @@ identification of different types of variables.
 
 ```
 
-```{r ex13, fig.height = 9, fig.width = 16, fig.cap = "Shade certain variables."}
+```{r ex12, fig.height = 8.5, fig.width = 17, fig.cap = "Shade certain variables."}
 
   p1 <- EnhancedVolcano(res2,
     lab = rownames(res2),
@@ -686,14 +624,14 @@ identification of different types of variables.
     shape = 42,
     colCustom = keyvals,
     colAlpha = 1,
-    legendPosition = 'top',
+    legendPosition = 'none',
     legendLabSize = 15,
     legendIconSize = 5.0,
     shade = celltype1,
     shadeLabel = 'Cell-type I',
     shadeAlpha = 1/2,
     shadeFill = 'purple',
-    shadeSize = 1,
+    shadeSize = 4,
     shadeBins = 5,
     drawConnectors = TRUE,
     widthConnectors = 1.0,
@@ -746,7 +684,6 @@ identification of different types of variables.
     top = textGrob('EnhancedVolcano',
       just = c('center'),
       gp = gpar(fontsize = 32)))
-  grid.rect(gp=gpar(fill=NA))
 
 ```
 
@@ -754,9 +691,9 @@ identification of different types of variables.
 
 One can also supply a vector of sizes to pointSize for the purpose of having
 a different size for each poin. For example, if we want to change the size of 
-just those variables with log2FC>2:
+just those variables with log~2~FC>2:
 
-```{r ex14, fig.height = 9, fig.width = 12, fig.cap = "Highlighting key variabvles via custom point sizes."}
+```{r ex13, fig.height = 9, fig.width = 12, fig.cap = "Highlighting key variabvles via custom point sizes."}
 
   library("pasilla")
   pasCts <- system.file("extdata", "pasilla_gene_counts.tsv",
@@ -787,7 +724,7 @@ just those variables with log2FC>2:
     xlim = c(-5.5, 5.5),
     ylim = c(0, -log10(10e-12)),
     pointSize = c(ifelse(res$log2FoldChange>2, 8, 1)),
-    labSize = 2.5,
+    labSize = 4.0,
     shape = c(6, 6, 19, 16),
     title = "DESeq2 results",
     subtitle = "Differential expression",
@@ -825,7 +762,14 @@ More information on this can be found here: http://www.sthda.com/english/wiki/gg
 The development of *EnhancedVolcano* has benefited from contributions
 and suggestions from:
 
-Sharmila Rana, [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html), Luke Dow (Assistant Professor at Weill Cornell Medicine), Tokhir Dadaev (Institute of Cancer Research), Alina Frolova, Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center), David Wheeler (Montana State University), David Kulp
+* Sharmila Rana
+* [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html)
+* Luke Dow (Assistant Professor at Weill Cornell Medicine)
+* Tokhir Dadaev (Institute of Cancer Research)
+* Alina Frolova
+* Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center)
+* David Wheeler (Montana State University)
+* David Kulp
 
 # Session info
 

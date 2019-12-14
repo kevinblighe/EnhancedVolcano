@@ -1,7 +1,7 @@
 EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling
 ================
 Kevin Blighe
-2019-09-05
+2019-12-14
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -15,7 +15,6 @@ Kevin Blighe
     -   [Adjust shape of plotted points](#adjust-shape-of-plotted-points)
     -   [Adjust cut-off lines and add extra threshold lines](#adjust-cut-off-lines-and-add-extra-threshold-lines)
     -   [Adjust legend position, size, and text](#adjust-legend-position-size-and-text)
-    -   [Plot adjusted p-values](#plot-adjusted-p-values)
     -   [Fit more labels by adding connectors](#fit-more-labels-by-adding-connectors)
     -   [Only label key variables](#only-label-key-variables)
     -   [Draw labels in boxes](#draw-labels-in-boxes)
@@ -42,7 +41,8 @@ Installation
 ``` r
   if (!requireNamespace('BiocManager', quietly = TRUE))
     install.packages('BiocManager')
-    BiocManager::install('EnhancedVolcano')
+
+  BiocManager::install('EnhancedVolcano')
 ```
 
 Note: to install development version:
@@ -245,8 +245,8 @@ The position of the legend can also be changed to "left" or "right" (and stacked
     pointSize = 4.0,
     labSize = 4.0,
     colAlpha = 1,
-    legend=c('NS','Log (base 2) fold-change','P value',
-      'P value & Log (base 2) fold-change'),
+    legendLabels=c('Not sig.','Log (base 2) FC','p-value',
+      'p-value & Log (base 2) FC'),
     legendPosition = 'right',
     legendLabSize = 16,
     legendIconSize = 5.0)
@@ -257,34 +257,8 @@ The position of the legend can also be changed to "left" or "right" (and stacked
 Note: to make the legend completely invisible, specify:
 
 ``` r
-legendVisible = FALSE
+legendPosition = 'none'
 ```
-
-Plot adjusted p-values
-----------------------
-
-Volcano plots do not have to be produced with nominal (unadjusted P values), even if this is the common practice. Simply provide a column name relating to adjusted P values and you can also generate a volcano with these. In this case, the cutoff for the P value then relates to the adjusted P value. Here, we also modify the axis titles by supplying an expression via the bquote function.
-
-``` r
-  EnhancedVolcano(res2,
-    lab = rownames(res2),
-    x = 'log2FoldChange',
-    y = 'padj',
-    xlim=c(-6,6),
-    xlab = bquote(~Log[2]~ 'fold change'),
-    ylab = bquote(~-Log[10]~adjusted~italic(P)),
-    pCutoff = 0.0001,
-    FCcutoff = 1.0,
-    labSize = 4.0,
-    colAlpha = 1,
-    legend=c('NS','Log2 FC','Adjusted p-value',
-      'Adjusted p-value & Log2 FC'),
-    legendPosition = 'bottom',
-    legendLabSize = 10,
-    legendIconSize = 3.0)
-```
-
-![Plot adjusted p-values.](README_files/figure-markdown_github/ex7-1.png)
 
 Fit more labels by adding connectors
 ------------------------------------
@@ -305,8 +279,6 @@ The result may not always be desirable as it can make the plot look overcrowded.
     pointSize = 4.0,
     labSize = 4.0,
     colAlpha = 1,
-    legend=c('NS','Log (base 2) fold-change','P value',
-      'P value & Log (base 2) fold-change'),
     legendPosition = 'right',
     legendLabSize = 12,
     legendIconSize = 4.0,
@@ -315,7 +287,7 @@ The result may not always be desirable as it can make the plot look overcrowded.
     colConnectors = 'grey30')
 ```
 
-![Fit more labels by adding connectors.](README_files/figure-markdown_github/ex8-1.png)
+![Fit more labels by adding connectors.](README_files/figure-markdown_github/ex7-1.png)
 
 Only label key variables
 ------------------------
@@ -336,14 +308,12 @@ In many situations, people may only wish to label their key variables / variable
     labSize = 5.0,
     shape = c(4, 35, 17, 18),
     colAlpha = 1,
-    legend=c('NS','Log (base 2) fold-change','P value',
-      'P value & Log (base 2) fold-change'),
     legendPosition = 'right',
     legendLabSize = 14,
     legendIconSize = 5.0)
 ```
 
-![Only label key variables.](README_files/figure-markdown_github/ex9-1.png)
+![Only label key variables.](README_files/figure-markdown_github/ex8-1.png)
 
 Draw labels in boxes
 --------------------
@@ -368,8 +338,6 @@ To improve label clarity, we can draw simple boxes around the plots labels. This
     labFace = 'bold',
     boxedLabels = TRUE,
     colAlpha = 4/5,
-    legend=c('NS','Log (base 2) fold-change','P value',
-      'P value & Log (base 2) fold-change'),
     legendPosition = 'right',
     legendLabSize = 14,
     legendIconSize = 4.0,
@@ -378,7 +346,7 @@ To improve label clarity, we can draw simple boxes around the plots labels. This
     colConnectors = 'black')
 ```
 
-![Draw labels in boxes.](README_files/figure-markdown_github/ex10-1.png)
+![Draw labels in boxes.](README_files/figure-markdown_github/ex9-1.png)
 
 Over-ride colouring scheme with custom key-value pairs
 ------------------------------------------------------
@@ -389,41 +357,15 @@ In this example, we just wish to colour all variables with log2FC &gt; 2.5 as 'h
 
 ``` r
   # create custom key-value pairs for 'high', 'low', 'mid' expression by fold-change
-    # set the base colour as 'black'
-    keyvals <- rep('black', nrow(res2))
-
-    # set the base name/label as 'Mid'
-    names(keyvals) <- rep('Mid', nrow(res2))
-
-    # modify keyvals for variables with fold change > 2.5
-    keyvals[which(res2$log2FoldChange > 2.5)] <- 'gold'
-    names(keyvals)[which(res2$log2FoldChange > 2.5)] <- 'high'
-
-    # modify keyvals for variables with fold change < -2.5
-    keyvals[which(res2$log2FoldChange < -2.5)] <- 'royalblue'
-    names(keyvals)[which(res2$log2FoldChange < -2.5)] <- 'low'
-
-    unique(names(keyvals))
+  # this can be achieved with nested ifelse statements
+  keyvals <- ifelse(
+    res2$log2FoldChange < -2.5, 'royalblue',
+      ifelse(res2$log2FoldChange > 2.5, 'gold',
+        'black'))
+  names(keyvals)[keyvals == 'gold'] <- 'high'
+  names(keyvals)[keyvals == 'black'] <- 'mid'
+  names(keyvals)[keyvals == 'royalblue'] <- 'low'
 ```
-
-    ## [1] "Mid"  "low"  "high"
-
-``` r
-    unique(keyvals)
-```
-
-    ## [1] "black"     "royalblue" "gold"
-
-``` r
-    keyvals[1:20]
-```
-
-    ##     Mid     Mid     Mid     Mid     Mid     Mid     Mid     Mid     Mid 
-    ## "black" "black" "black" "black" "black" "black" "black" "black" "black" 
-    ##     Mid     Mid     Mid     Mid     Mid     Mid     Mid     Mid     Mid 
-    ## "black" "black" "black" "black" "black" "black" "black" "black" "black" 
-    ##     Mid     Mid 
-    ## "black" "black"
 
 ``` r
   p1 <- EnhancedVolcano(res2,
@@ -467,7 +409,7 @@ In this example, we just wish to colour all variables with log2FC &gt; 2.5 as 'h
     labSize = 4.5,
     colCustom = NULL,
     colAlpha = 1,
-    legendPosition = 'top',
+    legendPosition = 'right',
     legendLabSize = 15,
     legendIconSize = 5.0,
     drawConnectors = FALSE,
@@ -486,10 +428,9 @@ In this example, we just wish to colour all variables with log2FC &gt; 2.5 as 'h
     top = textGrob('EnhancedVolcano',
       just = c('center'),
       gp = gpar(fontsize = 32)))
-  grid.rect(gp=gpar(fill=NA))
 ```
 
-![Over-ride colouring scheme with custom key-value pairs.](README_files/figure-markdown_github/ex11-1.png)
+![Over-ride colouring scheme with custom key-value pairs.](README_files/figure-markdown_github/ex10-1.png)
 
 Over-ride colour and/or shape scheme with custom key-value pairs
 ----------------------------------------------------------------
@@ -505,39 +446,15 @@ In this example, we first over-ride the existing shape scheme and then both the 
     'ENSG00000231924', 'ENSG00000145681')
 
   # create custom key-value pairs for different cell-types
-    # set the base shape as '3'
-    keyvals.shape <- rep(3, nrow(res2))
-
-    # set the base name/label as 'PBC'
-    names(keyvals.shape) <- rep('PBC', nrow(res2))
-
-    # modify the keyvals for cell-type 1
-    keyvals.shape[which(rownames(res2) %in% celltype1)] <- 17
-    names(keyvals.shape)[which(rownames(res2) %in% celltype1)] <- 'Cell-type 1'
-
-    # modify the keyvals for cell-type 2
-    keyvals.shape[which(rownames(res2) %in% celltype2)] <- 64
-    names(keyvals.shape)[which(rownames(res2) %in% celltype2)] <- 'Cell-type 2'
-
-    unique(names(keyvals.shape))
+  # this can be achieved with nested ifelse statements
+  keyvals.shape <- ifelse(
+    rownames(res2) %in% celltype1, 17,
+      ifelse(rownames(res2) %in% celltype2, 64,
+        3))
+  names(keyvals.shape)[keyvals.shape == 3] <- 'PBMC'
+  names(keyvals.shape)[keyvals.shape == 17] <- 'Cell-type 1'
+  names(keyvals.shape)[keyvals.shape == 64] <- 'Cell-type 2'
 ```
-
-    ## [1] "PBC"         "Cell-type 1" "Cell-type 2"
-
-``` r
-    unique(keyvals.shape)
-```
-
-    ## [1]  3 17 64
-
-``` r
-    keyvals.shape[1:20]
-```
-
-    ## PBC PBC PBC PBC PBC PBC PBC PBC PBC PBC PBC PBC PBC PBC PBC PBC PBC PBC 
-    ##   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3   3 
-    ## PBC PBC 
-    ##   3   3
 
 ``` r
   p1 <- EnhancedVolcano(res2,
@@ -568,32 +485,15 @@ In this example, we first over-ride the existing shape scheme and then both the 
     borderColour = 'black')
 
   # create custom key-value pairs for 'high', 'low', 'mid' expression by fold-change
-    # set the base colour as 'black'
-    keyvals.colour <- rep('black', nrow(res2))
+  # this can be achieved with nested ifelse statements
+  keyvals.colour <- ifelse(
+    res2$log2FoldChange < -2.5, 'royalblue',
+      ifelse(res2$log2FoldChange > 2.5, 'gold',
+        'black'))
+  names(keyvals.colour)[keyvals.colour == 'gold'] <- 'high'
+  names(keyvals.colour)[keyvals.colour == 'black'] <- 'mid'
+  names(keyvals.colour)[keyvals.colour == 'royalblue'] <- 'low'
 
-    # set the base name/label as 'Mid'
-    names(keyvals.colour) <- rep('Mid', nrow(res2))
-
-    # modify keyvals for variables with fold change > 2.5
-    keyvals.colour[which(res2$log2FoldChange > 2.5)] <- 'gold'
-    names(keyvals.colour)[which(res2$log2FoldChange > 2.5)] <- 'high'
-
-    # modify keyvals for variables with fold change < -2.5
-    keyvals.colour[which(res2$log2FoldChange < -2.5)] <- 'royalblue'
-    names(keyvals.colour)[which(res2$log2FoldChange < -2.5)] <- 'low'
-
-    unique(names(keyvals.colour))
-```
-
-    ## [1] "Mid"  "low"  "high"
-
-``` r
-    unique(keyvals.colour)
-```
-
-    ## [1] "black"     "royalblue" "gold"
-
-``` r
   p2 <- EnhancedVolcano(res2,
     lab = rownames(res2),
     x = 'log2FoldChange',
@@ -609,7 +509,7 @@ In this example, we first over-ride the existing shape scheme and then both the 
     shapeCustom = keyvals.shape,
     colCustom = keyvals.colour,
     colAlpha = 1,
-    legendPosition = 'top',
+    legendPosition = 'right',
     legendLabSize = 15,
     legendIconSize = 5.0,
     drawConnectors = TRUE,
@@ -628,10 +528,9 @@ In this example, we first over-ride the existing shape scheme and then both the 
     top = textGrob('EnhancedVolcano',
       just = c('center'),
       gp = gpar(fontsize = 32)))
-  grid.rect(gp=gpar(fill=NA))
 ```
 
-![Over-ride colour and/or shape scheme with custom key-value pairs.](README_files/figure-markdown_github/ex12-1.png)
+![Over-ride colour and/or shape scheme with custom key-value pairs.](README_files/figure-markdown_github/ex11-1.png)
 
 Shade certain variables
 -----------------------
@@ -665,14 +564,14 @@ This feature works best for shading just 1 or 2 key variables. It is expected th
     shape = 42,
     colCustom = keyvals,
     colAlpha = 1,
-    legendPosition = 'top',
+    legendPosition = 'none',
     legendLabSize = 15,
     legendIconSize = 5.0,
     shade = celltype1,
     shadeLabel = 'Cell-type I',
     shadeAlpha = 1/2,
     shadeFill = 'purple',
-    shadeSize = 1,
+    shadeSize = 4,
     shadeBins = 5,
     drawConnectors = TRUE,
     widthConnectors = 1.0,
@@ -725,15 +624,14 @@ This feature works best for shading just 1 or 2 key variables. It is expected th
     top = textGrob('EnhancedVolcano',
       just = c('center'),
       gp = gpar(fontsize = 32)))
-  grid.rect(gp=gpar(fill=NA))
 ```
 
-![Shade certain variables.](README_files/figure-markdown_github/ex13-1.png)
+![Shade certain variables.](README_files/figure-markdown_github/ex12-1.png)
 
 Highlighting key variables via custom point sizes
 -------------------------------------------------
 
-One can also supply a vector of sizes to pointSize for the purpose of having a different size for each poin. For example, if we want to change the size of just those variables with log2FC&gt;2:
+One can also supply a vector of sizes to pointSize for the purpose of having a different size for each poin. For example, if we want to change the size of just those variables with log<sub>2</sub>FC&gt;2:
 
 ``` r
   library("pasilla")
@@ -765,7 +663,7 @@ One can also supply a vector of sizes to pointSize for the purpose of having a d
     xlim = c(-5.5, 5.5),
     ylim = c(0, -log10(10e-12)),
     pointSize = c(ifelse(res$log2FoldChange>2, 8, 1)),
-    labSize = 2.5,
+    labSize = 4.0,
     shape = c(6, 6, 19, 16),
     title = "DESeq2 results",
     subtitle = "Differential expression",
@@ -781,7 +679,7 @@ One can also supply a vector of sizes to pointSize for the purpose of having a d
   p1
 ```
 
-![Highlighting key variabvles via custom point sizes.](README_files/figure-markdown_github/ex14-1.png)
+![Highlighting key variabvles via custom point sizes.](README_files/figure-markdown_github/ex13-1.png)
 
 Custom axis tick marks
 ----------------------
@@ -804,7 +702,14 @@ Acknowledgments
 
 The development of *EnhancedVolcano* has benefited from contributions and suggestions from:
 
-Sharmila Rana, [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html), Luke Dow (Assistant Professor at Weill Cornell Medicine), Tokhir Dadaev (Institute of Cancer Research), Alina Frolova, Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center), David Wheeler (Montana State University), David Kulp
+-   Sharmila Rana
+-   [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html)
+-   Luke Dow (Assistant Professor at Weill Cornell Medicine)
+-   Tokhir Dadaev (Institute of Cancer Research)
+-   Alina Frolova
+-   Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center)
+-   David Wheeler (Montana State University)
+-   David Kulp
 
 Session info
 ============
@@ -834,42 +739,42 @@ sessionInfo()
     ##  [8] datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] pasilla_1.13.0              gridExtra_2.3              
-    ##  [3] DESeq2_1.25.10              magrittr_1.5               
-    ##  [5] airway_1.5.0                SummarizedExperiment_1.15.6
-    ##  [7] DelayedArray_0.11.4         BiocParallel_1.19.2        
-    ##  [9] matrixStats_0.54.0          Biobase_2.45.0             
-    ## [11] GenomicRanges_1.37.14       GenomeInfoDb_1.21.1        
-    ## [13] IRanges_2.19.10             S4Vectors_0.23.18          
-    ## [15] BiocGenerics_0.31.5         EnhancedVolcano_1.3.4      
+    ##  [1] pasilla_1.14.0              gridExtra_2.3              
+    ##  [3] DESeq2_1.26.0               magrittr_1.5               
+    ##  [5] airway_1.6.0                SummarizedExperiment_1.16.0
+    ##  [7] DelayedArray_0.12.0         BiocParallel_1.20.0        
+    ##  [9] matrixStats_0.55.0          Biobase_2.46.0             
+    ## [11] GenomicRanges_1.38.0        GenomeInfoDb_1.22.0        
+    ## [13] IRanges_2.20.0              S4Vectors_0.24.0           
+    ## [15] BiocGenerics_0.32.0         EnhancedVolcano_1.5.1      
     ## [17] ggrepel_0.8.1               ggplot2_3.2.1              
-    ## [19] knitr_1.24                 
+    ## [19] knitr_1.26                 
     ## 
     ## loaded via a namespace (and not attached):
     ##  [1] bit64_0.9-7            splines_3.6.1          Formula_1.2-3         
     ##  [4] assertthat_0.2.1       highr_0.8              latticeExtra_0.6-28   
-    ##  [7] blob_1.2.0             GenomeInfoDbData_1.2.1 yaml_2.2.0            
-    ## [10] RSQLite_2.1.2          pillar_1.4.2           backports_1.1.4       
-    ## [13] lattice_0.20-38        glue_1.3.1             digest_0.6.20         
-    ## [16] RColorBrewer_1.1-2     XVector_0.25.0         checkmate_1.9.4       
-    ## [19] colorspace_1.4-1       htmltools_0.3.6        Matrix_1.2-17         
-    ## [22] XML_3.98-1.20          pkgconfig_2.0.2        genefilter_1.67.1     
-    ## [25] zlibbioc_1.31.0        purrr_0.3.2            xtable_1.8-4          
-    ## [28] scales_1.0.0           tibble_2.1.3           htmlTable_1.13.1      
-    ## [31] annotate_1.63.0        withr_2.1.2            nnet_7.3-12           
-    ## [34] lazyeval_0.2.2         survival_2.44-1.1      crayon_1.3.4          
+    ##  [7] blob_1.2.0             GenomeInfoDbData_1.2.2 yaml_2.2.0            
+    ## [10] RSQLite_2.1.2          pillar_1.4.2           backports_1.1.5       
+    ## [13] lattice_0.20-38        glue_1.3.1             digest_0.6.22         
+    ## [16] RColorBrewer_1.1-2     XVector_0.26.0         checkmate_1.9.4       
+    ## [19] colorspace_1.4-1       htmltools_0.4.0        Matrix_1.2-17         
+    ## [22] XML_3.98-1.20          pkgconfig_2.0.3        genefilter_1.68.0     
+    ## [25] zlibbioc_1.32.0        purrr_0.3.3            xtable_1.8-4          
+    ## [28] scales_1.0.0           tibble_2.1.3           htmlTable_1.13.2      
+    ## [31] annotate_1.64.0        withr_2.1.2            nnet_7.3-12           
+    ## [34] lazyeval_0.2.2         survival_3.1-7         crayon_1.3.4          
     ## [37] memoise_1.1.0          evaluate_0.14          MASS_7.3-51.4         
-    ## [40] foreign_0.8-72         tools_3.6.1            data.table_1.12.2     
+    ## [40] foreign_0.8-72         tools_3.6.1            data.table_1.12.6     
     ## [43] stringr_1.4.0          locfit_1.5-9.1         munsell_0.5.0         
-    ## [46] cluster_2.1.0          AnnotationDbi_1.47.0   compiler_3.6.1        
-    ## [49] rlang_0.4.0            RCurl_1.95-4.12        rstudioapi_0.10       
-    ## [52] htmlwidgets_1.3        labeling_0.3           bitops_1.0-6          
-    ## [55] base64enc_0.1-3        rmarkdown_1.14         gtable_0.3.0          
-    ## [58] DBI_1.0.0              R6_2.4.0               dplyr_0.8.3           
-    ## [61] zeallot_0.1.0          bit_1.1-14             Hmisc_4.2-0           
-    ## [64] stringi_1.4.3          Rcpp_1.0.2             geneplotter_1.63.0    
+    ## [46] cluster_2.1.0          AnnotationDbi_1.48.0   compiler_3.6.1        
+    ## [49] rlang_0.4.1            RCurl_1.95-4.12        rstudioapi_0.10       
+    ## [52] htmlwidgets_1.5.1      labeling_0.3           bitops_1.0-6          
+    ## [55] base64enc_0.1-3        rmarkdown_1.17         gtable_0.3.0          
+    ## [58] DBI_1.0.0              R6_2.4.1               dplyr_0.8.3           
+    ## [61] zeallot_0.1.0          bit_1.1-14             Hmisc_4.3-0           
+    ## [64] stringi_1.4.3          Rcpp_1.0.3             geneplotter_1.64.0    
     ## [67] vctrs_0.2.0            rpart_4.1-15           acepack_1.4.1         
-    ## [70] tidyselect_0.2.5       xfun_0.8
+    ## [70] tidyselect_0.2.5       xfun_0.11
 
 References
 ==========
