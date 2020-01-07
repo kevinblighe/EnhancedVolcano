@@ -1,7 +1,7 @@
 EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling
 ================
 Kevin Blighe
-2019-12-14
+2020-01-06
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -81,11 +81,11 @@ Conduct differential expression using DESeq2 in order to create 2 sets of result
   res1 <- results(dds,
     contrast = c('dex','trt','untrt'))
   res1 <- lfcShrink(dds,
-    contrast = c('dex','trt','untrt'), res=res1)
+    contrast = c('dex','trt','untrt'), res=res1, type = 'normal')
   res2 <- results(dds,
     contrast = c('cell', 'N061011', 'N61311'))
   res2 <- lfcShrink(dds,
-    contrast = c('cell', 'N061011', 'N61311'), res=res2)
+    contrast = c('cell', 'N061011', 'N61311'), res=res2, type = 'normal')
 ```
 
 Plot the most basic volcano plot
@@ -718,7 +718,7 @@ Session info
 sessionInfo()
 ```
 
-    ## R version 3.6.1 (2019-07-05)
+    ## R version 3.6.2 (2019-12-12)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
     ## Running under: Ubuntu 16.04.6 LTS
     ## 
@@ -751,7 +751,7 @@ sessionInfo()
     ## [19] knitr_1.26                 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] bit64_0.9-7            splines_3.6.1          Formula_1.2-3         
+    ##  [1] bit64_0.9-7            splines_3.6.2          Formula_1.2-3         
     ##  [4] assertthat_0.2.1       highr_0.8              latticeExtra_0.6-28   
     ##  [7] blob_1.2.0             GenomeInfoDbData_1.2.2 yaml_2.2.0            
     ## [10] RSQLite_2.1.2          pillar_1.4.2           backports_1.1.5       
@@ -764,9 +764,9 @@ sessionInfo()
     ## [31] annotate_1.64.0        withr_2.1.2            nnet_7.3-12           
     ## [34] lazyeval_0.2.2         survival_3.1-7         crayon_1.3.4          
     ## [37] memoise_1.1.0          evaluate_0.14          MASS_7.3-51.4         
-    ## [40] foreign_0.8-72         tools_3.6.1            data.table_1.12.6     
+    ## [40] foreign_0.8-72         tools_3.6.2            data.table_1.12.6     
     ## [43] stringr_1.4.0          locfit_1.5-9.1         munsell_0.5.0         
-    ## [46] cluster_2.1.0          AnnotationDbi_1.48.0   compiler_3.6.1        
+    ## [46] cluster_2.1.0          AnnotationDbi_1.48.0   compiler_3.6.2        
     ## [49] rlang_0.4.1            RCurl_1.95-4.12        rstudioapi_0.10       
     ## [52] htmlwidgets_1.5.1      labeling_0.3           bitops_1.0-6          
     ## [55] base64enc_0.1-3        rmarkdown_1.17         gtable_0.3.0          
