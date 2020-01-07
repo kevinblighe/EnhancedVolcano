@@ -90,11 +90,11 @@ Conduct differential expression using DESeq2 in order to create 2 sets of result
   res1 <- results(dds,
     contrast = c('dex','trt','untrt'))
   res1 <- lfcShrink(dds,
-    contrast = c('dex','trt','untrt'), res=res1)
+    contrast = c('dex','trt','untrt'), res=res1, type = 'normal')
   res2 <- results(dds,
     contrast = c('cell', 'N061011', 'N61311'))
   res2 <- lfcShrink(dds,
-    contrast = c('cell', 'N061011', 'N61311'), res=res2)
+    contrast = c('cell', 'N061011', 'N61311'), res=res2, type = 'normal')
 
 ```
 
