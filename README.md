@@ -1,7 +1,7 @@
 EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling
 ================
-Kevin Blighe
-2020-01-06
+Kevin Blighe, Sharmila Rana, Myles Lewis
+2020-02-06
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -702,8 +702,6 @@ Acknowledgments
 
 The development of *EnhancedVolcano* has benefited from contributions and suggestions from:
 
--   Sharmila Rana
--   [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html)
 -   Luke Dow (Assistant Professor at Weill Cornell Medicine)
 -   Tokhir Dadaev (Institute of Cancer Research)
 -   Alina Frolova
@@ -778,5 +776,7 @@ sessionInfo()
 
 References
 ==========
+
+Blighe, Rana, and Lewis (2018)
 
 Blighe, K, S Rana, and M Lewis. 2018. “EnhancedVolcano: Publication-ready volcano plots with enhanced colouring and labeling.” <https://github.com/kevinblighe>.

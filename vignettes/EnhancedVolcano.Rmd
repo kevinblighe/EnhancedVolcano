@@ -1,6 +1,6 @@
 ---
-title: "Publication-ready volcano plots with enhanced colouring and labeling"
-author: "Kevin Blighe"
+title: "EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling"
+author: "Kevin Blighe, Sharmila Rana, Myles Lewis"
 date: "`r Sys.Date()`"
 package: "`r packageVersion('EnhancedVolcano')`"
 output:
@@ -762,8 +762,6 @@ More information on this can be found here: http://www.sthda.com/english/wiki/gg
 The development of *EnhancedVolcano* has benefited from contributions
 and suggestions from:
 
-* Sharmila Rana
-* [Myles Lewis](https://www.qmul.ac.uk/whri/people/academic-staff/items/lewismyles.html)
 * Luke Dow (Assistant Professor at Weill Cornell Medicine)
 * Tokhir Dadaev (Institute of Cancer Research)
 * Alina Frolova
@@ -780,4 +778,6 @@ sessionInfo()
 ```
 
 # References
+
+@EnhancedVolcano
 
