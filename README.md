@@ -1,7 +1,7 @@
 EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling
 ================
 Kevin Blighe, Sharmila Rana, Myles Lewis
-2020-02-15
+2020-04-02
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -716,7 +716,7 @@ Session info
 sessionInfo()
 ```
 
-    ## R version 3.6.2 (2019-12-12)
+    ## R version 3.6.3 (2020-02-29)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
     ## Running under: Ubuntu 16.04.6 LTS
     ## 
@@ -744,16 +744,16 @@ sessionInfo()
     ##  [9] matrixStats_0.55.0          Biobase_2.46.0             
     ## [11] GenomicRanges_1.38.0        GenomeInfoDb_1.22.0        
     ## [13] IRanges_2.20.0              S4Vectors_0.24.0           
-    ## [15] BiocGenerics_0.32.0         EnhancedVolcano_1.5.1      
+    ## [15] BiocGenerics_0.32.0         EnhancedVolcano_1.5.6      
     ## [17] ggrepel_0.8.1               ggplot2_3.2.1              
     ## [19] knitr_1.26                 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] bit64_0.9-7            splines_3.6.2          Formula_1.2-3         
+    ##  [1] bit64_0.9-7            splines_3.6.3          Formula_1.2-3         
     ##  [4] assertthat_0.2.1       highr_0.8              latticeExtra_0.6-28   
     ##  [7] blob_1.2.0             GenomeInfoDbData_1.2.2 yaml_2.2.0            
     ## [10] RSQLite_2.1.2          pillar_1.4.2           backports_1.1.5       
-    ## [13] lattice_0.20-38        glue_1.3.1             digest_0.6.22         
+    ## [13] lattice_0.20-40        glue_1.3.1             digest_0.6.22         
     ## [16] RColorBrewer_1.1-2     XVector_0.26.0         checkmate_1.9.4       
     ## [19] colorspace_1.4-1       htmltools_0.4.0        Matrix_1.2-17         
     ## [22] XML_3.98-1.20          pkgconfig_2.0.3        genefilter_1.68.0     
@@ -761,10 +761,10 @@ sessionInfo()
     ## [28] scales_1.0.0           tibble_2.1.3           htmlTable_1.13.2      
     ## [31] annotate_1.64.0        withr_2.1.2            nnet_7.3-12           
     ## [34] lazyeval_0.2.2         survival_3.1-7         crayon_1.3.4          
-    ## [37] memoise_1.1.0          evaluate_0.14          MASS_7.3-51.4         
-    ## [40] foreign_0.8-72         tools_3.6.2            data.table_1.12.6     
+    ## [37] memoise_1.1.0          evaluate_0.14          MASS_7.3-51.5         
+    ## [40] foreign_0.8-72         tools_3.6.3            data.table_1.12.6     
     ## [43] stringr_1.4.0          locfit_1.5-9.1         munsell_0.5.0         
-    ## [46] cluster_2.1.0          AnnotationDbi_1.48.0   compiler_3.6.2        
+    ## [46] cluster_2.1.0          AnnotationDbi_1.48.0   compiler_3.6.3        
     ## [49] rlang_0.4.1            RCurl_1.95-4.12        rstudioapi_0.10       
     ## [52] htmlwidgets_1.5.1      labeling_0.3           bitops_1.0-6          
     ## [55] base64enc_0.1-3        rmarkdown_1.17         gtable_0.3.0          
