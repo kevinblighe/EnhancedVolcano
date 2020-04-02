@@ -744,7 +744,7 @@ sessionInfo()
     ##  [9] matrixStats_0.55.0          Biobase_2.46.0             
     ## [11] GenomicRanges_1.38.0        GenomeInfoDb_1.22.0        
     ## [13] IRanges_2.20.0              S4Vectors_0.24.0           
-    ## [15] BiocGenerics_0.32.0         EnhancedVolcano_1.5.6      
+    ## [15] BiocGenerics_0.32.0         EnhancedVolcano_1.5.8      
     ## [17] ggrepel_0.8.1               ggplot2_3.2.1              
     ## [19] knitr_1.26                 
     ## 
