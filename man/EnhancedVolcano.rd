@@ -23,7 +23,7 @@ EnhancedVolcano(
   xlim = c(min(toptable[[x]], na.rm=TRUE) - 1,
     max(toptable[[x]], na.rm=TRUE) + 1),
   ylim = c(0, max(-log10(toptable[[y]]), na.rm=TRUE) + 5),
-  xlab = bquote(~Log[2]~ "fold change"),
+  xlab = bquote(~Log[2]~ 'fold change'),
   ylab = bquote(~-Log[10]~italic(P)),
   axisLabSize = 18,
   title = 'Volcano plot',
@@ -46,19 +46,23 @@ EnhancedVolcano(
   boxedLabels = FALSE,
   shape = 19,
   shapeCustom = NULL,
-  col = c("grey30", "forestgreen", "royalblue", "red2"),
+  col = c('grey30', 'forestgreen', 'royalblue', 'red2'),
   colCustom = NULL,
   colAlpha = 1/2,
-  .legend = c("NS","Log2 FC","P","P & Log2 FC"),
+  colGradient = NULL,
+  colGradientBreaks = c(pCutoff, 1.0),
+  colGradientLabels = c('0', '1.0'),
+  colGradientLimits = c(0, 1.0),
+  .legend = c('NS','Log2 FC','P','P & Log2 FC'),
   legendLabels = c('NS', expression(Log[2]~FC),
-    "p-value", expression(p-value~and~log[2]~FC)),
-  legendPosition = "top",
+    'p-value', expression(p-value~and~log[2]~FC)),
+  legendPosition = 'top',
   legendLabSize = 14,
   legendIconSize = 4.0,
   shade = NULL,
   shadeLabel = NULL,
   shadeAlpha = 1/2,
-  shadeFill = "grey",
+  shadeFill = 'grey',
   shadeSize = 0.01,
   shadeBins = 2,
   drawConnectors = FALSE,
@@ -77,141 +81,152 @@ EnhancedVolcano(
   vlineWidth = 0.4,
   gridlines.major = TRUE,
   gridlines.minor = TRUE,
-  border = "partial",
+  border = 'partial',
   borderWidth = 0.8,
-  borderColour = "black")
+  borderColour = 'black')
 }
 
 \arguments{
   \item{toptable}{A data-frame of test statistics (if not, a data frame,
-  an attempt will be made to convert it to one). Requires at least
-  the following: column for transcript names (can be rownames); a column
-  for log2 fold changes; a column for nominal or adjusted p-value.
-  REQUIRED.}
+    an attempt will be made to convert it to one). Requires at least
+    the following: column for transcript names (can be rownames); a column
+    for log2 fold changes; a column for nominal or adjusted p-value.
+    REQUIRED.}
   \item{lab}{A column name in toptable containing transcript names. Can be
-  rownames(toptable). REQUIRED.}
+    rownames(toptable). REQUIRED.}
   \item{x}{A column name in toptable containing log2 fold changes. REQUIRED.}
   \item{y}{A column name in toptable containing nominal or adjusted p-values.
-  REQUIRED.}
+    REQUIRED.}
   \item{selectLab}{A vector containing a subset of lab. DEFAULT = NULL.
-  OPTIONAL.}
+    OPTIONAL.}
   \item{xlim}{Limits of the x-axis. DEFAULT = c(min(toptable[,x], na.rm=TRUE),
-  max(toptable[,x], na.rm=TRUE)). OPTIONAL.}
+    max(toptable[,x], na.rm=TRUE)). OPTIONAL.}
   \item{ylim}{Limits of the y-axis. DEFAULT = c(0, max(-log10(toptable[,y]),
-  na.rm=TRUE) + 5). OPTIONAL.}
+    na.rm=TRUE) + 5). OPTIONAL.}
   \item{xlab}{Label for x-axis. DEFAULT = bquote(~Log[2]~ "fold change").
-  OPTIONAL.}
+    OPTIONAL.}
   \item{ylab}{Label for y-axis. DEFAULT = bquote(~-Log[10]~italic(P)).
-  OPTIONAL.}
+    OPTIONAL.}
   \item{axisLabSize}{Size of x- and y-axis labels. DEFAULT = 18. OPTIONAL.}
   \item{title}{Plot title. DEFAULT = 'Volcano plot'. OPTIONAL.}
   \item{subtitle}{Plot subtitle. DEFAULT = 'EnhancedVolcano'. OPTIONAL.}
   \item{caption}{Plot caption. DEFAULT =
-  paste0('Total = ', nrow(toptable), ' variables'). OPTIONAL.}
+    paste0('Total = ', nrow(toptable), ' variables'). OPTIONAL.}
   \item{titleLabSize}{Size of plot title. DEFAULT = 18. OPTIONAL.}
   \item{subtitleLabSize}{Size of plot subtitle. DEFAULT = 14. OPTIONAL.}
   \item{captionLabSize}{Size of plot caption. DEFAULT = 14. OPTIONAL.}
   \item{pCutoff}{Cut-off for statistical significance. A horizontal line
-  will be drawn at -log10(pCutoff). DEFAULT = 10e-6. OPTIONAL.}
+    will be drawn at -log10(pCutoff). DEFAULT = 10e-6. OPTIONAL.}
   \item{FCcutoff}{Cut-off for absolute log2 fold-change. Vertical lines will
-  be drawn at the negative and positive values of log2FCcutoff. DEFAULT =
-  1.0. OPTIONAL.}
-  \item{cutoffLineType}{Line type for FCcutoff and pCutoff ("blank",
-  "solid", "dashed", "dotted", "dotdash", "longdash", "twodash").
-  DEFAULT = "longdash". OPTIONAL.}
+    be drawn at the negative and positive values of log2FCcutoff. DEFAULT =
+    1.0. OPTIONAL.}
+  \item{cutoffLineType}{Line type for FCcutoff and pCutoff ('blank',
+    'solid', 'dashed', 'dotted', 'dotdash', 'longdash', 'twodash').
+    DEFAULT = 'longdash'. OPTIONAL.}
   \item{cutoffLineCol}{Line colour for FCcutoff and pCutoff. DEFAULT =
-  "black". OPTIONAL.}
+    'black'. OPTIONAL.}
   \item{cutoffLineWidth}{Line width for FCcutoff and pCutoff. DEFAULT =
-  0.4. OPTIONAL.}
+    0.4. OPTIONAL.}
   \item{pointSize}{Size of plotted points for each transcript. Can be
-  a single value or a vector of sizes. DEFAULT = 2.0. OPTIONAL.}
+    a single value or a vector of sizes. DEFAULT = 2.0. OPTIONAL.}
   \item{labSize}{Size of labels for each transcript. DEFAULT =
-  3.0. OPTIONAL.}
+    3.0. OPTIONAL.}
   \item{labCol}{Colour of labels for each transcript. DEFAULT =
-  'black'. OPTIONAL.}
+    'black'. OPTIONAL.}
   \item{labFace}{Font face of labels for each transcript. DEFAULT
-  = 'plain'. OPTIONAL.}
+    = 'plain'. OPTIONAL.}
   \item{labhjust}{Horizontal adjustment of label for each
-  transcript. DEFAULT = 0.5. OPTIONAL.}
+    transcript. DEFAULT = 0.5. OPTIONAL.}
   \item{labvjust}{Vertical adjustment of label for each
-  transcript. DEFAULT = 1.5. OPTIONAL.}
+    transcript. DEFAULT = 1.5. OPTIONAL.}
   \item{boxedLabels}{Logical, indicating whether or not to draw labels in
-  boxes. DEFAULT = FALSE. OPTIONAL.}
+    boxes. DEFAULT = FALSE. OPTIONAL.}
   \item{shape}{Shape of the plotted points. Either a single value for
-  all points, or 4 values corresponding to < abs(FCcutoff) && > pCutoff,
-  > abs(FCcutoff), < pCutoff, > abs(FCcutoff) && < pCutoff. DEFAULT = 19.
-  OPTIONAL.}
+    all points, or 4 values corresponding to < abs(FCcutoff) && > pCutoff,
+    > abs(FCcutoff), < pCutoff, > abs(FCcutoff) && < pCutoff. DEFAULT = 19.
+    OPTIONAL.}
   \item{shapeCustom}{Named vector / key-value pairs that will over-ride the
-  default shape scheme. The order must match that of toptable. Names / keys
-  relate to groups / categories; values relate to shape encodings. DEFAULT
-  = NULL. OPTIONAL.}
+    default shape scheme. The order must match that of toptable. Names / keys
+    relate to groups / categories; values relate to shape encodings. DEFAULT
+    = NULL. OPTIONAL.}
   \item{col}{Colour shading for plotted points, corresponding to
-  < abs(FCcutoff) && > pCutoff, > abs(FCcutoff), < pCutoff,
-  > abs(FCcutoff) && < pCutoff. DEFAULT = c("grey30", "forestgreen",
-  "royalblue", "red2"). OPTIONAL.}
+    < abs(FCcutoff) && > pCutoff, > abs(FCcutoff), < pCutoff,
+    > abs(FCcutoff) && < pCutoff. DEFAULT = c('grey30', 'forestgreen',
+    'royalblue', 'red2'). OPTIONAL.}
   \item{colCustom}{Named vector / key-value pairs that will over-ride the
-  default colour scheme. The order must match that of toptable. Names / keys
-  relate to groups / categories; values relate to colour. DEFAULT = NULL.
+    default colour scheme. The order must match that of toptable. Names / keys
+    relate to groups / categories; values relate to colour. DEFAULT = NULL.
   OPTIONAL.}
   \item{colAlpha}{Alpha for purposes of controlling colour transparency of
   transcript points. DEFAULT = 1/2. OPTIONAL.}
-  \item{.legend}{Plot legend key. DEFAULT = c("NS", "Log2 FC", "P",
-  "P & Log2 FC"). OPTIONAL.}
+  \item{colGradient}{If activated, over-rides the default discrete colour scheme
+    and replaces it with a continous scheme that shades based on nominal or 
+    adjusted p-value specified by 'y'. For example, c('red2', 'blue2').
+    DEFAULT = NULL. OPTIONAL.}
+  \item{colGradientBreaks}{Break-points for the two colours specified by
+    colGradient. DEFAULT = c(pCutoff, 1.0). OPTIONAL.}
+  \item{colGradientLabels}{Labels for the break-points specified by
+    colGradientBreaks. DEFAULT = c('0', '1.0'). OPTIONAL.}
+  \item{colGradientLimits}{Limits of the colour scheme specified by
+    colGradient, i.e., max and min possible p-values. DEFAULT = c(0, 1.0).
+    OPTIONAL.}
+  \item{.legend}{Plot legend key. DEFAULT = c('NS', 'Log2 FC', 'P',
+    'P & Log2 FC'). OPTIONAL.}
   \item{legendLabels}{Plot legend text labels. DEFAULT = c('NS', expression(Log[2]~FC),
-    "p-value", expression(p-value~and~log[2]~FC). OPTIONAL}
-  \item{legendPosition}{Position of legend ("top", "bottom", "left",
-  "right"). DEFAULT = "top". OPTIONAL.}
+    'p-value', expression(p-value~and~log[2]~FC). OPTIONAL}
+  \item{legendPosition}{Position of legend ('top', 'bottom', 'left',
+    'right'). DEFAULT = 'top'. OPTIONAL.}
   \item{legendLabSize}{Size of plot legend text. DEFAULT = 14. OPTIONAL.}
   \item{legendIconSize}{Size of plot legend icons / symbols. DEFAULT = 4.0.
-  OPTIONAL.}
+    OPTIONAL.}
   \item{shade}{A vector of transcript names to shade. DEFAULT = NULL.
-  OPTIONAL.}
+    OPTIONAL.}
   \item{shadeLabel}{Label for the transcrips to shade. DEFAULT = NULL.
-  OPTIONAL.}
+    OPTIONAL.}
   \item{shadeAlpha}{Alpha for purposes of controlling colour transparency of
-  shaded regions. DEFAULT = 1/2. OPTIONAL.}
-  \item{shadeFill}{Colour of shaded regions. DEFAULT = "grey". OPTIONAL.}
+    shaded regions. DEFAULT = 1/2. OPTIONAL.}
+  \item{shadeFill}{Colour of shaded regions. DEFAULT = 'grey'. OPTIONAL.}
   \item{shadeSize}{Size of the shade contour lines. DEFAULT = 0.01.
-  OPTIONAL.}
+    OPTIONAL.}
   \item{shadeBins}{Number of bins for the density of the shade. DEFAULT = 2.
-  OPTIONAL.}
+    OPTIONAL.}
   \item{drawConnectors}{Logical, indicating whether or not to connect plot
-  labels to their corresponding points by line connectors. DEFAULT = FALSE.
-  OPTIONAL.}
+    labels to their corresponding points by line connectors. DEFAULT = FALSE.
+    OPTIONAL.}
   \item{widthConnectors}{Line width of connectors. DEFAULT = 0.5. OPTIONAL.}
   \item{typeConnectors}{Have the arrow head open or filled ('closed')?
-  ('open', 'closed'). DEFAULT = 'closed'. OPTIONAL.}
+    ('open', 'closed'). DEFAULT = 'closed'. OPTIONAL.}
   \item{endsConnectors}{Which end of connectors to draw arrow head? ('last',
-  'first', 'both'). DEFAULT = 'first'. OPTIONAL.}
+    'first', 'both'). DEFAULT = 'first'. OPTIONAL.}
   \item{lengthConnectors}{Length of the connectors. DEFAULT =
-  unit(0.01, 'npc'). OPTIONAL}
+    unit(0.01, 'npc'). OPTIONAL}
   \item{colConnectors}{Line colour of connectors. DEFAULT = 'grey10'. OPTIONAL.}
   \item{hline}{Draw one or more horizontal lines passing through this/these
-  values on y-axis. For single values, only a single numerical value is
-  necessary. For multiple lines, pass these as a vector, e.g., c(60,90).
-  DEFAULT = NULL. OPTIONAL.}
+    values on y-axis. For single values, only a single numerical value is
+    necessary. For multiple lines, pass these as a vector, e.g., c(60,90).
+    DEFAULT = NULL. OPTIONAL.}
   \item{hlineType}{Line type for hline ('blank', 'solid', 'dashed', 'dotted',
-  'dotdash', 'longdash', 'twodash'). DEFAULT = 'longdash'. OPTIONAL.}
+    'dotdash', 'longdash', 'twodash'). DEFAULT = 'longdash'. OPTIONAL.}
   \item{hlineCol}{Colour of hline. DEFAULT = 'black'. OPTIONAL.}
   \item{hlineWidth}{Width of hline. DEFAULT = 0.4. OPTIONAL.}
   \item{vline}{Draw one or more vertical lines passing through this/these
-  values on x-axis. For single values, only a single numerical value is
-  necessary. For multiple lines, pass these as a vector, e.g., c(60,90).
-  DEFAULT = NULL. OPTIONAL.}
+    values on x-axis. For single values, only a single numerical value is
+    necessary. For multiple lines, pass these as a vector, e.g., c(60,90).
+    DEFAULT = NULL. OPTIONAL.}
   \item{vlineType}{Line type for vline ('blank', 'solid', 'dashed', 'dotted',
-  'dotdash', 'longdash', 'twodash'). DEFAULT = 'longdash'. OPTIONAL.}
+    'dotdash', 'longdash', 'twodash'). DEFAULT = 'longdash'. OPTIONAL.}
   \item{vlineCol}{Colour of vline. DEFAULT = 'black'. OPTIONAL.}
   \item{vlineWidth}{Width of vline. DEFAULT = 0.4. OPTIONAL.}
   \item{gridlines.major}{Logical, indicating whether or not to draw major
-  gridlines. DEFAULT = TRUE. OPTIONAL}
+    gridlines. DEFAULT = TRUE. OPTIONAL}
   \item{gridlines.minor}{Logical, indicating whether or not to draw minor
-  gridlines. DEFAULT = TRUE. OPTIONAL}
+    gridlines. DEFAULT = TRUE. OPTIONAL}
   \item{border}{Add a border for just the x and y axes ('partial') or the
-  entire plot grid ('full')? DEFAULT = 'partial'. OPTIONAL.}
+    entire plot grid ('full')? DEFAULT = 'partial'. OPTIONAL.}
   \item{borderWidth}{Width of the border on the x and y axes. DEFAULT = 0.8.
-  OPTIONAL.}
+    OPTIONAL.}
   \item{borderColour}{Colour of the border on the x and y axes. DEFAULT =
-  "black". OPTIONAL.}
+    'black'. OPTIONAL.}
 }
 
 \details{
@@ -232,17 +247,17 @@ Kevin Blighe <kevin@clinicalbioinformatics.co.uk>
 }
 
 \examples{
-library("pasilla")
-pasCts <- system.file("extdata", "pasilla_gene_counts.tsv",
-  package="pasilla", mustWork=TRUE)
-pasAnno <- system.file("extdata", "pasilla_sample_annotation.csv",
-  package="pasilla", mustWork=TRUE)
-cts <- as.matrix(read.csv(pasCts,sep="\t",row.names="gene_id"))
+library('pasilla')
+pasCts <- system.file('extdata', 'pasilla_gene_counts.tsv',
+  package='pasilla', mustWork=TRUE)
+pasAnno <- system.file('extdata', 'pasilla_sample_annotation.csv',
+  package='pasilla', mustWork=TRUE)
+cts <- as.matrix(read.csv(pasCts,sep='\t',row.names='gene_id'))
 coldata <- read.csv(pasAnno, row.names=1)
-coldata <- coldata[,c("condition","type")]
-rownames(coldata) <- sub("fb", "", rownames(coldata))
+coldata <- coldata[,c('condition','type')]
+rownames(coldata) <- sub('fb', '', rownames(coldata))
 cts <- cts[, rownames(coldata)]
-library("DESeq2")
+library('DESeq2')
 dds <- DESeqDataSetFromMatrix(countData = cts,
   colData = coldata,
   design = ~ condition)
@@ -254,21 +269,21 @@ res <- results(dds)
 
 EnhancedVolcano(res,
   lab = rownames(res),
-  x = "log2FoldChange",
-  y = "pvalue",
+  x = 'log2FoldChange',
+  y = 'pvalue',
   pCutoff = 10e-4,
   FCcutoff = 1.333,
   xlim = c(-5.5, 5.5),
   ylim = c(0, -log10(10e-12)),
   pointSize = 1.5,
   labSize = 2.5,
-  shape = c(6, 6, 19, 16),
-  title = "DESeq2 results",
-  subtitle = "Differential expression",
-  caption = "FC cutoff, 1.333; p-value cutoff, 10e-4",
+  #shape = c(6, 6, 19, 16),
+  title = 'DESeq2 results',
+  subtitle = 'Differential expression',
+  caption = 'FC cutoff, 1.333; p-value cutoff, 10e-4',
   legendPosition = "right",
   legendLabSize = 14,
-  col = c("grey30", "forestgreen", "royalblue", "red2"),
+  col = c('grey30', 'forestgreen', 'royalblue', 'red2'),
   colAlpha = 0.9,
   drawConnectors = TRUE,
   hline = c(10e-8),

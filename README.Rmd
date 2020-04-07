@@ -738,6 +738,40 @@ just those variables with log~2~FC>2:
 
 ```
 
+## Change to continuous colour scheme
+
+We can over-ride the default 'discrete' colour scheme with a continuous one
+that shades between 2 colours based on nominal or adjusted p-value,
+whichever is selected by *y*, via *colGradient*:
+
+```{r ex14, fig.height = 9, fig.width = 12, fig.cap = "Highlighting key variabvles via custom point sizes."}
+
+  p1 <- EnhancedVolcano(res,
+    lab = rownames(res),
+    x = "log2FoldChange",
+    y = "pvalue",
+    pCutoff = 10e-4,
+    FCcutoff = 2,
+    xlim = c(-5.5, 5.5),
+    ylim = c(0, -log10(10e-12)),
+    pointSize = c(ifelse(res$log2FoldChange>2, 8, 1)),
+    labSize = 4.0,
+    shape = c(6, 6, 19, 16),
+    title = "DESeq2 results",
+    subtitle = "Differential expression",
+    caption = "FC cutoff, 1.333; p-value cutoff, 10e-4",
+    legendPosition = "right",
+    legendLabSize = 14,
+    colAlpha = 0.9,
+    colGradient = c('red3', 'royalblue'),
+    drawConnectors = TRUE,
+    hline = c(10e-8),
+    widthConnectors = 0.5)
+
+  p1
+
+```
+
 ## Custom axis tick marks
 
 Custom axis ticks can be added in a 'plug and play' fashion via
@@ -765,6 +799,7 @@ and suggestions from:
 * Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center)
 * David Wheeler (Montana State University)
 * David Kulp
+* DinoFer
 
 # Session info
 

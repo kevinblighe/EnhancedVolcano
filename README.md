@@ -1,7 +1,7 @@
 EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling
 ================
 Kevin Blighe, Sharmila Rana, Myles Lewis
-2020-04-02
+2020-04-07
 
 -   [Introduction](#introduction)
 -   [Installation](#installation)
@@ -22,6 +22,7 @@ Kevin Blighe, Sharmila Rana, Myles Lewis
     -   [Over-ride colour and/or shape scheme with custom key-value pairs](#over-ride-colour-andor-shape-scheme-with-custom-key-value-pairs)
     -   [Shade certain variables](#shade-certain-variables)
     -   [Highlighting key variables via custom point sizes](#highlighting-key-variables-via-custom-point-sizes)
+    -   [Change to continuous colour scheme](#change-to-continuous-colour-scheme)
     -   [Custom axis tick marks](#custom-axis-tick-marks)
 -   [Acknowledgments](#acknowledgments)
 -   [Session info](#session-info)
@@ -681,6 +682,39 @@ One can also supply a vector of sizes to pointSize for the purpose of having a d
 
 ![Highlighting key variabvles via custom point sizes.](README_files/figure-markdown_github/ex13-1.png)
 
+Change to continuous colour scheme
+----------------------------------
+
+We can over-ride the default 'discrete' colour scheme with a continuous one that shades between 2 colours based on nominal or adjusted p-value, whichever is selected by *y*, via *colGradient*:
+
+``` r
+  p1 <- EnhancedVolcano(res,
+    lab = rownames(res),
+    x = "log2FoldChange",
+    y = "pvalue",
+    pCutoff = 10e-4,
+    FCcutoff = 2,
+    xlim = c(-5.5, 5.5),
+    ylim = c(0, -log10(10e-12)),
+    pointSize = c(ifelse(res$log2FoldChange>2, 8, 1)),
+    labSize = 4.0,
+    shape = c(6, 6, 19, 16),
+    title = "DESeq2 results",
+    subtitle = "Differential expression",
+    caption = "FC cutoff, 1.333; p-value cutoff, 10e-4",
+    legendPosition = "right",
+    legendLabSize = 14,
+    colAlpha = 0.9,
+    colGradient = c('red3', 'royalblue'),
+    drawConnectors = TRUE,
+    hline = c(10e-8),
+    widthConnectors = 0.5)
+
+  p1
+```
+
+![Highlighting key variabvles via custom point sizes.](README_files/figure-markdown_github/ex14-1.png)
+
 Custom axis tick marks
 ----------------------
 
@@ -708,6 +742,7 @@ The development of *EnhancedVolcano* has benefited from contributions and sugges
 -   Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center)
 -   David Wheeler (Montana State University)
 -   David Kulp
+-   DinoFer
 
 Session info
 ============
@@ -744,7 +779,7 @@ sessionInfo()
     ##  [9] matrixStats_0.55.0          Biobase_2.46.0             
     ## [11] GenomicRanges_1.38.0        GenomeInfoDb_1.22.0        
     ## [13] IRanges_2.20.0              S4Vectors_0.24.0           
-    ## [15] BiocGenerics_0.32.0         EnhancedVolcano_1.5.8      
+    ## [15] BiocGenerics_0.32.0         EnhancedVolcano_1.5.10     
     ## [17] ggrepel_0.8.1               ggplot2_3.2.1              
     ## [19] knitr_1.26                 
     ## 

@@ -30,12 +30,16 @@ EnhancedVolcano <- function(
   boxedLabels = FALSE,
   shape = 19,
   shapeCustom = NULL,
-  col = c("grey30", "forestgreen", "royalblue", "red2"),
+  col = c('grey30', 'forestgreen', 'royalblue', 'red2'),
   colCustom = NULL,
   colAlpha = 1/2,
-  .legend = c("NS","Log2 FC","P","P & Log2 FC"),
+  colGradient = NULL,
+  colGradientBreaks = c(pCutoff, 1.0),
+  colGradientLabels = c('0', '1.0'),
+  colGradientLimits = c(0, 1.0),
+  .legend = c('NS','Log2 FC','P','P & Log2 FC'),
   legendLabels = c('NS', expression(Log[2]~FC),
-    "p-value", expression(p-value~and~log[2]~FC)),
+    'p-value', expression(p-value~and~log[2]~FC)),
   legendPosition = "top",
   legendLabSize = 14,
   legendIconSize = 4.0,
@@ -61,28 +65,28 @@ EnhancedVolcano <- function(
   vlineWidth = 0.4,
   gridlines.major = TRUE,
   gridlines.minor = TRUE,
-  border = "partial",
+  border = 'partial',
   borderWidth = 0.8,
-  borderColour = "black")
+  borderColour = 'black')
 {
   if(!is.numeric(toptable[[x]])) {
-    stop(paste(x, " is not numeric!", sep=""))
+    stop(paste(x, ' is not numeric!', sep=''))
   }
 
   if(!is.numeric(toptable[[y]])) {
-    stop(paste(y, " is not numeric!", sep=""))
+    stop(paste(y, ' is not numeric!', sep=''))
   }
 
   i <- xvals <- yvals <- Sig <- NULL
 
   toptable <- as.data.frame(toptable)
-  toptable$Sig <- "NS"
-  toptable$Sig[(abs(toptable[[x]]) > FCcutoff)] <- "FC"
-  toptable$Sig[(toptable[[y]] < pCutoff)] <- "P"
+  toptable$Sig <- 'NS'
+  toptable$Sig[(abs(toptable[[x]]) > FCcutoff)] <- 'FC'
+  toptable$Sig[(toptable[[y]] < pCutoff)] <- 'P'
   toptable$Sig[(toptable[[y]] < pCutoff) &
-    (abs(toptable[[x]]) > FCcutoff)] <- "FC_P"
+    (abs(toptable[[x]]) > FCcutoff)] <- 'FC_P'
   toptable$Sig <- factor(toptable$Sig,
-    levels=c("NS","FC","P","FC_P"))
+    levels=c('NS','FC','P','FC_P'))
 
   # some software programs return 0 for very low p-values
   # These throw an error in EnhancedVolcano
@@ -97,9 +101,9 @@ EnhancedVolcano <- function(
     #  "Converting to minimum possible value..."),
     #  call. = FALSE)
     #toptable[which(toptable[[y]] == 0), y] <- .Machine$double.xmin
-    warning(paste("One or more p-values is 0.",
-      "Converting to 10^-1 * current",
-      "lowest non-zero p-value..."),
+    warning(paste('One or more p-values is 0.',
+      'Converting to 10^-1 * current',
+      'lowest non-zero p-value...'),
       call. = FALSE)
     toptable[which(toptable[[y]] == 0), y] <- min(
       toptable[which(toptable[[y]] != 0), y],
@@ -157,7 +161,7 @@ EnhancedVolcano <- function(
       # legend
       legend.position = legendPosition,
       legend.key = element_blank(),
-      legend.key.size = unit(0.5, "cm"),
+      legend.key.size = unit(0.5, 'cm'),
       legend.text = element_text(
         size = legendLabSize),
       title = element_text(
@@ -282,128 +286,206 @@ EnhancedVolcano <- function(
 
   # 4, only shapeCustom is activated
   } else if (is.null(colCustom) & !is.null(shapeCustom)) {
-    plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
+    if (is.null(colGradient)) {
+      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
 
-      # over-ride legend icon sizes for colour and shape.
-      # guide_legends are separate for colour and shape;
-      # so, legends will be drawn separate
-      guides(
-        colour = guide_legend(
-          order = 1,
-          override.aes=list(
-            size = legendIconSize)),
-        shape = guide_legend(
-          order = 2,
-          override.aes=list(
-            size = legendIconSize))) +
+        # over-ride legend icon sizes for colour and shape.
+        # guide_legends are separate for colour and shape;
+        # so, legends will be drawn separate
+        guides(
+          colour = guide_legend(
+            order = 1,
+            override.aes=list(
+              size = legendIconSize)),
+          shape = guide_legend(
+            order = 2,
+            override.aes=list(
+              size = legendIconSize))) +
 
-      # include new shape encodings as aes.
-      # Standard colour for NS, FC, P, FC_P,
-      # are added to aes, too.
-      geom_point(
-        aes(
-          color = factor(Sig),
-          shape = factor(names(shapeCustom))),
-        alpha = colAlpha,
-        size = pointSize,
-        na.rm = TRUE) +
+        # include new shape encodings as aes.
+        # Standard colour for NS, FC, P, FC_P,
+        # are added to aes, too.
+        geom_point(
+          aes(
+            color = factor(Sig),
+            shape = factor(names(shapeCustom))),
+          alpha = colAlpha,
+          size = pointSize,
+          na.rm = TRUE) +
 
-      # as it is included as aes, a separate legend
-      # for 'colour' will be drawn. Here, over-ride that
-      # legend
-      scale_color_manual(
-        values=c(
-          NS=col[1],
-          FC=col[2],
-          P=col[3],
-          FC_P=col[4]),
-        labels=c(
-          NS=legendLabels[1],
-          FC=legendLabels[2],
-          P=legendLabels[3],
-          FC_P=legendLabels[4])) +
+        # as it is included as aes, a separate legend
+        # for 'colour' will be drawn. Here, over-ride that
+        # legend
+        scale_color_manual(
+          values=c(
+            NS=col[1],
+            FC=col[2],
+            P=col[3],
+            FC_P=col[4]),
+          labels=c(
+            NS=legendLabels[1],
+            FC=legendLabels[2],
+            P=legendLabels[3],
+            FC_P=legendLabels[4])) +
 
-      # specify the shape with the supplied encoding
-      scale_shape_manual(values = shapeCustom)
+        # specify the shape with the supplied encoding
+        scale_shape_manual(values = shapeCustom)
+    } else {
+        plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
+
+        # over-ride legend icon sizes for colour and shape.
+        # guide_legends are separate for colour and shape;
+        # so, legends will be drawn separate
+        guides(
+          shape = guide_legend(
+            order = 2,
+            override.aes=list(
+              size = legendIconSize))) +
+
+        # include new shape encodings as aes.
+        # Standard colour for NS, FC, P, FC_P,
+        # are added to aes, too.
+        geom_point(
+          aes(
+            color = factor(Sig),
+            shape = factor(names(shapeCustom))),
+          alpha = colAlpha,
+          size = pointSize,
+          na.rm = TRUE) +
+
+        scale_colour_gradient(
+          low = colGradient[1],
+          high = colGradient[2],
+          limits = colGradientLimits,
+          breaks = colGradientBreaks,
+          labels = colGradientLabels)
+
+        # specify the shape with the supplied encoding
+        scale_shape_manual(values = shapeCustom)
+    }
 
   # 5, both colCustom and shapeCustom are null;
   # only a single shape value specified
   } else if (is.null(colCustom) & is.null(shapeCustom) & length(shape) == 1) {
-    plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
+    if (is.null(colGradient)) {
+      plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
 
-      # over-ride legend icon sizes for colour and shape.
-      # including 'shape' in the colour guide_legend here
-      # results in the legends merging
-      guides(colour = guide_legend(
-        order = 1,
-        override.aes=list(
+        # over-ride legend icon sizes for colour and shape.
+        # including 'shape' in the colour guide_legend here
+        # results in the legends merging
+        guides(colour = guide_legend(
+          order = 1,
+          override.aes=list(
+            shape = shape,
+            size = legendIconSize))) +
+
+        geom_point(
+          aes(color = factor(Sig)),
+          alpha = colAlpha,
           shape = shape,
-          size = legendIconSize))) +
+          size = pointSize,
+          na.rm = TRUE) +
 
-      geom_point(
-        aes(color = factor(Sig)),
-        alpha = colAlpha,
-        shape = shape,
-        size = pointSize,
-        na.rm = TRUE) +
+        scale_color_manual(
+          values = c(
+            NS = col[1],
+            FC = col[2],
+            P = col[3],
+            FC_P = col[4]),
+          labels = c(
+            NS = legendLabels[1],
+            FC = legendLabels[2],
+            P = legendLabels[3],
+            FC_P = legendLabels[4]))
+    } else {
+      plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
 
-      scale_color_manual(
-        values = c(
-          NS = col[1],
-          FC = col[2],
-          P = col[3],
-          FC_P = col[4]),
-        labels = c(
-          NS = legendLabels[1],
-          FC = legendLabels[2],
-          P = legendLabels[3],
-          FC_P = legendLabels[4]))
+        geom_point(
+          aes(color = yvals),
+          alpha = colAlpha,
+          shape = shape,
+          size = pointSize,
+          na.rm = TRUE) +
 
+        scale_colour_gradient(
+          low = colGradient[1],
+          high = colGradient[2],
+          limits = colGradientLimits,
+          breaks = colGradientBreaks,
+          labels = colGradientLabels)
+    }
   # 6, both colCustom and shapeCustom are null;
   # four shape values are specified
   } else if (is.null(colCustom) & is.null(shapeCustom) & length(shape) == 4) {
-    plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
+    if (is.null(colGradient)) {
+      plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
 
-      # over-ride legend icon sizes for colour and shape.
-      # including 'shape' in the colour guide_legend here
-      # results in the legends merging
-      guides(colour = guide_legend(
-        order = 1,
-        override.aes = list(
-          shape = c(
+        # over-ride legend icon sizes for colour and shape.
+        # including 'shape' in the colour guide_legend here
+        # results in the legends merging
+        guides(colour = guide_legend(
+          order = 1,
+          override.aes = list(
+            shape = c(
+              NS = shape[1],
+              FC = shape[2],
+              P = shape[3],
+              FC_P = shape[4]),
+            size = legendIconSize))) +
+
+        geom_point(
+          aes(
+            color = factor(Sig),
+            shape = factor(Sig)),
+          alpha = colAlpha,
+          size = pointSize,
+          na.rm = TRUE) +
+
+        scale_color_manual(
+          values = c(
+            NS = col[1],
+            FC = col[2],
+            P = col[3],
+            FC_P = col[4]),
+          labels = c(
+            NS = legendLabels[1],
+            FC = legendLabels[2],
+            P = legendLabels[3],
+            FC_P = legendLabels[4])) +
+
+        scale_shape_manual(
+          values = c(
             NS = shape[1],
             FC = shape[2],
             P = shape[3],
             FC_P = shape[4]),
-          size = legendIconSize))) +
+          guide = FALSE)
+    } else {
+      plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
 
-      geom_point(
-        aes(
-          color = factor(Sig),
-          shape = factor(Sig)),
-        alpha = colAlpha,
-        size = pointSize,
-        na.rm = TRUE) +
+        geom_point(
+          aes(
+            color = yvals,
+            shape = factor(Sig)),
+          alpha = colAlpha,
+          size = pointSize,
+          na.rm = TRUE) +
 
-      scale_color_manual(
-        values = c(
-          NS = col[1],
-          FC = col[2],
-          P = col[3],
-          FC_P = col[4]),
-        labels = c(
-          NS = legendLabels[1],
-          FC = legendLabels[2],
-          P = legendLabels[3],
-          FC_P = legendLabels[4])) +
+        scale_colour_gradient(
+          low = colGradient[1],
+          high = colGradient[2],
+          limits = colGradientLimits,
+          breaks = colGradientBreaks,
+          labels = colGradientLabels) +
 
-      scale_shape_manual(
-        values = c(
-          NS = shape[1],
-          FC = shape[2],
-          P = shape[3],
-          FC_P = shape[4]),
-        guide = FALSE)
+        scale_shape_manual(
+          values = c(
+            NS = shape[1],
+            FC = shape[2],
+            P = shape[3],
+            FC_P = shape[4]),
+          guide = FALSE)
+    }
   }
 
   # add more elements to the plot
@@ -444,7 +526,7 @@ EnhancedVolcano <- function(
   }
 
   # Border around plot
-  if (border == "full") {
+  if (border == 'full') {
     plot <- plot + theme(panel.border = element_rect(
       colour = borderColour, fill = NA, size = borderWidth))
   } else if (border == "partial") {
@@ -494,9 +576,9 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == TRUE && !is.null(selectLab)) {
       plot <- plot + geom_text_repel(
         data=subset(toptable,
-          !is.na(toptable[["lab"]])),
+          !is.na(toptable[['lab']])),
         aes(label=subset(toptable,
-          !is.na(toptable[["lab"]]))[["lab"]]),
+          !is.na(toptable[['lab']]))[['lab']]),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
@@ -510,10 +592,10 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == FALSE && !is.null(selectLab)) {
       plot <- plot + geom_text(
         data=subset(toptable,
-          !is.na(toptable[["lab"]])),
+          !is.na(toptable[['lab']])),
         aes(
           label=subset(toptable,
-            !is.na(toptable[["lab"]]))[["lab"]]),
+            !is.na(toptable[['lab']]))[['lab']]),
         size = labSize,
         check_overlap = TRUE,
         hjust = labhjust,
@@ -528,7 +610,7 @@ EnhancedVolcano <- function(
             abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
           toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[["lab"]]),
+            abs(toptable[[x]]) > FCcutoff)[['lab']]),
         size = labSize,
         check_overlap = TRUE,
         hjust = labhjust,
@@ -548,7 +630,7 @@ EnhancedVolcano <- function(
             abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
           toptable[[y]]<pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[["lab"]]),
+            abs(toptable[[x]]) > FCcutoff)[['lab']]),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
@@ -562,9 +644,9 @@ EnhancedVolcano <- function(
     } else if (drawConnectors == TRUE && !is.null(selectLab)) {
       plot <- plot + geom_label_repel(
         data=subset(toptable,
-          !is.na(toptable[["lab"]])),
+          !is.na(toptable[['lab']])),
         aes(label=subset(toptable,
-          !is.na(toptable[["lab"]]))[["lab"]]),
+          !is.na(toptable[['lab']]))[['lab']]),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
@@ -581,7 +663,7 @@ EnhancedVolcano <- function(
           !is.na(toptable[["lab"]])),
         aes(
           label=subset(toptable,
-            !is.na(toptable[["lab"]]))[["lab"]]),
+            !is.na(toptable[['lab']]))[['lab']]),
         size = labSize,
         #check_overlap = TRUE,
         hjust = labhjust,
@@ -596,7 +678,7 @@ EnhancedVolcano <- function(
             abs(toptable[[x]]) > FCcutoff),
         aes(label=subset(toptable,
           toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[["lab"]]),
+            abs(toptable[[x]]) > FCcutoff)[['lab']]),
         size = labSize,
         #check_overlap = TRUE,
         hjust = labhjust,

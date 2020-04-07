@@ -9,7 +9,8 @@ CHANGES IN VERSION 1.6
  - now pad xlim by +/- 1
  - moved default position of labels to be central to
    its respective point
- - tidied vignette to simplify code
+ - added 'colGradient', which colours points continuously
+   based on p-value
 
 
 CHANGES IN VERSION 1.4
