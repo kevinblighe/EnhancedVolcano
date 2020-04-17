@@ -412,6 +412,7 @@ In this example, we just wish to colour all variables with log2FC > 2.5 as
     res2$log2FoldChange < -2.5, 'royalblue',
       ifelse(res2$log2FoldChange > 2.5, 'gold',
         'black'))
+  keyvals[is.na(keyvals)] <- 'black'
   names(keyvals)[keyvals == 'gold'] <- 'high'
   names(keyvals)[keyvals == 'black'] <- 'mid'
   names(keyvals)[keyvals == 'royalblue'] <- 'low'
@@ -505,6 +506,7 @@ both the colour and shape scheme at the same time.
     rownames(res2) %in% celltype1, 17,
       ifelse(rownames(res2) %in% celltype2, 64,
         3))
+  keyvals.shape[is.na(keyvals.shape)] <- 3
   names(keyvals.shape)[keyvals.shape == 3] <- 'PBMC'
   names(keyvals.shape)[keyvals.shape == 17] <- 'Cell-type 1'
   names(keyvals.shape)[keyvals.shape == 64] <- 'Cell-type 2'
@@ -546,6 +548,7 @@ both the colour and shape scheme at the same time.
     res2$log2FoldChange < -2.5, 'royalblue',
       ifelse(res2$log2FoldChange > 2.5, 'gold',
         'black'))
+  keyvals.colour[is.na(keyvals.colour)] <- 'black'
   names(keyvals.colour)[keyvals.colour == 'gold'] <- 'high'
   names(keyvals.colour)[keyvals.colour == 'black'] <- 'mid'
   names(keyvals.colour)[keyvals.colour == 'royalblue'] <- 'low'
