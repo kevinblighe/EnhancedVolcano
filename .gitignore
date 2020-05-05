@@ -1,6 +1,5 @@
-^library\.bib$
-^README\.Rmd$
-^\.Rproj$
-^\.Rhistory$
-^\.Rproj\.user$
+library.bib
+README.Rmd
+.Rproj
+.Rhistory
 .Rproj.user
