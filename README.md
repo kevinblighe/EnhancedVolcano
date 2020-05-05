@@ -1,43 +1,26 @@
-EnhancedVolcano: publication-ready volcano plots with enhanced colouring and labeling
+EnhancedVolcano: publication-ready volcano plots with enhanced colouring
+and labeling
 ================
 Kevin Blighe, Sharmila Rana, Myles Lewis
-2020-04-07
+2020-05-04
 
--   [Introduction](#introduction)
--   [Installation](#installation)
-    -   [1. Download the package from Bioconductor](#download-the-package-from-bioconductor)
-    -   [2. Load the package into R session](#load-the-package-into-r-session)
--   [Quick start](#quick-start)
-    -   [Plot the most basic volcano plot](#plot-the-most-basic-volcano-plot)
--   [Advanced features](#advanced-features)
-    -   [Modify cut-offs for log2FC and P value; specify title; adjust point and label size](#modify-cut-offs-for-log2fc-and-p-value-specify-title-adjust-point-and-label-size)
-    -   [Adjust colour and alpha for point shading](#adjust-colour-and-alpha-for-point-shading)
-    -   [Adjust shape of plotted points](#adjust-shape-of-plotted-points)
-    -   [Adjust cut-off lines and add extra threshold lines](#adjust-cut-off-lines-and-add-extra-threshold-lines)
-    -   [Adjust legend position, size, and text](#adjust-legend-position-size-and-text)
-    -   [Fit more labels by adding connectors](#fit-more-labels-by-adding-connectors)
-    -   [Only label key variables](#only-label-key-variables)
-    -   [Draw labels in boxes](#draw-labels-in-boxes)
-    -   [Over-ride colouring scheme with custom key-value pairs](#over-ride-colouring-scheme-with-custom-key-value-pairs)
-    -   [Over-ride colour and/or shape scheme with custom key-value pairs](#over-ride-colour-andor-shape-scheme-with-custom-key-value-pairs)
-    -   [Shade certain variables](#shade-certain-variables)
-    -   [Highlighting key variables via custom point sizes](#highlighting-key-variables-via-custom-point-sizes)
-    -   [Change to continuous colour scheme](#change-to-continuous-colour-scheme)
-    -   [Custom axis tick marks](#custom-axis-tick-marks)
--   [Acknowledgments](#acknowledgments)
--   [Session info](#session-info)
--   [References](#references)
+# Introduction
 
-Introduction
-============
+Volcano plots represent a useful way to visualise the results of
+differential expression analyses. Here, we present a highly-configurable
+function that produces publication-ready volcano plots. EnhancedVolcano
+(Blighe, Rana, and Lewis 2018) will attempt to fit as many labels in the
+plot window as possible, thus avoiding ‘clogging’ up the plot with
+labels that could not otherwise have been read. Other functionality
+allows the user to identify up to 3 different types of attributes in the
+same plot space via colour, shape, size, and shade parameter
+configurations.
 
-Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots. EnhancedVolcano (Blighe, Rana, and Lewis 2018) will attempt to fit as many labels in the plot window as possible, thus avoiding 'clogging' up the plot with labels that could not otherwise have been read. Other functionality allows the user to identify up to 3 different types of attributes in the same plot space via colour, shape, size, and shade parameter configurations.
+    ## Warning: package 'knitr' was built under R version 4.0.0
 
-Installation
-============
+# Installation
 
-1. Download the package from Bioconductor
------------------------------------------
+## 1\. Download the package from Bioconductor
 
 ``` r
   if (!requireNamespace('BiocManager', quietly = TRUE))
@@ -52,17 +35,19 @@ Note: to install development version:
   devtools::install_github('kevinblighe/EnhancedVolcano')
 ```
 
-2. Load the package into R session
-----------------------------------
+## 2\. Load the package into R session
 
 ``` r
   library(EnhancedVolcano)
 ```
 
-Quick start
-===========
+# Quick start
 
-For this example, we will follow the tutorial (from Section 3.1) of [RNA-seq workflow: gene-level exploratory analysis and differential expression](http://master.bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html). Specifically, we will load the 'airway' data, where different airway smooth muscle cells were treated with dexamethasone.
+For this example, we will follow the tutorial (from Section 3.1) of
+[RNA-seq workflow: gene-level exploratory analysis and differential
+expression](http://master.bioconductor.org/packages/release/workflows/vignettes/rnaseqGene/inst/doc/rnaseqGene.html).
+Specifically, we will load the ‘airway’ data, where different airway
+smooth muscle cells were treated with dexamethasone.
 
 ``` r
   library(airway)
@@ -72,7 +57,8 @@ For this example, we will follow the tutorial (from Section 3.1) of [RNA-seq wor
   airway$dex %<>% relevel('untrt')
 ```
 
-Conduct differential expression using DESeq2 in order to create 2 sets of results:
+Conduct differential expression using DESeq2 in order to create 2 sets
+of results:
 
 ``` r
   library('DESeq2')
@@ -89,10 +75,12 @@ Conduct differential expression using DESeq2 in order to create 2 sets of result
     contrast = c('cell', 'N061011', 'N61311'), res=res2, type = 'normal')
 ```
 
-Plot the most basic volcano plot
---------------------------------
+## Plot the most basic volcano plot
 
-For the most basic volcano plot, only a single data-frame, data-matrix, or tibble of test results is required, containing point labels, log2FC, and adjusted or unadjusted P values. The default cut-off for log2FC is &gt;|2|; the default cut-off for P value is 10e-6.
+For the most basic volcano plot, only a single data-frame, data-matrix,
+or tibble of test results is required, containing point labels, log2FC,
+and adjusted or unadjusted P values. The default cut-off for log2FC is
+\>|2|; the default cut-off for P value is 10e-6.
 
 ``` r
   EnhancedVolcano(res1,
@@ -102,19 +90,31 @@ For the most basic volcano plot, only a single data-frame, data-matrix, or tibbl
     xlim = c(-5, 8))
 ```
 
-![Plot the most basic volcano plot.](README_files/figure-markdown_github/ex1-1.png)
+![Plot the most basic volcano plot.](README_files/figure-gfm/ex1-1.png)
 
-Advanced features
-=================
+# Advanced features
 
-Virtually all aspects of an EnhancedVolcano plot can be configured for the purposes of accommodating all types of statistical distributions and labelling preferences. By default, EnhancedVolcano will only attempt to label genes that pass the thresholds that you set for statistical significance, i.e., 'pCutoff' and 'FCcutoff'. In addition, it will only label as many of these that can reasonably fit in the plot space. The user can optionally supply a vector of labels (as 'selectLab') that s/he wishes to label in the plot.
+Virtually all aspects of an EnhancedVolcano plot can be configured for
+the purposes of accommodating all types of statistical distributions and
+labelling preferences. By default, EnhancedVolcano will only attempt to
+label genes that pass the thresholds that you set for statistical
+significance, i.e., ‘pCutoff’ and ‘FCcutoff’. In addition, it will only
+label as many of these that can reasonably fit in the plot space. The
+user can optionally supply a vector of labels (as ‘selectLab’) that s/he
+wishes to label in the
+plot.
 
-Modify cut-offs for log2FC and P value; specify title; adjust point and label size
-----------------------------------------------------------------------------------
+## Modify cut-offs for log2FC and P value; specify title; adjust point and label size
 
-The default P value cut-off of 10e-6 may be too relaxed for most studies, which may therefore necessitate increasing this threshold by a few orders of magnitude. Equally, the log2FC cut-offs may be too stringent, given that moderated 'shrunk' estimates of log2FC differences in differential expression analysis can now be calculated.
+The default P value cut-off of 10e-6 may be too relaxed for most
+studies, which may therefore necessitate increasing this threshold by a
+few orders of magnitude. Equally, the log2FC cut-offs may be too
+stringent, given that moderated ‘shrunk’ estimates of log2FC differences
+in differential expression analysis can now be calculated.
 
-In this example, we also modify the point and label size, which can help to improve clarity where many variables went into the differential expression analysis.
+In this example, we also modify the point and label size, which can help
+to improve clarity where many variables went into the differential
+expression analysis.
 
 ``` r
   EnhancedVolcano(res2,
@@ -129,12 +129,16 @@ In this example, we also modify the point and label size, which can help to impr
     labSize = 3.0)
 ```
 
-![Modify cut-offs for log2FC and P value; specify title; adjust point and label size.](README_files/figure-markdown_github/ex2-1.png)
+![Modify cut-offs for log2FC and P value; specify title; adjust point
+and label size.](README_files/figure-gfm/ex2-1.png)
 
-Adjust colour and alpha for point shading
------------------------------------------
+## Adjust colour and alpha for point shading
 
-The default colour scheme may not be to everyone's taste. Here we make it such that only the variables passing both the log2FC and P value thresholds are coloured red, with everything else black. We also adjust the value for 'alpha', which controls the transparency of the plotted points: 1 = 100% opaque; 0 = 100% transparent.
+The default colour scheme may not be to everyone’s taste. Here we make
+it such that only the variables passing both the log2FC and P value
+thresholds are coloured red, with everything else black. We also adjust
+the value for ‘alpha’, which controls the transparency of the plotted
+points: 1 = 100% opaque; 0 = 100% transparent.
 
 ``` r
   EnhancedVolcano(res2,
@@ -151,14 +155,20 @@ The default colour scheme may not be to everyone's taste. Here we make it such t
     colAlpha = 1)
 ```
 
-![Adjust colour and alpha for point shading.](README_files/figure-markdown_github/ex3-1.png)
+![Adjust colour and alpha for point
+shading.](README_files/figure-gfm/ex3-1.png)
 
-Adjust shape of plotted points
-------------------------------
+## Adjust shape of plotted points
 
-It can help, visually, to also plot different points as different shapes. The default shape is a circle. The user can specify their own shape encoding via the 'shape' parameter, which accepts either a single or four possible values: if four values, these then map to the standard designation that is also assigned by the colours; if a single value, all points are shaped with this value.
+It can help, visually, to also plot different points as different
+shapes. The default shape is a circle. The user can specify their own
+shape encoding via the ‘shape’ parameter, which accepts either a single
+or four possible values: if four values, these then map to the standard
+designation that is also assigned by the colours; if a single value, all
+points are shaped with this value.
 
-For more information on shape encoding search online at [ggplot2 Quick Reference: shape](http://sape.inf.usi.ch/quick-reference/ggplot2/shape)
+For more information on shape encoding search online at [ggplot2 Quick
+Reference: shape](http://sape.inf.usi.ch/quick-reference/ggplot2/shape)
 
 ``` r
  EnhancedVolcano(res2,
@@ -175,7 +185,7 @@ For more information on shape encoding search online at [ggplot2 Quick Reference
     colAlpha = 1)
 ```
 
-![Adjust shape of plotted points.](README_files/figure-markdown_github/ex4-1.png)
+![Adjust shape of plotted points.](README_files/figure-gfm/ex4-1.png)
 
 ``` r
   EnhancedVolcano(res2,
@@ -192,14 +202,19 @@ For more information on shape encoding search online at [ggplot2 Quick Reference
     colAlpha = 1)
 ```
 
-![Adjust shape of plotted points.](README_files/figure-markdown_github/ex4-2.png)
+![Adjust shape of plotted points.](README_files/figure-gfm/ex4-2.png)
 
-Adjust cut-off lines and add extra threshold lines
---------------------------------------------------
+## Adjust cut-off lines and add extra threshold lines
 
-The lines that are drawn to indicate cut-off points are also modifiable. The parameter 'cutoffLineType' accepts the following values: "blank", "solid", "dashed", "dotted", "dotdash", "longdash", and "twodash". The colour and thickness of these can also be modified with 'cutoffLineCol' and 'cutoffLineWidth'. To disable the lines, set either cutoffLineType="blank" or cutoffLineWidth=0.
+The lines that are drawn to indicate cut-off points are also modifiable.
+The parameter ‘cutoffLineType’ accepts the following values: “blank”,
+“solid”, “dashed”, “dotted”, “dotdash”, “longdash”, and “twodash”. The
+colour and thickness of these can also be modified with ‘cutoffLineCol’
+and ‘cutoffLineWidth’. To disable the lines, set either
+cutoffLineType=“blank” or cutoffLineWidth=0.
 
-Extra lines can also be added via 'hline' and 'vline' to display other cut-offs.
+Extra lines can also be added via ‘hline’ and ‘vline’ to display other
+cut-offs.
 
 To make these more visible, we will also remove the default gridlines.
 
@@ -226,12 +241,14 @@ To make these more visible, we will also remove the default gridlines.
     gridlines.minor = FALSE)
 ```
 
-![Adjust cut-off lines and add extra threshold lines.](README_files/figure-markdown_github/ex5-1.png)
+![Adjust cut-off lines and add extra threshold
+lines.](README_files/figure-gfm/ex5-1.png)
 
-Adjust legend position, size, and text
---------------------------------------
+## Adjust legend position, size, and text
 
-The position of the legend can also be changed to "left" or "right" (and stacked vertically), or 'top' or "bottom" (stacked horizontally). The legend text, label size, and icon size can also be modified.
+The position of the legend can also be changed to “left” or “right” (and
+stacked vertically), or ‘top’ or “bottom” (stacked horizontally). The
+legend text, label size, and icon size can also be modified.
 
 ``` r
   EnhancedVolcano(res2,
@@ -253,7 +270,8 @@ The position of the legend can also be changed to "left" or "right" (and stacked
     legendIconSize = 5.0)
 ```
 
-![Adjust legend position, size, and text.](README_files/figure-markdown_github/ex6-1.png)
+![Adjust legend position, size, and
+text.](README_files/figure-gfm/ex6-1.png)
 
 Note: to make the legend completely invisible, specify:
 
@@ -261,12 +279,18 @@ Note: to make the legend completely invisible, specify:
 legendPosition = 'none'
 ```
 
-Fit more labels by adding connectors
-------------------------------------
+## Fit more labels by adding connectors
 
-In order to maximise free space in the plot window, one can fit more labels by adding connectors from labels to points, where appropriate. The width and colour of these connectors can also be modified with 'widthConnectors' and 'colConnectors', respectively. Further configuration is achievable via 'typeConnectors' ("open", "closed"), 'endsConnectors' ("last", "first", "both"), and lengthConnectors (default = unit(0.01, 'npc')).
+In order to maximise free space in the plot window, one can fit more
+labels by adding connectors from labels to points, where appropriate.
+The width and colour of these connectors can also be modified with
+‘widthConnectors’ and ‘colConnectors’, respectively. Further
+configuration is achievable via ‘typeConnectors’ (“open”, “closed”),
+‘endsConnectors’ (“last”, “first”, “both”), and lengthConnectors
+(default = unit(0.01, ‘npc’)).
 
-The result may not always be desirable as it can make the plot look overcrowded.
+The result may not always be desirable as it can make the plot look
+overcrowded.
 
 ``` r
   EnhancedVolcano(res2,
@@ -288,12 +312,17 @@ The result may not always be desirable as it can make the plot look overcrowded.
     colConnectors = 'grey30')
 ```
 
-![Fit more labels by adding connectors.](README_files/figure-markdown_github/ex7-1.png)
+![Fit more labels by adding
+connectors.](README_files/figure-gfm/ex7-1.png)
 
-Only label key variables
-------------------------
+## Only label key variables
 
-In many situations, people may only wish to label their key variables / variables of interest. One can therefore supply a vector of these variables via the 'selectLab' parameter, the contents of which have to also be present in the vector passed to 'lab'. In addition, only those variables that pass both the cutoff for log2FC and P value will be labelled.
+In many situations, people may only wish to label their key variables /
+variables of interest. One can therefore supply a vector of these
+variables via the ‘selectLab’ parameter, the contents of which have to
+also be present in the vector passed to ‘lab’. In addition, only those
+variables that pass both the cutoff for log2FC and P value will be
+labelled.
 
 ``` r
   EnhancedVolcano(res2,
@@ -314,12 +343,12 @@ In many situations, people may only wish to label their key variables / variable
     legendIconSize = 5.0)
 ```
 
-![Only label key variables.](README_files/figure-markdown_github/ex8-1.png)
+![Only label key variables.](README_files/figure-gfm/ex8-1.png)
 
-Draw labels in boxes
---------------------
+## Draw labels in boxes
 
-To improve label clarity, we can draw simple boxes around the plots labels. This works much better when drawConnectors is also TRUE.
+To improve label clarity, we can draw simple boxes around the plots
+labels. This works much better when drawConnectors is also TRUE.
 
 ``` r
   EnhancedVolcano(res2,
@@ -347,14 +376,18 @@ To improve label clarity, we can draw simple boxes around the plots labels. This
     colConnectors = 'black')
 ```
 
-![Draw labels in boxes.](README_files/figure-markdown_github/ex9-1.png)
+![Draw labels in boxes.](README_files/figure-gfm/ex9-1.png)
 
-Over-ride colouring scheme with custom key-value pairs
-------------------------------------------------------
+## Over-ride colouring scheme with custom key-value pairs
 
-In certain situations, one may wish to over-ride the default colour scheme with their own colour-scheme, such as colouring variables by pathway, cell-type or group. This can be achieved by supplying a named vector as 'colCustom'.
+In certain situations, one may wish to over-ride the default colour
+scheme with their own colour-scheme, such as colouring variables by
+pathway, cell-type or group. This can be achieved by supplying a named
+vector as ‘colCustom’.
 
-In this example, we just wish to colour all variables with log2FC &gt; 2.5 as 'high' and those with log2FC &lt; -2.5 as 'low'.
+In this example, we just wish to colour all variables with log2FC \> 2.5
+as ‘high’ and those with log2FC \< -2.5 as
+‘low’.
 
 ``` r
   # create custom key-value pairs for 'high', 'low', 'mid' expression by fold-change
@@ -432,12 +465,13 @@ In this example, we just wish to colour all variables with log2FC &gt; 2.5 as 'h
       gp = gpar(fontsize = 32)))
 ```
 
-![Over-ride colouring scheme with custom key-value pairs.](README_files/figure-markdown_github/ex10-1.png)
+![Over-ride colouring scheme with custom key-value
+pairs.](README_files/figure-gfm/ex10-1.png)
 
-Over-ride colour and/or shape scheme with custom key-value pairs
-----------------------------------------------------------------
+## Over-ride colour and/or shape scheme with custom key-value pairs
 
-In this example, we first over-ride the existing shape scheme and then both the colour and shape scheme at the same time.
+In this example, we first over-ride the existing shape scheme and then
+both the colour and shape scheme at the same time.
 
 ``` r
   # define different cell-types that will be shaded
@@ -534,14 +568,17 @@ In this example, we first over-ride the existing shape scheme and then both the 
       gp = gpar(fontsize = 32)))
 ```
 
-![Over-ride colour and/or shape scheme with custom key-value pairs.](README_files/figure-markdown_github/ex11-1.png)
+![Over-ride colour and/or shape scheme with custom key-value
+pairs.](README_files/figure-gfm/ex11-1.png)
 
-Shade certain variables
------------------------
+## Shade certain variables
 
-In this example we add an extra level of highlighting key variables by shading.
+In this example we add an extra level of highlighting key variables by
+shading.
 
-This feature works best for shading just 1 or 2 key variables. It is expected that the user can use the 'shapeCustom' parameter for more in depth identification of different types of variables.
+This feature works best for shading just 1 or 2 key variables. It is
+expected that the user can use the ‘shapeCustom’ parameter for more in
+depth identification of different types of variables.
 
 ``` r
   # define different cell-types that will be shaded
@@ -630,12 +667,13 @@ This feature works best for shading just 1 or 2 key variables. It is expected th
       gp = gpar(fontsize = 32)))
 ```
 
-![Shade certain variables.](README_files/figure-markdown_github/ex12-1.png)
+![Shade certain variables.](README_files/figure-gfm/ex12-1.png)
 
-Highlighting key variables via custom point sizes
--------------------------------------------------
+## Highlighting key variables via custom point sizes
 
-One can also supply a vector of sizes to pointSize for the purpose of having a different size for each poin. For example, if we want to change the size of just those variables with log<sub>2</sub>FC&gt;2:
+One can also supply a vector of sizes to pointSize for the purpose of
+having a different size for each poin. For example, if we want to change
+the size of just those variables with log<sub>2</sub>FC\>2:
 
 ``` r
   library("pasilla")
@@ -683,12 +721,14 @@ One can also supply a vector of sizes to pointSize for the purpose of having a d
   p1
 ```
 
-![Highlighting key variabvles via custom point sizes.](README_files/figure-markdown_github/ex13-1.png)
+![Highlighting key variabvles via custom point
+sizes.](README_files/figure-gfm/ex13-1.png)
 
-Change to continuous colour scheme
-----------------------------------
+## Change to continuous colour scheme
 
-We can over-ride the default 'discrete' colour scheme with a continuous one that shades between 2 colours based on nominal or adjusted p-value, whichever is selected by *y*, via *colGradient*:
+We can over-ride the default ‘discrete’ colour scheme with a continuous
+one that shades between 2 colours based on nominal or adjusted p-value,
+whichever is selected by *y*, via *colGradient*:
 
 ``` r
   p1 <- EnhancedVolcano(res,
@@ -716,12 +756,13 @@ We can over-ride the default 'discrete' colour scheme with a continuous one that
   p1
 ```
 
-![Highlighting key variabvles via custom point sizes.](README_files/figure-markdown_github/ex14-1.png)
+![Highlighting key variabvles via custom point
+sizes.](README_files/figure-gfm/ex14-1.png)
 
-Custom axis tick marks
-----------------------
+## Custom axis tick marks
 
-Custom axis ticks can be added in a 'plug and play' fashion via *ggplot2* functionality, as follows:
+Custom axis ticks can be added in a ‘plug and play’ fashion via
+*ggplot2* functionality, as follows:
 
 ``` r
   p1 +
@@ -730,25 +771,26 @@ Custom axis ticks can be added in a 'plug and play' fashion via *ggplot2* functi
       breaks=seq(-6,6, 1))
 ```
 
-![Custom axis tick marks](README_files/figure-markdown_github/ex15-1.png)
+![Custom axis tick marks](README_files/figure-gfm/ex15-1.png)
 
-More information on this can be found here: <http://www.sthda.com/english/wiki/ggplot2-axis-ticks-a-guide-to-customize-tick-marks-and-labels>
+More information on this can be found here:
+<http://www.sthda.com/english/wiki/ggplot2-axis-ticks-a-guide-to-customize-tick-marks-and-labels>
 
-Acknowledgments
-===============
+# Acknowledgments
 
-The development of *EnhancedVolcano* has benefited from contributions and suggestions from:
+The development of *EnhancedVolcano* has benefited from contributions
+and suggestions from:
 
--   Luke Dow (Assistant Professor at Weill Cornell Medicine)
--   Tokhir Dadaev (Institute of Cancer Research)
--   Alina Frolova
--   Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German Cancer Research Center)
--   David Wheeler (Montana State University)
--   David Kulp
--   DinoFer
+  - Luke Dow (Assistant Professor at Weill Cornell Medicine)
+  - Tokhir Dadaev (Institute of Cancer Research)
+  - Alina Frolova
+  - Venu Thatikonda (Deutsches Krebsforschungszentrum (DKFZ) / German
+    Cancer Research Center)
+  - David Wheeler (Montana State University)
+  - David Kulp
+  - DinoFer
 
-Session info
-============
+# Session info
 
 ``` r
 sessionInfo()
@@ -777,44 +819,55 @@ sessionInfo()
     ## other attached packages:
     ##  [1] pasilla_1.14.0              gridExtra_2.3              
     ##  [3] DESeq2_1.26.0               magrittr_1.5               
-    ##  [5] airway_1.6.0                SummarizedExperiment_1.16.0
-    ##  [7] DelayedArray_0.12.0         BiocParallel_1.20.0        
-    ##  [9] matrixStats_0.55.0          Biobase_2.46.0             
-    ## [11] GenomicRanges_1.38.0        GenomeInfoDb_1.22.0        
-    ## [13] IRanges_2.20.0              S4Vectors_0.24.0           
+    ##  [5] airway_1.6.0                SummarizedExperiment_1.16.1
+    ##  [7] DelayedArray_0.12.3         BiocParallel_1.20.1        
+    ##  [9] matrixStats_0.56.0          Biobase_2.46.0             
+    ## [11] GenomicRanges_1.38.0        GenomeInfoDb_1.22.1        
+    ## [13] IRanges_2.20.2              S4Vectors_0.24.4           
     ## [15] BiocGenerics_0.32.0         EnhancedVolcano_1.5.10     
-    ## [17] ggrepel_0.8.1               ggplot2_3.2.1              
-    ## [19] knitr_1.26                 
+    ## [17] ggrepel_0.8.2               ggplot2_3.3.0              
+    ## [19] knitr_1.28                 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] bit64_0.9-7            splines_3.6.3          Formula_1.2-3         
-    ##  [4] assertthat_0.2.1       highr_0.8              latticeExtra_0.6-28   
-    ##  [7] blob_1.2.0             GenomeInfoDbData_1.2.2 yaml_2.2.0            
-    ## [10] RSQLite_2.1.2          pillar_1.4.2           backports_1.1.5       
-    ## [13] lattice_0.20-40        glue_1.3.1             digest_0.6.22         
-    ## [16] RColorBrewer_1.1-2     XVector_0.26.0         checkmate_1.9.4       
-    ## [19] colorspace_1.4-1       htmltools_0.4.0        Matrix_1.2-17         
-    ## [22] XML_3.98-1.20          pkgconfig_2.0.3        genefilter_1.68.0     
-    ## [25] zlibbioc_1.32.0        purrr_0.3.3            xtable_1.8-4          
-    ## [28] scales_1.0.0           tibble_2.1.3           htmlTable_1.13.2      
-    ## [31] annotate_1.64.0        withr_2.1.2            nnet_7.3-12           
-    ## [34] lazyeval_0.2.2         survival_3.1-7         crayon_1.3.4          
-    ## [37] memoise_1.1.0          evaluate_0.14          MASS_7.3-51.5         
-    ## [40] foreign_0.8-72         tools_3.6.3            data.table_1.12.6     
-    ## [43] stringr_1.4.0          locfit_1.5-9.1         munsell_0.5.0         
-    ## [46] cluster_2.1.0          AnnotationDbi_1.48.0   compiler_3.6.3        
-    ## [49] rlang_0.4.1            RCurl_1.95-4.12        rstudioapi_0.10       
-    ## [52] htmlwidgets_1.5.1      labeling_0.3           bitops_1.0-6          
-    ## [55] base64enc_0.1-3        rmarkdown_1.17         gtable_0.3.0          
-    ## [58] DBI_1.0.0              R6_2.4.1               dplyr_0.8.3           
-    ## [61] zeallot_0.1.0          bit_1.1-14             Hmisc_4.3-0           
-    ## [64] stringi_1.4.3          Rcpp_1.0.3             geneplotter_1.64.0    
-    ## [67] vctrs_0.2.0            rpart_4.1-15           acepack_1.4.1         
-    ## [70] tidyselect_0.2.5       xfun_0.11
+    ##  [1] bitops_1.0-6           bit64_0.9-7            RColorBrewer_1.1-2    
+    ##  [4] tools_3.6.3            backports_1.1.6        R6_2.4.1              
+    ##  [7] rpart_4.1-15           Hmisc_4.4-0            DBI_1.1.0             
+    ## [10] colorspace_1.4-1       nnet_7.3-13            withr_2.1.2           
+    ## [13] tidyselect_1.0.0       bit_1.1-15.2           compiler_3.6.3        
+    ## [16] cli_2.0.2              htmlTable_1.13.3       isoband_0.2.1         
+    ## [19] labeling_0.3           scales_1.1.0           checkmate_2.0.0       
+    ## [22] genefilter_1.68.0      stringr_1.4.0          digest_0.6.25         
+    ## [25] foreign_0.8-76         rmarkdown_2.1          XVector_0.26.0        
+    ## [28] base64enc_0.1-3        jpeg_0.1-8.1           pkgconfig_2.0.3       
+    ## [31] htmltools_0.4.0        highr_0.8              htmlwidgets_1.5.1     
+    ## [34] rlang_0.4.5            rstudioapi_0.11        RSQLite_2.2.0         
+    ## [37] farver_2.0.3           acepack_1.4.1          dplyr_0.8.5           
+    ## [40] RCurl_1.98-1.2         GenomeInfoDbData_1.2.2 Formula_1.2-3         
+    ## [43] Matrix_1.2-18          Rcpp_1.0.4.6           munsell_0.5.0         
+    ## [46] fansi_0.4.1            lifecycle_0.2.0        stringi_1.4.6         
+    ## [49] yaml_2.2.1             MASS_7.3-51.5          zlibbioc_1.32.0       
+    ## [52] blob_1.2.1             crayon_1.3.4           lattice_0.20-41       
+    ## [55] splines_3.6.3          annotate_1.64.0        locfit_1.5-9.4        
+    ## [58] pillar_1.4.3           geneplotter_1.64.0     XML_3.99-0.3          
+    ## [61] glue_1.4.0             evaluate_0.14          latticeExtra_0.6-29   
+    ## [64] data.table_1.12.8      png_0.1-7              vctrs_0.2.4           
+    ## [67] gtable_0.3.0           purrr_0.3.3            assertthat_0.2.1      
+    ## [70] xfun_0.13              xtable_1.8-4           survival_3.1-12       
+    ## [73] tibble_3.0.0           AnnotationDbi_1.48.0   memoise_1.1.0         
+    ## [76] cluster_2.1.0          ellipsis_0.3.0
 
-References
-==========
+# References
 
 Blighe, Rana, and Lewis (2018)
 
-Blighe, K, S Rana, and M Lewis. 2018. “EnhancedVolcano: Publication-ready volcano plots with enhanced colouring and labeling.” <https://github.com/kevinblighe/EnhancedVolcano.>
+<div id="refs" class="references">
+
+<div id="ref-EnhancedVolcano">
+
+Blighe, K, S Rana, and M Lewis. 2018. “EnhancedVolcano:
+Publication-ready volcano plots with enhanced colouring and labeling.”
+<https://github.com/kevinblighe/EnhancedVolcano.>
+
+</div>
+
+</div>
