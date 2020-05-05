@@ -1,2 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^README_files$
+^library\.bib$
+^README\.Rmd$
+^README\.md$
