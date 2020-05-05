@@ -16,8 +16,6 @@ allows the user to identify up to 3 different types of attributes in the
 same plot space via colour, shape, size, and shade parameter
 configurations.
 
-    ## Warning: package 'knitr' was built under R version 4.0.0
-
 # Installation
 
 ## 1\. Download the package from Bioconductor
