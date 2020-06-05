@@ -2,7 +2,7 @@ EnhancedVolcano: publication-ready volcano plots with enhanced colouring
 and labeling
 ================
 Kevin Blighe, Sharmila Rana, Myles Lewis
-2020-05-04
+2020-06-04
 
 # Introduction
 
@@ -707,7 +707,7 @@ the size of just those variables with log<sub>2</sub>FC\>2:
     shape = c(6, 6, 19, 16),
     title = "DESeq2 results",
     subtitle = "Differential expression",
-    caption = "FC cutoff, 1.333; p-value cutoff, 10e-4",
+    caption = bquote(~Log[2]~ "fold change cutoff, 2; p-value cutoff, 10e-4"),
     legendPosition = "right",
     legendLabSize = 14,
     col = c("grey30", "forestgreen", "royalblue", "red2"),
@@ -742,7 +742,7 @@ whichever is selected by *y*, via *colGradient*:
     shape = c(6, 6, 19, 16),
     title = "DESeq2 results",
     subtitle = "Differential expression",
-    caption = "FC cutoff, 1.333; p-value cutoff, 10e-4",
+    caption = bquote(~Log[2]~ "fold change cutoff, 2; p-value cutoff, 10e-4"),
     legendPosition = "right",
     legendLabSize = 14,
     colAlpha = 0.9,
