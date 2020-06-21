@@ -26,9 +26,9 @@ expression analyses. Here, we present a highly-configurable function that
 produces publication-ready volcano plots. EnhancedVolcano [@EnhancedVolcano]
 will attempt to fit as many labels in the plot window as possible,
 thus avoiding 'clogging' up the plot with labels that could not otherwise
-have been read. Other functionality allows the user to identify up to 3
-different types of attributes in the same plot space via colour, shape, size, and
-shade parameter configurations.
+have been read. Other functionality allows the user to identify up to 5
+different types of attributes in the same plot space via colour, shape, size,
+encircling, and shade parameter configurations.
 
 ```{r, echo=FALSE}
 
@@ -83,6 +83,23 @@ exploratory analysis and differential expression](http://master.bioconductor.org
 
 ```
 
+Annotate the Ensembl gene IDs to gene symbols:
+
+```{r}
+
+  ens <- rownames(airway)
+
+  library(org.Hs.eg.db)
+  symbols <- mapIds(org.Hs.eg.db, keys = ens,
+    column = c('SYMBOL'), keytype = 'ENSEMBL')
+  symbols <- symbols[!is.na(symbols)]
+  symbols <- symbols[match(rownames(airway), names(symbols))]
+  rownames(airway) <- symbols
+  keep <- !is.na(rownames(airway))
+  airway <- airway[keep,]
+
+```
+
 Conduct differential expression using DESeq2 in order to create 2 sets of results:
 
 ```{r}
@@ -91,14 +108,10 @@ Conduct differential expression using DESeq2 in order to create 2 sets of result
 
   dds <- DESeqDataSet(airway, design = ~ cell + dex)
   dds <- DESeq(dds, betaPrior=FALSE)
-  res1 <- results(dds,
+  res <- results(dds,
     contrast = c('dex','trt','untrt'))
-  res1 <- lfcShrink(dds,
-    contrast = c('dex','trt','untrt'), res=res1, type = 'normal')
-  res2 <- results(dds,
-    contrast = c('cell', 'N061011', 'N61311'))
-  res2 <- lfcShrink(dds,
-    contrast = c('cell', 'N061011', 'N61311'), res=res2, type = 'normal')
+  res <- lfcShrink(dds,
+    contrast = c('dex','trt','untrt'), res=res, type = 'normal')
 
 ```
 
@@ -111,11 +124,10 @@ the default cut-off for P value is 10e-6.
 
 ```{r ex1, fig.height = 8.5, fig.width = 7, fig.cap = "Plot the most basic volcano plot."}
 
-  EnhancedVolcano(res1,
-    lab = rownames(res1),
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
-    y = 'pvalue',
-    xlim = c(-5, 8))
+    y = 'pvalue')
 
 ```
 
@@ -142,16 +154,15 @@ improve clarity where many variables went into the differential expression analy
 
 ```{r ex2, fig.height = 8.5, fig.width = 7, fig.cap = "Modify cut-offs for log2FC and P value; specify title; adjust point and label size."}
 
-  EnhancedVolcano(res2,
-    lab = rownames(res2),
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    xlim = c(-8, 8),
     title = 'N061011 versus N61311',
-    pCutoff = 10e-16,
-    FCcutoff = 1.5,
+    pCutoff = 10e-32,
+    FCcutoff = 0.5,
     pointSize = 3.0,
-    labSize = 3.0)
+    labSize = 6.0)
 
 ```
 
@@ -164,16 +175,15 @@ transparency of the plotted points: 1 = 100% opaque; 0 = 100% transparent.
 
 ```{r ex3, fig.height = 8.5, fig.width = 7, fig.cap = "Adjust colour and alpha for point shading."}
 
-  EnhancedVolcano(res2,
-    lab = rownames(res2),
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    xlim = c(-8, 8),
     title = 'N061011 versus N61311',
     pCutoff = 10e-16,
     FCcutoff = 1.5,
     pointSize = 3.0,
-    labSize = 3.0,
+    labSize = 6.0,
     col=c('black', 'black', 'black', 'red3'),
     colAlpha = 1)
 
@@ -190,31 +200,33 @@ assigned by the colours; if a single value, all points are shaped with this valu
 For more information on shape encoding search online at
 [ggplot2 Quick Reference: shape](http://sape.inf.usi.ch/quick-reference/ggplot2/shape)
 
-```{r ex4, fig.height = 8.5, fig.width = 7, fig.cap = "Adjust shape of plotted points."}
+```{r ex4a, eval = FALSE}
 
- EnhancedVolcano(res2,
-    lab = rownames(res2),
+ EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    xlim = c(-8, 8),
     title = 'N061011 versus N61311',
     pCutoff = 10e-16,
     FCcutoff = 1.5,
     pointSize = 4.0,
-    labSize = 3.0,
+    labSize = 6.0,
     shape = 8,
     colAlpha = 1)
 
-  EnhancedVolcano(res2,
-    lab = rownames(res2),
+```
+
+```{r ex4b, fig.height = 8.5, fig.width = 7, fig.cap = "Adjust shape of plotted points."}
+
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    xlim = c(-8, 8),
     title = 'N061011 versus N61311',
     pCutoff = 10e-16,
     FCcutoff = 1.5,
     pointSize = 3.0,
-    labSize = 3.0,
+    labSize = 6.0,
     shape = c(1, 4, 23, 25),
     colAlpha = 1)
 
@@ -235,8 +247,8 @@ To make these more visible, we will also remove the default gridlines.
 
 ```{r ex5, fig.height = 8.5, fig.width = 7, fig.cap = "Adjust cut-off lines and add extra threshold lines."}
 
-  EnhancedVolcano(res2,
-    lab = rownames(res2),
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
     xlim = c(-6, 6),
@@ -244,15 +256,18 @@ To make these more visible, we will also remove the default gridlines.
     pCutoff = 10e-12,
     FCcutoff = 1.5,
     pointSize = 3.0,
-    labSize = 3.0,
+    labSize = 6.0,
     colAlpha = 1,
     cutoffLineType = 'blank',
     cutoffLineCol = 'black',
     cutoffLineWidth = 0.8,
-    hline = c(10e-12, 10e-36, 10e-60, 10e-84),
-    hlineCol = c('grey0', 'grey25','grey50','grey75'),
-    hlineType = 'longdash',
-    hlineWidth = 0.8,
+    hline = c(10e-20,
+      10e-20 * 10e-30,
+      10e-20 * 10e-60,
+      10e-20 * 10e-90),
+    hlineCol = c('pink', 'red', 'red2', 'red4'),
+    hlineType = c('solid', 'longdash', 'dotdash', 'dotted'),
+    hlineWidth = c(4, 3, 2, 1),
     gridlines.major = FALSE,
     gridlines.minor = FALSE)
 
@@ -264,19 +279,18 @@ The position of the legend can also be changed to "left" or "right"
 (and stacked vertically), or 'top' or "bottom" (stacked horizontally). The
 legend text, label size, and icon size can also be modified.
 
-```{r ex6, fig.height = 8.5, fig.width = 12, fig.cap = "Adjust legend position, size, and text."}
+```{r ex6, fig.height = 8.5, fig.width = 10, fig.cap = "Adjust legend position, size, and text."}
 
-  EnhancedVolcano(res2,
-    lab = rownames(res2),
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    xlim = c(-6, 6),
     pCutoff = 10e-12,
     FCcutoff = 1.5,
     cutoffLineType = 'twodash',
     cutoffLineWidth = 0.8,
     pointSize = 4.0,
-    labSize = 4.0,
+    labSize = 6.0,
     colAlpha = 1,
     legendLabels=c('Not sig.','Log (base 2) FC','p-value',
       'p-value & Log (base 2) FC'),
@@ -288,7 +302,7 @@ legend text, label size, and icon size can also be modified.
 
 Note: to make the legend completely invisible, specify:
 
-```{r eval=FALSE}
+```{r eval = FALSE}
 
 legendPosition = 'none'
 
@@ -308,25 +322,23 @@ lengthConnectors (default = unit(0.01, 'npc')).
 The result may not always be desirable as it can make the plot
 look overcrowded.
 
-```{r ex7, fig.height = 8.5, fig.width = 11, fig.cap = "Fit more labels by adding connectors."}
+```{r ex7, fig.height = 8.5, fig.width = 10, fig.cap = "Fit more labels by adding connectors."}
 
-  EnhancedVolcano(res2,
-    lab = rownames(res2),
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    xlim = c(-6,6),
     xlab = bquote(~Log[2]~ 'fold change'),
-    pCutoff = 10e-14,
+    pCutoff = 10e-32,
     FCcutoff = 2.0,
     pointSize = 4.0,
-    labSize = 4.0,
+    labSize = 6.0,
     colAlpha = 1,
     legendPosition = 'right',
     legendLabSize = 12,
     legendIconSize = 4.0,
     drawConnectors = TRUE,
-    widthConnectors = 0.2,
-    colConnectors = 'grey30')
+    widthConnectors = 0.75)
 
 ```
 
@@ -339,19 +351,18 @@ to also be present in the vector passed to 'lab'. In addition, only
 those variables that pass both the cutoff for log2FC and P value will
 be labelled.
 
-```{r ex8, fig.height = 8.5, fig.width = 11, fig.cap = "Only label key variables."}
+```{r ex8, eval = FALSE}
 
-  EnhancedVolcano(res2,
-    lab = rownames(res2),
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    selectLab = c('ENSG00000106565','ENSG00000187758'),
-    xlim = c(-6,7),
+    selectLab = c('TMEM176B','ADH1A'),
     xlab = bquote(~Log[2]~ 'fold change'),
     pCutoff = 10e-14,
     FCcutoff = 2.0,
     pointSize = 4.0,
-    labSize = 5.0,
+     labSize = 6.0,
     shape = c(4, 35, 17, 18),
     colAlpha = 1,
     legendPosition = 'right',
@@ -366,21 +377,19 @@ be labelled.
 To improve label clarity, we can draw simple boxes around the plots
 labels. This works much better when drawConnectors is also TRUE.
 
-```{r ex9, fig.height = 8.5, fig.width = 12, fig.cap = "Draw labels in boxes."}
+```{r ex9, fig.height = 8.5, fig.width = 10, fig.cap = "Draw labels in boxes."}
 
-  EnhancedVolcano(res2,
-    lab = rownames(res2),
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    selectLab = c('ENSG00000106565','ENSG00000187758',
-      'ENSG00000230795', 'ENSG00000164530',
-      'ENSG00000143153'),
-    xlim = c(-5.5,8),
+    selectLab = c('VCAM1','KCTD12','ADAM12',
+      'CXCL12','CACNB2','SPARCL1','DUSP1','SAMHD1','MAOA'),
     xlab = bquote(~Log[2]~ 'fold change'),
     pCutoff = 10e-14,
     FCcutoff = 2.0,
     pointSize = 4.0,
-    labSize = 5.0,
+     labSize = 6.0,
     labCol = 'black',
     labFace = 'bold',
     boxedLabels = TRUE,
@@ -410,8 +419,8 @@ In this example, we just wish to colour all variables with log2FC > 2.5 as
   # create custom key-value pairs for 'high', 'low', 'mid' expression by fold-change
   # this can be achieved with nested ifelse statements
   keyvals <- ifelse(
-    res2$log2FoldChange < -2.5, 'royalblue',
-      ifelse(res2$log2FoldChange > 2.5, 'gold',
+    res$log2FoldChange < -2.5, 'royalblue',
+      ifelse(res$log2FoldChange > 2.5, 'gold',
         'black'))
   keyvals[is.na(keyvals)] <- 'black'
   names(keyvals)[keyvals == 'gold'] <- 'high'
@@ -420,19 +429,18 @@ In this example, we just wish to colour all variables with log2FC > 2.5 as
 
 ```
 
-```{r ex10, fig.height = 8.5, fig.width = 18, fig.cap = "Over-ride colouring scheme with custom key-value pairs."}
+```{r ex10, fig.height = 8.5, fig.width = 10, fig.cap = "Over-ride colouring scheme with custom key-value pairs."}
 
-  p1 <- EnhancedVolcano(res2,
-    lab = rownames(res2),
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    selectLab = rownames(res2)[which(names(keyvals) %in% c('high', 'low'))],
-    xlim = c(-6.5,6.5),
+    selectLab = rownames(res)[which(names(keyvals) %in% c('high', 'low'))],
     xlab = bquote(~Log[2]~ 'fold change'),
     title = 'Custom colour over-ride',
     pCutoff = 10e-14,
     FCcutoff = 1.0,
-    pointSize = 4.5,
+    pointSize = 3.5,
     labSize = 4.5,
     shape = c(6, 4, 2, 11),
     colCustom = keyvals,
@@ -441,47 +449,14 @@ In this example, we just wish to colour all variables with log2FC > 2.5 as
     legendLabSize = 15,
     legendIconSize = 5.0,
     drawConnectors = TRUE,
-    widthConnectors = 0.5,
-    colConnectors = 'grey50',
+    widthConnectors = 1.0,
+    colConnectors = 'black',
+    arrowheads = FALSE,
     gridlines.major = TRUE,
     gridlines.minor = FALSE,
     border = 'partial',
     borderWidth = 1.5,
     borderColour = 'black')
-
-  p2 <- EnhancedVolcano(res2,
-    lab = rownames(res2),
-    x = 'log2FoldChange',
-    y = 'pvalue',
-    selectLab = rownames(res2)[which(names(keyvals) %in% c('high', 'low'))],
-    xlim = c(-6.5,6.5),
-    xlab = bquote(~Log[2]~ 'fold change'),
-    title = 'No custom colour over-ride',
-    pCutoff = 10e-14,
-    FCcutoff = 1.0,
-    pointSize = 4.5,
-    labSize = 4.5,
-    colCustom = NULL,
-    colAlpha = 1,
-    legendPosition = 'right',
-    legendLabSize = 15,
-    legendIconSize = 5.0,
-    drawConnectors = FALSE,
-    widthConnectors = 0.5,
-    colConnectors = 'grey50',
-    gridlines.major = TRUE,
-    gridlines.minor = FALSE,
-    border = 'full',
-    borderWidth = 1.0,
-    borderColour = 'black')
-
-  library(gridExtra)
-  library(grid)
-  grid.arrange(p1, p2,
-    ncol=2,
-    top = textGrob('EnhancedVolcano',
-      just = c('center'),
-      gp = gpar(fontsize = 32)))
 
 ```
 
@@ -495,17 +470,14 @@ both the colour and shape scheme at the same time.
 ```{r eval = TRUE}
 
   # define different cell-types that will be shaded
-  celltype1 <- c('ENSG00000106565', 'ENSG00000002933',
-    'ENSG00000165246', 'ENSG00000224114')
-  celltype2 <- c('ENSG00000230795', 'ENSG00000164530',
-    'ENSG00000143153', 'ENSG00000169851',
-    'ENSG00000231924', 'ENSG00000145681')
+  celltype1 <- c('VCAM1','KCTD12','ADAM12','CXCL12')
+  celltype2 <- c('CACNB2','SPARCL1','DUSP1','SAMHD1','MAOA')
 
   # create custom key-value pairs for different cell-types
   # this can be achieved with nested ifelse statements
   keyvals.shape <- ifelse(
-    rownames(res2) %in% celltype1, 17,
-      ifelse(rownames(res2) %in% celltype2, 64,
+    rownames(res) %in% celltype1, 17,
+      ifelse(rownames(res) %in% celltype2, 64,
         3))
   keyvals.shape[is.na(keyvals.shape)] <- 3
   names(keyvals.shape)[keyvals.shape == 3] <- 'PBMC'
@@ -514,14 +486,13 @@ both the colour and shape scheme at the same time.
 
 ```
 
-```{r ex11, fig.height = 8.5, fig.width = 18, fig.cap = "Over-ride colour and/or shape scheme with custom key-value pairs."}
+```{r ex11, fig.height = 8.5, fig.width = 17, fig.cap = "Over-ride colour and/or shape scheme with custom key-value pairs."}
 
-  p1 <- EnhancedVolcano(res2,
-    lab = rownames(res2),
+  p1 <- EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    selectLab = rownames(res2)[which(names(keyvals) %in% c('high', 'low'))],
-    xlim = c(-6.5,6.5),
+    selectLab = rownames(res)[which(names(keyvals) %in% c('high', 'low'))],
     xlab = bquote(~Log[2]~ 'fold change'),
     title = 'Custom shape over-ride',
     pCutoff = 10e-14,
@@ -546,20 +517,19 @@ both the colour and shape scheme at the same time.
   # create custom key-value pairs for 'high', 'low', 'mid' expression by fold-change
   # this can be achieved with nested ifelse statements
   keyvals.colour <- ifelse(
-    res2$log2FoldChange < -2.5, 'royalblue',
-      ifelse(res2$log2FoldChange > 2.5, 'gold',
+    res$log2FoldChange < -2.5, 'royalblue',
+      ifelse(res$log2FoldChange > 2.5, 'gold',
         'black'))
   keyvals.colour[is.na(keyvals.colour)] <- 'black'
   names(keyvals.colour)[keyvals.colour == 'gold'] <- 'high'
   names(keyvals.colour)[keyvals.colour == 'black'] <- 'mid'
   names(keyvals.colour)[keyvals.colour == 'royalblue'] <- 'low'
 
-  p2 <- EnhancedVolcano(res2,
-    lab = rownames(res2),
+  p2 <- EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    selectLab = rownames(res2)[which(names(keyvals) %in% c('High', 'Low'))],
-    xlim = c(-6.5,6.5),
+    selectLab = rownames(res)[which(names(keyvals) %in% c('High', 'Low'))],
     xlab = bquote(~Log[2]~ 'fold change'),
     title = 'Custom shape & colour over-ride',
     pCutoff = 10e-14,
@@ -591,10 +561,10 @@ both the colour and shape scheme at the same time.
 
 ```
 
-## Shade certain variables
+## Encircle / highlight certain variables 
 
-In this example we add an extra level of highlighting key variables by
-shading.
+In this example we add an extra level of identifying key variables by
+encircling them.
 
 This feature works best for shading just 1 or 2 key variables. It is
 expected that the user can use the 'shapeCustom' parameter for more in depth
@@ -603,91 +573,52 @@ identification of different types of variables.
 ```{r eval = TRUE}
 
   # define different cell-types that will be shaded
-  celltype1 <- c('ENSG00000106565', 'ENSG00000002933')
-  celltype2 <- c('ENSG00000230795', 'ENSG00000164530')
+  celltype1 <- c('VCAM1','CXCL12')
+  celltype2 <- c('SORT1', 'KLF15')
 
 ```
 
-```{r ex12, fig.height = 8.5, fig.width = 17, fig.cap = "Shade certain variables."}
+```{r ex12, fig.height = 8.5, fig.width = 10, fig.cap = "Shade certain variables."}
 
-  p1 <- EnhancedVolcano(res2,
-    lab = rownames(res2),
+  EnhancedVolcano(res,
+    lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    selectLab = celltype1,
-    xlim = c(-6.5,6.5),
+    selectLab = c(celltype1, celltype2),
     xlab = bquote(~Log[2]~ 'fold change'),
-    title = 'Shading cell-type 1',
+    title = 'Shading cell-type 1|2',
     pCutoff = 10e-14,
     FCcutoff = 1.0,
     pointSize = 8.0,
-    labSize = 5.0,
-    labCol = 'purple',
+     labSize = 6.0,
+    labCol = 'black',
     labFace = 'bold',
     boxedLabels = TRUE,
     shape = 42,
     colCustom = keyvals,
     colAlpha = 1,
-    legendPosition = 'none',
-    legendLabSize = 15,
-    legendIconSize = 5.0,
-    shade = celltype1,
-    shadeLabel = 'Cell-type I',
-    shadeAlpha = 1/2,
-    shadeFill = 'purple',
-    shadeSize = 4,
-    shadeBins = 5,
-    drawConnectors = TRUE,
-    widthConnectors = 1.0,
-    colConnectors = 'grey30',
-    gridlines.major = TRUE,
-    gridlines.minor = FALSE,
-    border = 'partial',
-    borderWidth = 1.5,
-    borderColour = 'black')
-
-  p2 <- EnhancedVolcano(res2,
-    lab = rownames(res2),
-    x = 'log2FoldChange',
-    y = 'pvalue',
-    selectLab = celltype2,
-    xlim = c(-6.5,6.5),
-    xlab = bquote(~Log[2]~ 'fold change'),
-    title = 'Shading cell-type 2',
-    pCutoff = 10e-14,
-    FCcutoff = 1.0,
-    labSize = 5.0,
-    labCol = 'forestgreen',
-    labFace = 'bold',
-    shapeCustom = keyvals.shape,
-    colCustom = keyvals.colour,
-    colAlpha = 1,
     legendPosition = 'right',
-    pointSize = 4.0,
-    legendLabSize = 15,
-    legendIconSize = 5.0,
-    shade = celltype2,
-    shadeLabel = 'Cell-type II',
-    shadeAlpha = 1/2,
-    shadeFill = 'forestgreen',
-    shadeSize = 1,
-    shadeBins = 5,
+    legendLabSize = 20,
+    legendIconSize = 20.0,
+    # encircle
+      encircle = celltype1,
+      encircleCol = 'black',
+      encircleSize = 2.5,
+      encircleFill = 'pink',
+      encircleAlpha = 1/2,
+    # shade
+      shade = celltype2,
+      shadeAlpha = 1/2,
+      shadeFill = 'skyblue',
+      shadeSize = 1,
+      shadeBins = 5,
     drawConnectors = TRUE,
-    widthConnectors = 1.0,
-    colConnectors = 'grey30',
+    widthConnectors = 2.0,
     gridlines.major = TRUE,
     gridlines.minor = FALSE,
     border = 'full',
-    borderWidth = 1.0,
+    borderWidth = 5,
     borderColour = 'black')
-
-  library(gridExtra)
-  library(grid)
-  grid.arrange(p1, p2,
-    ncol=2,
-    top = textGrob('EnhancedVolcano',
-      just = c('center'),
-      gp = gpar(fontsize = 32)))
 
 ```
 
@@ -725,10 +656,9 @@ just those variables with log~2~FC>2:
     y = "pvalue",
     pCutoff = 10e-4,
     FCcutoff = 2,
-    xlim = c(-5.5, 5.5),
     ylim = c(0, -log10(10e-12)),
     pointSize = c(ifelse(res$log2FoldChange>2, 8, 1)),
-    labSize = 4.0,
+    labSize = 6.0,
     shape = c(6, 6, 19, 16),
     title = "DESeq2 results",
     subtitle = "Differential expression",
@@ -759,10 +689,9 @@ whichever is selected by *y*, via *colGradient*:
     y = "pvalue",
     pCutoff = 10e-4,
     FCcutoff = 2,
-    xlim = c(-5.5, 5.5),
     ylim = c(0, -log10(10e-12)),
     pointSize = c(ifelse(res$log2FoldChange>2, 8, 1)),
-    labSize = 4.0,
+    labSize = 6.0,
     shape = c(6, 6, 19, 16),
     title = "DESeq2 results",
     subtitle = "Differential expression",
@@ -807,6 +736,8 @@ and suggestions from:
 * David Wheeler (Montana State University)
 * David Kulp
 * DinoFer
+* Axel Künstner
+* Anthony Doherty
 
 # Session info
 
