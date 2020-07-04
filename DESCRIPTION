@@ -28,4 +28,4 @@ URL: https://github.com/kevinblighe/EnhancedVolcano
 biocViews: RNASeq, GeneExpression, Transcription, DifferentialExpression, ImmunoOncology
 VignetteBuilder:
   knitr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
