@@ -362,7 +362,7 @@ be labelled.
     pCutoff = 10e-14,
     FCcutoff = 2.0,
     pointSize = 4.0,
-     labSize = 6.0,
+    labSize = 6.0,
     shape = c(4, 35, 17, 18),
     colAlpha = 1,
     legendPosition = 'right',
@@ -389,7 +389,7 @@ labels. This works much better when drawConnectors is also TRUE.
     pCutoff = 10e-14,
     FCcutoff = 2.0,
     pointSize = 4.0,
-     labSize = 6.0,
+    labSize = 6.0,
     labCol = 'black',
     labFace = 'bold',
     boxedLabels = TRUE,
@@ -590,7 +590,7 @@ identification of different types of variables.
     pCutoff = 10e-14,
     FCcutoff = 1.0,
     pointSize = 8.0,
-     labSize = 6.0,
+    labSize = 6.0,
     labCol = 'black',
     labFace = 'bold',
     boxedLabels = TRUE,
@@ -738,6 +738,7 @@ and suggestions from:
 * DinoFer
 * Axel Künstner
 * Anthony Doherty
+* Emir Turkes
 
 # Session info
 

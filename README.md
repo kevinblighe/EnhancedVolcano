@@ -2,7 +2,7 @@ EnhancedVolcano: publication-ready volcano plots with enhanced colouring
 and labeling
 ================
 Kevin Blighe, Sharmila Rana, Myles Lewis
-2020-06-21
+2020-07-11
 
 # Introduction
 
@@ -336,7 +336,7 @@ labelled.
     pCutoff = 10e-14,
     FCcutoff = 2.0,
     pointSize = 4.0,
-     labSize = 6.0,
+    labSize = 6.0,
     shape = c(4, 35, 17, 18),
     colAlpha = 1,
     legendPosition = 'right',
@@ -360,7 +360,7 @@ labels. This works much better when drawConnectors is also TRUE.
     pCutoff = 10e-14,
     FCcutoff = 2.0,
     pointSize = 4.0,
-     labSize = 6.0,
+    labSize = 6.0,
     labCol = 'black',
     labFace = 'bold',
     boxedLabels = TRUE,
@@ -555,7 +555,7 @@ depth identification of different types of variables.
     pCutoff = 10e-14,
     FCcutoff = 1.0,
     pointSize = 8.0,
-     labSize = 6.0,
+    labSize = 6.0,
     labCol = 'black',
     labFace = 'bold',
     boxedLabels = TRUE,
@@ -708,6 +708,7 @@ and suggestions from:
   - DinoFer
   - Axel Künstner
   - Anthony Doherty
+  - Emir Turkes
 
 # Session info
 
@@ -715,7 +716,7 @@ and suggestions from:
 sessionInfo()
 ```
 
-    ## R version 3.6.3 (2020-02-29)
+    ## R version 4.0.2 (2020-06-22)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
     ## Running under: Ubuntu 16.04.6 LTS
     ## 
@@ -736,47 +737,40 @@ sessionInfo()
     ##  [8] datasets  methods   base     
     ## 
     ## other attached packages:
-    ##  [1] pasilla_1.14.0              gridExtra_2.3              
-    ##  [3] DESeq2_1.26.0               org.Hs.eg.db_3.10.0        
-    ##  [5] AnnotationDbi_1.48.0        magrittr_1.5               
-    ##  [7] airway_1.6.0                SummarizedExperiment_1.16.1
-    ##  [9] DelayedArray_0.12.3         BiocParallel_1.20.1        
-    ## [11] matrixStats_0.56.0          Biobase_2.46.0             
-    ## [13] GenomicRanges_1.38.0        GenomeInfoDb_1.22.1        
-    ## [15] IRanges_2.20.2              S4Vectors_0.24.4           
-    ## [17] BiocGenerics_0.32.0         EnhancedVolcano_1.7.8      
-    ## [19] ggrepel_0.8.2               ggplot2_3.3.0              
-    ## [21] knitr_1.28                 
+    ##  [1] pasilla_1.16.0              gridExtra_2.3              
+    ##  [3] DESeq2_1.28.1               org.Hs.eg.db_3.11.4        
+    ##  [5] AnnotationDbi_1.50.0        magrittr_1.5               
+    ##  [7] airway_1.8.0                SummarizedExperiment_1.18.1
+    ##  [9] DelayedArray_0.14.0         matrixStats_0.56.0         
+    ## [11] Biobase_2.48.0              GenomicRanges_1.40.0       
+    ## [13] GenomeInfoDb_1.24.2         IRanges_2.22.2             
+    ## [15] S4Vectors_0.26.1            BiocGenerics_0.34.0        
+    ## [17] EnhancedVolcano_1.7.10      ggrepel_0.8.2              
+    ## [19] ggplot2_3.3.2               knitr_1.29                 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] bitops_1.0-6           bit64_0.9-7            ash_1.0-15            
-    ##  [4] RColorBrewer_1.1-2     backports_1.1.6        tools_3.6.3           
-    ##  [7] R6_2.4.1               rpart_4.1-15           KernSmooth_2.23-16    
-    ## [10] Hmisc_4.4-0            DBI_1.1.0              colorspace_1.4-1      
-    ## [13] nnet_7.3-13            withr_2.1.2            tidyselect_1.0.0      
-    ## [16] ggalt_0.4.0            bit_1.1-15.2           compiler_3.6.3        
-    ## [19] extrafontdb_1.0        cli_2.0.2              htmlTable_1.13.3      
-    ## [22] isoband_0.2.1          labeling_0.3           scales_1.1.0          
-    ## [25] checkmate_2.0.0        proj4_1.0-10           genefilter_1.68.0     
-    ## [28] stringr_1.4.0          digest_0.6.25          foreign_0.8-76        
-    ## [31] rmarkdown_2.1          XVector_0.26.0         base64enc_0.1-3       
-    ## [34] jpeg_0.1-8.1           pkgconfig_2.0.3        htmltools_0.4.0       
-    ## [37] extrafont_0.17         highr_0.8              maps_3.3.0            
-    ## [40] htmlwidgets_1.5.1      rlang_0.4.5            rstudioapi_0.11       
-    ## [43] RSQLite_2.2.0          farver_2.0.3           acepack_1.4.1         
-    ## [46] dplyr_0.8.5            RCurl_1.98-1.2         GenomeInfoDbData_1.2.2
-    ## [49] Formula_1.2-3          Matrix_1.2-18          Rcpp_1.0.4.6          
-    ## [52] munsell_0.5.0          fansi_0.4.1            lifecycle_0.2.0       
-    ## [55] stringi_1.4.6          yaml_2.2.1             MASS_7.3-51.5         
-    ## [58] zlibbioc_1.32.0        blob_1.2.1             crayon_1.3.4          
-    ## [61] lattice_0.20-41        splines_3.6.3          annotate_1.64.0       
-    ## [64] locfit_1.5-9.4         pillar_1.4.3           geneplotter_1.64.0    
-    ## [67] XML_3.99-0.3           glue_1.4.0             evaluate_0.14         
-    ## [70] latticeExtra_0.6-29    data.table_1.12.8      vctrs_0.2.4           
-    ## [73] png_0.1-7              Rttf2pt1_1.3.8         gtable_0.3.0          
-    ## [76] purrr_0.3.3            assertthat_0.2.1       xfun_0.13             
-    ## [79] xtable_1.8-4           survival_3.1-12        tibble_3.0.0          
-    ## [82] memoise_1.1.0          cluster_2.1.0          ellipsis_0.3.0
+    ##  [1] maps_3.3.0             bit64_0.9-7            splines_4.0.2         
+    ##  [4] highr_0.8              blob_1.2.1             GenomeInfoDbData_1.2.3
+    ##  [7] yaml_2.2.1             Rttf2pt1_1.3.8         pillar_1.4.4          
+    ## [10] RSQLite_2.2.0          lattice_0.20-41        glue_1.4.1            
+    ## [13] extrafontdb_1.0        digest_0.6.25          RColorBrewer_1.1-2    
+    ## [16] XVector_0.28.0         colorspace_1.4-1       htmltools_0.5.0       
+    ## [19] Matrix_1.2-18          XML_3.99-0.3           pkgconfig_2.0.3       
+    ## [22] genefilter_1.70.0      zlibbioc_1.34.0        purrr_0.3.4           
+    ## [25] xtable_1.8-4           scales_1.1.1           BiocParallel_1.22.0   
+    ## [28] tibble_3.0.1           annotate_1.66.0        farver_2.0.3          
+    ## [31] generics_0.0.2         ellipsis_0.3.1         withr_2.2.0           
+    ## [34] survival_3.2-3         crayon_1.3.4           memoise_1.1.0         
+    ## [37] evaluate_0.14          ash_1.0-15             MASS_7.3-51.6         
+    ## [40] tools_4.0.2            lifecycle_0.2.0        stringr_1.4.0         
+    ## [43] munsell_0.5.0          locfit_1.5-9.4         isoband_0.2.2         
+    ## [46] compiler_4.0.2         ggalt_0.4.0            rlang_0.4.6           
+    ## [49] RCurl_1.98-1.2         labeling_0.3           bitops_1.0-6          
+    ## [52] rmarkdown_2.3          proj4_1.0-10           gtable_0.3.0          
+    ## [55] DBI_1.1.0              R6_2.4.1               dplyr_1.0.0           
+    ## [58] bit_1.1-15.2           extrafont_0.17         KernSmooth_2.23-17    
+    ## [61] stringi_1.4.6          Rcpp_1.0.4.6           vctrs_0.3.1           
+    ## [64] geneplotter_1.66.0     tidyselect_1.1.0       xfun_0.15
 
 # References
 
