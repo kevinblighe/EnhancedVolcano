@@ -48,6 +48,7 @@ EnhancedVolcano(
   legendPosition = "top",
   legendLabSize = 14,
   legendIconSize = 5,
+  legendDropLevels = TRUE,
   encircle = NULL,
   encircleCol = "black",
   encircleFill = "pink",
@@ -186,6 +187,8 @@ colGradient, i.e., max and min possible p-values.}
 \item{legendLabSize}{Size of plot legend text.}
 
 \item{legendIconSize}{Size of plot legend icons / symbols.}
+
+\item{legendDropLevels}{Logical, drop unused factor levels from legend.}
 
 \item{encircle}{A vector of variable names to encircle.}
 

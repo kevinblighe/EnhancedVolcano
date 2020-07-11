@@ -65,6 +65,7 @@
 #'   'right').
 #' @param legendLabSize Size of plot legend text.
 #' @param legendIconSize Size of plot legend icons / symbols.
+#' @param legendDropLevels Logical, drop unused factor levels from legend.
 #' @param encircle A vector of variable names to encircle.
 #' @param encircleCol Colour of the encircled line.
 #' @param encircleFill Colour fill of the encircled region.
@@ -209,6 +210,7 @@ EnhancedVolcano <- function(
   legendPosition = 'top',
   legendLabSize = 14,
   legendIconSize = 5.0,
+  legendDropLevels = TRUE,
   encircle = NULL,
   encircleCol = 'black',
   encircleFill = 'pink',
@@ -434,7 +436,7 @@ EnhancedVolcano <- function(
       geom_point(
         aes(
           color = factor(names(colCustom)),
-          shape = factor(Sig)),
+          shape = toptable$Sig),
         alpha = colAlpha,
         size = pointSize,
         na.rm = TRUE) +
@@ -456,7 +458,8 @@ EnhancedVolcano <- function(
           FC = legendLabels[2],
           P = legendLabels[3],
           FC_P = legendLabels[4]),
-        guide = TRUE)
+        guide = TRUE,
+        drop = legendDropLevels)
 
   # 4, only shapeCustom is activated
   } else if (is.null(colCustom) & !is.null(shapeCustom)) {
@@ -483,7 +486,7 @@ EnhancedVolcano <- function(
         # are added to aes, too.
         geom_point(
           aes(
-            color = factor(Sig),
+            color = toptable$Sig,
             shape = factor(names(shapeCustom))),
           alpha = colAlpha,
           size = pointSize,
@@ -502,7 +505,8 @@ EnhancedVolcano <- function(
             NS = legendLabels[1],
             FC = legendLabels[2],
             P = legendLabels[3],
-            FC_P = legendLabels[4])) +
+            FC_P = legendLabels[4]),
+          drop = legendDropLevels) +
 
         # specify the shape with the supplied encoding
         scale_shape_manual(values = shapeCustom)
@@ -525,7 +529,7 @@ EnhancedVolcano <- function(
         # are added to aes, too.
         geom_point(
           aes(
-            color = factor(Sig),
+            color = toptable$Sig,
             shape = factor(names(shapeCustom))),
           alpha = colAlpha,
           size = pointSize,
@@ -561,7 +565,7 @@ EnhancedVolcano <- function(
             size = legendIconSize))) +
 
         geom_point(
-          aes(color = factor(Sig)),
+          aes(color = toptable$Sig),
           alpha = colAlpha,
           shape = shape,
           size = pointSize,
@@ -577,7 +581,8 @@ EnhancedVolcano <- function(
             NS = legendLabels[1],
             FC = legendLabels[2],
             P = legendLabels[3],
-            FC_P = legendLabels[4]))
+            FC_P = legendLabels[4]),
+          drop = legendDropLevels)
 
     } else {
 
@@ -620,8 +625,8 @@ EnhancedVolcano <- function(
 
         geom_point(
           aes(
-            color = factor(Sig),
-            shape = factor(Sig)),
+            color = toptable$Sig,
+            shape = toptable$Sig),
           alpha = colAlpha,
           size = pointSize,
           na.rm = TRUE) +
@@ -636,7 +641,8 @@ EnhancedVolcano <- function(
             NS = legendLabels[1],
             FC = legendLabels[2],
             P = legendLabels[3],
-            FC_P = legendLabels[4])) +
+            FC_P = legendLabels[4]),
+          drop = legendDropLevels) +
 
         scale_shape_manual(
           values = c(
@@ -644,7 +650,8 @@ EnhancedVolcano <- function(
             FC = shape[2],
             P = shape[3],
             FC_P = shape[4]),
-          guide = FALSE)
+          guide = FALSE,
+          drop = legendDropLevels)
 
     } else {
 
@@ -653,7 +660,7 @@ EnhancedVolcano <- function(
         geom_point(
           aes(
             color = yvals,
-            shape = factor(Sig)),
+            shape = toptable$Sig),
           alpha = colAlpha,
           size = pointSize,
           na.rm = TRUE) +
@@ -671,7 +678,8 @@ EnhancedVolcano <- function(
             FC = shape[2],
             P = shape[3],
             FC_P = shape[4]),
-          guide = FALSE)
+          guide = FALSE,
+          drop = legendDropLevels)
 
     }
   }
