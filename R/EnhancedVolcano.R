@@ -334,7 +334,7 @@ EnhancedVolcano <- function(
       axis.text.y = element_text(
         angle = 0,
         size = axisLabSize,
-        vjust = 1),
+        vjust = 0.5),
       axis.title = element_text(
         size = axisLabSize),
 
