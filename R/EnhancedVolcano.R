@@ -436,7 +436,7 @@ EnhancedVolcano <- function(
       geom_point(
         aes(
           color = factor(names(colCustom)),
-          shape = toptable$Sig),
+          shape = Sig),
         alpha = colAlpha,
         size = pointSize,
         na.rm = TRUE) +
@@ -486,7 +486,7 @@ EnhancedVolcano <- function(
         # are added to aes, too.
         geom_point(
           aes(
-            color = toptable$Sig,
+            color = Sig,
             shape = factor(names(shapeCustom))),
           alpha = colAlpha,
           size = pointSize,
@@ -529,7 +529,7 @@ EnhancedVolcano <- function(
         # are added to aes, too.
         geom_point(
           aes(
-            color = toptable$Sig,
+            color = Sig,
             shape = factor(names(shapeCustom))),
           alpha = colAlpha,
           size = pointSize,
@@ -565,7 +565,7 @@ EnhancedVolcano <- function(
             size = legendIconSize))) +
 
         geom_point(
-          aes(color = toptable$Sig),
+          aes(color = Sig),
           alpha = colAlpha,
           shape = shape,
           size = pointSize,
@@ -625,8 +625,8 @@ EnhancedVolcano <- function(
 
         geom_point(
           aes(
-            color = toptable$Sig,
-            shape = toptable$Sig),
+            color = Sig,
+            shape = Sig),
           alpha = colAlpha,
           size = pointSize,
           na.rm = TRUE) +
@@ -660,7 +660,7 @@ EnhancedVolcano <- function(
         geom_point(
           aes(
             color = yvals,
-            shape = toptable$Sig),
+            shape = Sig),
           alpha = colAlpha,
           size = pointSize,
           na.rm = TRUE) +
