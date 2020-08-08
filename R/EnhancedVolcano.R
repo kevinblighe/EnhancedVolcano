@@ -109,7 +109,8 @@
 #' @param border Add a border for just the x and y axes ('partial') or the
 #'   entire plot grid ('full')?
 #' @param borderWidth Width of the border on the x and y axes.
-#' @param borderColour Colour of the border on the x and y axes.
+#' @param borderColour Colour of the border on the x and y axes. 
+#' @param raster Logical, indicating whether to rasterize the geom_point layer. 
 #'
 #' @details
 #' Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots [@EnhancedVolcano]. \code{EnhancedVolcano} will attempt to fit as many variable names in the plot window as possible, thus avoiding 'clogging' up the plot with labels that could not otherwise have been read.
@@ -240,7 +241,8 @@ EnhancedVolcano <- function(
   gridlines.minor = TRUE,
   border = 'partial',
   borderWidth = 0.8,
-  borderColour = 'black')
+  borderColour = 'black', 
+  raster = FALSE)
 {
   if(!is.numeric(toptable[[x]])) {
     stop(paste(x, ' is not numeric!', sep=''))
@@ -248,6 +250,11 @@ EnhancedVolcano <- function(
 
   if(!is.numeric(toptable[[y]])) {
     stop(paste(y, ' is not numeric!', sep=''))
+  }
+  
+  if (raster) {
+    require(ggrastr)
+    geom_point <- ggrastr::geom_point_rast
   }
 
   i <- xvals <- yvals <- Sig <- NULL
@@ -327,7 +334,7 @@ EnhancedVolcano <- function(
       axis.text.y = element_text(
         angle = 0,
         size = axisLabSize,
-        vjust = 1),
+        vjust = 0.5),
       axis.title = element_text(
         size = axisLabSize),
 
