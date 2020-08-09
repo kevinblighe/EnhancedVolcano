@@ -78,7 +78,8 @@ EnhancedVolcano(
   gridlines.minor = TRUE,
   border = "partial",
   borderWidth = 0.8,
-  borderColour = "black"
+  borderColour = "black",
+  raster = FALSE
 )
 }
 \arguments{
@@ -263,6 +264,8 @@ entire plot grid ('full')?}
 \item{borderWidth}{Width of the border on the x and y axes.}
 
 \item{borderColour}{Colour of the border on the x and y axes.}
+
+\item{raster}{Logical, indicating whether to rasterize the geom_point layer.}
 }
 \value{
 A \code{\link{ggplot2}} object.

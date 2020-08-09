@@ -2,7 +2,7 @@ EnhancedVolcano: publication-ready volcano plots with enhanced colouring
 and labeling
 ================
 Kevin Blighe, Sharmila Rana, Myles Lewis
-2020-08-03
+2020-08-08
 
 # Introduction
 
@@ -709,6 +709,7 @@ and suggestions from:
   - Axel Künstner
   - Anthony Doherty
   - Emir Turkes
+  - Benjamin Ostendorf
 
 # Session info
 
@@ -745,32 +746,34 @@ sessionInfo()
     ## [11] Biobase_2.48.0              GenomicRanges_1.40.0       
     ## [13] GenomeInfoDb_1.24.2         IRanges_2.22.2             
     ## [15] S4Vectors_0.26.1            BiocGenerics_0.34.0        
-    ## [17] EnhancedVolcano_1.7.12      ggrepel_0.8.2              
+    ## [17] EnhancedVolcano_1.7.14      ggrepel_0.8.2              
     ## [19] ggplot2_3.3.2               knitr_1.29                 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] maps_3.3.0             bit64_0.9-7            splines_4.0.2         
+    ##  [1] maps_3.3.0             splines_4.0.2          bit64_0.9-7           
     ##  [4] highr_0.8              blob_1.2.1             GenomeInfoDbData_1.2.3
-    ##  [7] yaml_2.2.1             Rttf2pt1_1.3.8         pillar_1.4.4          
-    ## [10] RSQLite_2.2.0          lattice_0.20-41        glue_1.4.1            
-    ## [13] extrafontdb_1.0        digest_0.6.25          RColorBrewer_1.1-2    
-    ## [16] XVector_0.28.0         colorspace_1.4-1       htmltools_0.5.0       
-    ## [19] Matrix_1.2-18          XML_3.99-0.3           pkgconfig_2.0.3       
-    ## [22] genefilter_1.70.0      zlibbioc_1.34.0        purrr_0.3.4           
-    ## [25] xtable_1.8-4           scales_1.1.1           BiocParallel_1.22.0   
-    ## [28] tibble_3.0.1           annotate_1.66.0        farver_2.0.3          
-    ## [31] generics_0.0.2         ellipsis_0.3.1         withr_2.2.0           
-    ## [34] survival_3.2-3         crayon_1.3.4           memoise_1.1.0         
-    ## [37] evaluate_0.14          ash_1.0-15             MASS_7.3-51.6         
-    ## [40] tools_4.0.2            lifecycle_0.2.0        stringr_1.4.0         
-    ## [43] munsell_0.5.0          locfit_1.5-9.4         isoband_0.2.2         
-    ## [46] compiler_4.0.2         ggalt_0.4.0            rlang_0.4.6           
-    ## [49] RCurl_1.98-1.2         labeling_0.3           bitops_1.0-6          
-    ## [52] rmarkdown_2.3          proj4_1.0-10           gtable_0.3.0          
-    ## [55] DBI_1.1.0              R6_2.4.1               dplyr_1.0.0           
-    ## [58] bit_1.1-15.2           extrafont_0.17         KernSmooth_2.23-17    
-    ## [61] stringi_1.4.6          Rcpp_1.0.4.6           vctrs_0.3.1           
-    ## [64] geneplotter_1.66.0     tidyselect_1.1.0       xfun_0.15
+    ##  [7] vipor_0.4.5            yaml_2.2.1             Rttf2pt1_1.3.8        
+    ## [10] pillar_1.4.4           RSQLite_2.2.0          lattice_0.20-41       
+    ## [13] glue_1.4.1             extrafontdb_1.0        digest_0.6.25         
+    ## [16] RColorBrewer_1.1-2     XVector_0.28.0         colorspace_1.4-1      
+    ## [19] htmltools_0.5.0        Matrix_1.2-18          XML_3.99-0.3          
+    ## [22] pkgconfig_2.0.3        genefilter_1.70.0      zlibbioc_1.34.0       
+    ## [25] xtable_1.8-4           purrr_0.3.4            scales_1.1.1          
+    ## [28] ggrastr_0.1.9          BiocParallel_1.22.0    tibble_3.0.1          
+    ## [31] annotate_1.66.0        farver_2.0.3           generics_0.0.2        
+    ## [34] ellipsis_0.3.1         withr_2.2.0            survival_3.2-3        
+    ## [37] crayon_1.3.4           memoise_1.1.0          evaluate_0.14         
+    ## [40] ash_1.0-15             MASS_7.3-51.6          beeswarm_0.2.3        
+    ## [43] tools_4.0.2            lifecycle_0.2.0        stringr_1.4.0         
+    ## [46] locfit_1.5-9.4         munsell_0.5.0          isoband_0.2.2         
+    ## [49] compiler_4.0.2         ggalt_0.4.0            rlang_0.4.6           
+    ## [52] RCurl_1.98-1.2         labeling_0.3           bitops_1.0-6          
+    ## [55] rmarkdown_2.3          proj4_1.0-10           gtable_0.3.0          
+    ## [58] DBI_1.1.0              R6_2.4.1               dplyr_1.0.0           
+    ## [61] bit_1.1-15.2           extrafont_0.17         KernSmooth_2.23-17    
+    ## [64] stringi_1.4.6          ggbeeswarm_0.6.0       Rcpp_1.0.4.6          
+    ## [67] geneplotter_1.66.0     vctrs_0.3.1            tidyselect_1.1.0      
+    ## [70] xfun_0.15
 
 # References
 

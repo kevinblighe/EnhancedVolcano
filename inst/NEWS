@@ -2,6 +2,8 @@ CHANGES IN VERSION 1.8
 ------------------------
  - added functionality to encircle variables of interest
  - added option to remove arrowheads on connectors
+ - added option to rasterise images via ggrastr::geom_point_rast (Benjamin Ostendorf)
+ - changed axis.text.y = element_text(..., vjust = 1.0) to 0.5 (Benjamin Ostendorf)
 
 CHANGES IN VERSION 1.6
 ------------------------

@@ -165,6 +165,7 @@
 #' @import ggrepel
 #' 
 #' @importFrom ggalt geom_encircle
+#' @importFrom ggrastr geom_point_rast
 #'
 #' @export
 EnhancedVolcano <- function(
@@ -253,8 +254,7 @@ EnhancedVolcano <- function(
   }
   
   if (raster) {
-    require(ggrastr)
-    geom_point <- ggrastr::geom_point_rast
+    geom_point <- geom_point_rast
   }
 
   i <- xvals <- yvals <- Sig <- NULL
