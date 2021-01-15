@@ -792,7 +792,7 @@ sessionInfo()
     ## [11] Biobase_2.48.0              GenomicRanges_1.40.0       
     ## [13] GenomeInfoDb_1.24.2         IRanges_2.22.2             
     ## [15] S4Vectors_0.26.1            BiocGenerics_0.34.0        
-    ## [17] EnhancedVolcano_1.7.18      ggrepel_0.8.2              
+    ## [17] EnhancedVolcano_1.9.1       ggrepel_0.8.2              
     ## [19] ggplot2_3.3.2               knitr_1.29                 
     ## 
     ## loaded via a namespace (and not attached):

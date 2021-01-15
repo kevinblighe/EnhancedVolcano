@@ -414,7 +414,7 @@ also be parsed.
 
 To flip the volcano on its side, we just use *EnhancedVolcano(...) + coord_flip()*.
 
-```{r ex10, fig.height = 8, fig.width = 10, fig.cap = "Italicise labels and flip volcano on it's side."}
+```{r ex10, fig.height = 7, fig.width = 10, fig.cap = "Italicise labels and flip volcano on it's side."}
 
   lab_italics <- paste0("italic('", rownames(res), "')")
   selectLab_italics = paste0(
