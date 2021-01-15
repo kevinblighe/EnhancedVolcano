@@ -38,6 +38,8 @@
 #' @param labvjust Vertical adjustment of label for each variable.
 #' @param boxedLabels Logical, indicating whether or not to draw labels in
 #'   boxes.
+#' @param parseLabels Logical, indicating whether or not to parse expressions
+#'   in labels
 #' @param shape Shape of the plotted points. Either a single value for
 #'   all points, or 4 values corresponding to the default 4 legend labels
 #'   specified by \code{legendLabels}.
@@ -198,6 +200,7 @@ EnhancedVolcano <- function(
   labhjust = 0.5,
   labvjust = 1.5,
   boxedLabels = FALSE,
+  parseLabels = FALSE,
   shape = 19,
   shapeCustom = NULL,
   col = c('grey30', 'forestgreen', 'royalblue', 'red2'),
@@ -783,6 +786,7 @@ EnhancedVolcano <- function(
         vjust = labvjust,
         colour = labCol,
         fontface = labFace,
+        parse = parseLabels,
         na.rm = TRUE)
 
     } else if (drawConnectors && !is.null(selectLab)) {
@@ -807,6 +811,7 @@ EnhancedVolcano <- function(
         vjust = labvjust,
         colour = labCol,
         fontface = labFace,
+        parse = parseLabels,
         na.rm = TRUE)
 
     } else if (!drawConnectors && !is.null(selectLab)) {
@@ -823,6 +828,7 @@ EnhancedVolcano <- function(
         vjust = labvjust,
         colour = labCol,
         fontface = labFace,
+        parse = parseLabels,
         na.rm = TRUE)
 
     } else if (!drawConnectors && is.null(selectLab)) {
@@ -840,6 +846,7 @@ EnhancedVolcano <- function(
         vjust = labvjust,
         colour = labCol,
         fontface = labFace,
+        parse = parseLabels,
         na.rm = TRUE)
     }
 
@@ -872,6 +879,7 @@ EnhancedVolcano <- function(
         vjust = labvjust,
         colour = labCol,
         fontface = labFace,
+        parse = parseLabels,
         na.rm = TRUE)
 
     } else if (drawConnectors && !is.null(selectLab)) {
@@ -896,6 +904,7 @@ EnhancedVolcano <- function(
         vjust = labvjust,
         colour = labCol,
         fontface = labFace,
+        parse = parseLabels,
         na.rm = TRUE)
 
     } else if (!drawConnectors && !is.null(selectLab)) {
@@ -912,6 +921,7 @@ EnhancedVolcano <- function(
         vjust = labvjust,
         colour = labCol,
         fontface = labFace,
+        parse = parseLabels,
         na.rm = TRUE)
 
     } else if (!drawConnectors && is.null(selectLab)) {
@@ -929,6 +939,7 @@ EnhancedVolcano <- function(
         vjust = labvjust,
         colour = labCol,
         fontface = labFace,
+        parse = parseLabels,
         na.rm = TRUE)
 
     }

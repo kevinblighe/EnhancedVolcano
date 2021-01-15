@@ -2,7 +2,7 @@ EnhancedVolcano: publication-ready volcano plots with enhanced colouring
 and labeling
 ================
 Kevin Blighe, Sharmila Rana, Myles Lewis
-2020-08-08
+2021-01-15
 
 # Introduction
 
@@ -375,6 +375,51 @@ labels. This works much better when drawConnectors is also TRUE.
 
 ![Draw labels in boxes.](README_files/figure-gfm/ex9-1.png)
 
+## Italicise labels and flip volcano on it’s side
+
+To make the labels italic, we can create a new vector in which we encode
+the labels as follows: *italic(‘\[LABEL\]’)*. By then setting
+*parseLabels = TRUE*, these will be parsed by the internal *ggplot2* or
+*ggrepel* engine and presented as italicised text. Advanced users can
+encode any expression as the label, which will then also be parsed.
+
+To flip the volcano on its side, we just use *EnhancedVolcano(…) +
+coord\_flip()*.
+
+``` r
+  lab_italics <- paste0("italic('", rownames(res), "')")
+  selectLab_italics = paste0(
+    "italic('",
+    c('VCAM1','KCTD12','ADAM12', 'CXCL12','CACNB2','SPARCL1','DUSP1','SAMHD1','MAOA'),
+    "')")
+
+  EnhancedVolcano(res,
+    lab = lab_italics,
+    x = 'log2FoldChange',
+    y = 'pvalue',
+    selectLab = selectLab_italics,
+    xlab = bquote(~Log[2]~ 'fold change'),
+    pCutoff = 10e-14,
+    FCcutoff = 1.0,
+    pointSize = 3.0,
+    labSize = 6.0,
+    labCol = 'black',
+    labFace = 'bold',
+    boxedLabels = TRUE,
+    parseLabels = TRUE,
+    col = c('black', 'pink', 'purple', 'red3'),
+    colAlpha = 4/5,
+    legendPosition = 'bottom',
+    legendLabSize = 14,
+    legendIconSize = 4.0,
+    drawConnectors = TRUE,
+    widthConnectors = 1.0,
+    colConnectors = 'black') + coord_flip()
+```
+
+![Italicise labels and flip volcano on it’s
+side.](README_files/figure-gfm/ex10-1.png)
+
 ## Over-ride colouring scheme with custom key-value pairs
 
 In certain situations, one may wish to over-ride the default colour
@@ -429,7 +474,7 @@ as ‘high’ and those with log2FC \< -2.5 as
 ```
 
 ![Over-ride colouring scheme with custom key-value
-pairs.](README_files/figure-gfm/ex10-1.png)
+pairs.](README_files/figure-gfm/ex11-1.png)
 
 ## Over-ride colour and/or shape scheme with custom key-value pairs
 
@@ -527,7 +572,7 @@ both the colour and shape scheme at the same time.
 ```
 
 ![Over-ride colour and/or shape scheme with custom key-value
-pairs.](README_files/figure-gfm/ex11-1.png)
+pairs.](README_files/figure-gfm/ex12-1.png)
 
 ## Encircle / highlight certain variables
 
@@ -586,7 +631,7 @@ depth identification of different types of variables.
     borderColour = 'black')
 ```
 
-![Shade certain variables.](README_files/figure-gfm/ex12-1.png)
+![Shade certain variables.](README_files/figure-gfm/ex13-1.png)
 
 ## Highlighting key variables via custom point sizes
 
@@ -640,7 +685,7 @@ the size of just those variables with log<sub>2</sub>FC\>2:
 ```
 
 ![Highlighting key variabvles via custom point
-sizes.](README_files/figure-gfm/ex13-1.png)
+sizes.](README_files/figure-gfm/ex14-1.png)
 
 ## Change to continuous colour scheme
 
@@ -674,7 +719,7 @@ whichever is selected by *y*, via *colGradient*:
 ```
 
 ![Highlighting key variabvles via custom point
-sizes.](README_files/figure-gfm/ex14-1.png)
+sizes.](README_files/figure-gfm/ex15-1.png)
 
 ## Custom axis tick marks
 
@@ -688,7 +733,7 @@ Custom axis ticks can be added in a ‘plug and play’ fashion via
       breaks=seq(-6,6, 1))
 ```
 
-![Custom axis tick marks](README_files/figure-gfm/ex15-1.png)
+![Custom axis tick marks](README_files/figure-gfm/ex16-1.png)
 
 More information on this can be found here:
 <http://www.sthda.com/english/wiki/ggplot2-axis-ticks-a-guide-to-customize-tick-marks-and-labels>
@@ -710,6 +755,7 @@ and suggestions from:
   - Anthony Doherty
   - Emir Turkes
   - Benjamin Ostendorf
+  - Cristian (github.com/ccruizm)
 
 # Session info
 
@@ -717,9 +763,9 @@ and suggestions from:
 sessionInfo()
 ```
 
-    ## R version 4.0.2 (2020-06-22)
+    ## R version 4.0.3 (2020-10-10)
     ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Ubuntu 16.04.6 LTS
+    ## Running under: Ubuntu 16.04.7 LTS
     ## 
     ## Matrix products: default
     ## BLAS:   /usr/lib/atlas-base/atlas/libblas.so.3.0
@@ -746,11 +792,11 @@ sessionInfo()
     ## [11] Biobase_2.48.0              GenomicRanges_1.40.0       
     ## [13] GenomeInfoDb_1.24.2         IRanges_2.22.2             
     ## [15] S4Vectors_0.26.1            BiocGenerics_0.34.0        
-    ## [17] EnhancedVolcano_1.7.14      ggrepel_0.8.2              
+    ## [17] EnhancedVolcano_1.7.18      ggrepel_0.8.2              
     ## [19] ggplot2_3.3.2               knitr_1.29                 
     ## 
     ## loaded via a namespace (and not attached):
-    ##  [1] maps_3.3.0             splines_4.0.2          bit64_0.9-7           
+    ##  [1] maps_3.3.0             splines_4.0.3          bit64_0.9-7           
     ##  [4] highr_0.8              blob_1.2.1             GenomeInfoDbData_1.2.3
     ##  [7] vipor_0.4.5            yaml_2.2.1             Rttf2pt1_1.3.8        
     ## [10] pillar_1.4.4           RSQLite_2.2.0          lattice_0.20-41       
@@ -763,10 +809,10 @@ sessionInfo()
     ## [31] annotate_1.66.0        farver_2.0.3           generics_0.0.2        
     ## [34] ellipsis_0.3.1         withr_2.2.0            survival_3.2-3        
     ## [37] crayon_1.3.4           memoise_1.1.0          evaluate_0.14         
-    ## [40] ash_1.0-15             MASS_7.3-51.6          beeswarm_0.2.3        
-    ## [43] tools_4.0.2            lifecycle_0.2.0        stringr_1.4.0         
+    ## [40] ash_1.0-15             MASS_7.3-53            beeswarm_0.2.3        
+    ## [43] tools_4.0.3            lifecycle_0.2.0        stringr_1.4.0         
     ## [46] locfit_1.5-9.4         munsell_0.5.0          isoband_0.2.2         
-    ## [49] compiler_4.0.2         ggalt_0.4.0            rlang_0.4.6           
+    ## [49] compiler_4.0.3         ggalt_0.4.0            rlang_0.4.6           
     ## [52] RCurl_1.98-1.2         labeling_0.3           bitops_1.0-6          
     ## [55] rmarkdown_2.3          proj4_1.0-10           gtable_0.3.0          
     ## [58] DBI_1.1.0              R6_2.4.1               dplyr_1.0.0           

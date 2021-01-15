@@ -404,6 +404,50 @@ labels. This works much better when drawConnectors is also TRUE.
 ```
 
 
+## Italicise labels and flip volcano on it's side
+
+To make the labels italic, we can create a new vector in which we encode the labels
+as follows: *italic('[LABEL]')*. By then setting *parseLabels = TRUE*,
+these will be parsed by the internal *ggplot2* or *ggrepel* engine and presented as
+italicised text. Advanced users can encode any expression as the label, which will then
+also be parsed.
+
+To flip the volcano on its side, we just use *EnhancedVolcano(...) + coord_flip()*.
+
+```{r ex10, fig.height = 8, fig.width = 10, fig.cap = "Italicise labels and flip volcano on it's side."}
+
+  lab_italics <- paste0("italic('", rownames(res), "')")
+  selectLab_italics = paste0(
+    "italic('",
+    c('VCAM1','KCTD12','ADAM12', 'CXCL12','CACNB2','SPARCL1','DUSP1','SAMHD1','MAOA'),
+    "')")
+
+  EnhancedVolcano(res,
+    lab = lab_italics,
+    x = 'log2FoldChange',
+    y = 'pvalue',
+    selectLab = selectLab_italics,
+    xlab = bquote(~Log[2]~ 'fold change'),
+    pCutoff = 10e-14,
+    FCcutoff = 1.0,
+    pointSize = 3.0,
+    labSize = 6.0,
+    labCol = 'black',
+    labFace = 'bold',
+    boxedLabels = TRUE,
+    parseLabels = TRUE,
+    col = c('black', 'pink', 'purple', 'red3'),
+    colAlpha = 4/5,
+    legendPosition = 'bottom',
+    legendLabSize = 14,
+    legendIconSize = 4.0,
+    drawConnectors = TRUE,
+    widthConnectors = 1.0,
+    colConnectors = 'black') + coord_flip()
+
+```
+
+
 ## Over-ride colouring scheme with custom key-value pairs
 
 In certain situations, one may wish to over-ride the default colour scheme
@@ -429,7 +473,7 @@ In this example, we just wish to colour all variables with log2FC > 2.5 as
 
 ```
 
-```{r ex10, fig.height = 8.5, fig.width = 10, fig.cap = "Over-ride colouring scheme with custom key-value pairs."}
+```{r ex11, fig.height = 8.5, fig.width = 10, fig.cap = "Over-ride colouring scheme with custom key-value pairs."}
 
   EnhancedVolcano(res,
     lab = rownames(res),
@@ -486,7 +530,7 @@ both the colour and shape scheme at the same time.
 
 ```
 
-```{r ex11, fig.height = 8.5, fig.width = 17, fig.cap = "Over-ride colour and/or shape scheme with custom key-value pairs."}
+```{r ex12, fig.height = 8.5, fig.width = 17, fig.cap = "Over-ride colour and/or shape scheme with custom key-value pairs."}
 
   p1 <- EnhancedVolcano(res,
     lab = rownames(res),
@@ -578,7 +622,7 @@ identification of different types of variables.
 
 ```
 
-```{r ex12, fig.height = 8.5, fig.width = 10, fig.cap = "Shade certain variables."}
+```{r ex13, fig.height = 8.5, fig.width = 10, fig.cap = "Shade certain variables."}
 
   EnhancedVolcano(res,
     lab = rownames(res),
@@ -628,7 +672,7 @@ One can also supply a vector of sizes to pointSize for the purpose of having
 a different size for each poin. For example, if we want to change the size of 
 just those variables with log~2~FC>2:
 
-```{r ex13, fig.height = 9, fig.width = 12, fig.cap = "Highlighting key variabvles via custom point sizes."}
+```{r ex14, fig.height = 9, fig.width = 12, fig.cap = "Highlighting key variabvles via custom point sizes."}
 
   library("pasilla")
   pasCts <- system.file("extdata", "pasilla_gene_counts.tsv",
@@ -681,7 +725,7 @@ We can over-ride the default 'discrete' colour scheme with a continuous one
 that shades between 2 colours based on nominal or adjusted p-value,
 whichever is selected by *y*, via *colGradient*:
 
-```{r ex14, fig.height = 9, fig.width = 12, fig.cap = "Highlighting key variabvles via custom point sizes."}
+```{r ex15, fig.height = 9, fig.width = 12, fig.cap = "Highlighting key variabvles via custom point sizes."}
 
   p1 <- EnhancedVolcano(res,
     lab = rownames(res),
@@ -713,7 +757,7 @@ whichever is selected by *y*, via *colGradient*:
 Custom axis ticks can be added in a 'plug and play' fashion via
 _ggplot2_ functionality, as follows:
 
-```{r ex15, fig.height = 9, fig.width = 12, fig.cap = "Custom axis tick marks"}
+```{r ex16, fig.height = 9, fig.width = 12, fig.cap = "Custom axis tick marks"}
 
   p1 +
     ggplot2::coord_cartesian(xlim=c(-6, 6)) +
@@ -740,6 +784,7 @@ and suggestions from:
 * Anthony Doherty
 * Emir Turkes
 * Benjamin Ostendorf
+* Cristian (github.com/ccruizm)
 
 # Session info
 

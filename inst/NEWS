@@ -1,3 +1,7 @@
+CHANGES IN VERSION 1.10
+------------------------
+ - added functionality to parse expressions in labels via parseLabels (TRUE/FALSE)
+
 CHANGES IN VERSION 1.8
 ------------------------
  - added functionality to encircle variables of interest

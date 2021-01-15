@@ -34,6 +34,7 @@ EnhancedVolcano(
   labhjust = 0.5,
   labvjust = 1.5,
   boxedLabels = FALSE,
+  parseLabels = FALSE,
   shape = 19,
   shapeCustom = NULL,
   col = c("grey30", "forestgreen", "royalblue", "red2"),
@@ -148,6 +149,9 @@ a single value or a vector of sizes.}
 
 \item{boxedLabels}{Logical, indicating whether or not to draw labels in
 boxes.}
+
+\item{parseLabels}{Logical, indicating whether or not to parse expressions
+in labels}
 
 \item{shape}{Shape of the plotted points. Either a single value for
 all points, or 4 values corresponding to the default 4 legend labels
