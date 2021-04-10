@@ -34,8 +34,6 @@
 #' @param labSize Size of labels for each variable.
 #' @param labCol Colour of labels for each variable.
 #' @param labFace Font face of labels for each variable.
-#' @param labhjust Horizontal adjustment of label for each variable.
-#' @param labvjust Vertical adjustment of label for each variable.
 #' @param boxedLabels Logical, indicating whether or not to draw labels in
 #'   boxes.
 #' @param parseLabels Logical, indicating whether or not to parse expressions
@@ -88,6 +86,10 @@
 #'   'first', 'both').
 #' @param lengthConnectors Length of the connectors.
 #' @param colConnectors Line colour of connectors.
+#' @param maxoverlapsConnectors Equivalent of max.overlaps in ggrepel. Set to
+#'   'Inf' to always display all labels when drawConnectors = TRUE.
+#' @param directionConnectors direction in which to draw connectors.
+#'   'both', 'x', or 'y'.
 #' @param arrowheads Logical, indicating whether or not to draw arrow heads or
 #'   or just have straight lines.
 #' @param hline Draw one or more horizontal lines passing through this/these
@@ -197,8 +199,6 @@ EnhancedVolcano <- function(
   labSize = 5.0,
   labCol = 'black',
   labFace = 'plain',
-  labhjust = 0.5,
-  labvjust = 1.5,
   boxedLabels = FALSE,
   parseLabels = FALSE,
   shape = 19,
@@ -232,6 +232,8 @@ EnhancedVolcano <- function(
   endsConnectors = 'first',
   lengthConnectors = unit(0.01, 'npc'),
   colConnectors = 'grey10',
+  maxoverlapsConnectors = 15,
+  directionConnectors = 'both',
   arrowheads = TRUE,
   hline = NULL,
   hlineType = 'longdash',
@@ -778,16 +780,18 @@ EnhancedVolcano <- function(
         aes(label = subset(toptable,
           toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff)[["lab"]]),
+        xlim = c(NA, NA),
+        ylim = c(NA, NA),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
         arrow = arr,
-        hjust = labhjust,
-        vjust = labvjust,
         colour = labCol,
         fontface = labFace,
         parse = parseLabels,
-        na.rm = TRUE)
+        na.rm = TRUE,
+        direction = directionConnectors,
+        max.overlaps = maxoverlapsConnectors)
 
     } else if (drawConnectors && !is.null(selectLab)) {
 
@@ -803,16 +807,18 @@ EnhancedVolcano <- function(
           !is.na(toptable[['lab']])),
         aes(label = subset(toptable,
           !is.na(toptable[['lab']]))[['lab']]),
+        xlim = c(NA, NA),
+        ylim = c(NA, NA),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
         arrow = arr,
-        hjust = labhjust,
-        vjust = labvjust,
         colour = labCol,
         fontface = labFace,
         parse = parseLabels,
-        na.rm = TRUE)
+        na.rm = TRUE,
+        direction = directionConnectors,
+        max.overlaps = maxoverlapsConnectors)
 
     } else if (!drawConnectors && !is.null(selectLab)) {
 
@@ -822,10 +828,12 @@ EnhancedVolcano <- function(
         aes(
           label = subset(toptable,
             !is.na(toptable[['lab']]))[['lab']]),
+        xlim = c(NA, NA),
+        ylim = c(NA, NA),
         size = labSize,
         check_overlap = TRUE,
-        hjust = labhjust,
-        vjust = labvjust,
+        labhjust = 0.5,
+        labvjust = 0.0,
         colour = labCol,
         fontface = labFace,
         parse = parseLabels,
@@ -840,10 +848,12 @@ EnhancedVolcano <- function(
         aes(label = subset(toptable,
           toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff)[['lab']]),
+        xlim = c(NA, NA),
+        ylim = c(NA, NA),
         size = labSize,
         check_overlap = TRUE,
-        hjust = labhjust,
-        vjust = labvjust,
+        labhjust = 0.5,
+        labvjust = 0.0,
         colour = labCol,
         fontface = labFace,
         parse = parseLabels,
@@ -871,16 +881,18 @@ EnhancedVolcano <- function(
         aes(label = subset(toptable,
           toptable[[y]]<pCutoff &
             abs(toptable[[x]]) > FCcutoff)[['lab']]),
+        xlim = c(NA, NA),
+        ylim = c(NA, NA),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
         arrow = arr,
-        hjust = labhjust,
-        vjust = labvjust,
         colour = labCol,
         fontface = labFace,
         parse = parseLabels,
-        na.rm = TRUE)
+        na.rm = TRUE,
+        direction = directionConnectors,
+        max.overlaps = maxoverlapsConnectors)
 
     } else if (drawConnectors && !is.null(selectLab)) {
 
@@ -896,16 +908,18 @@ EnhancedVolcano <- function(
           !is.na(toptable[['lab']])),
         aes(label = subset(toptable,
           !is.na(toptable[['lab']]))[['lab']]),
+        xlim = c(NA, NA),
+        ylim = c(NA, NA),
         size = labSize,
         segment.color = colConnectors,
         segment.size = widthConnectors,
         arrow = arr,
-        hjust = labhjust,
-        vjust = labvjust,
         colour = labCol,
         fontface = labFace,
         parse = parseLabels,
-        na.rm = TRUE)
+        na.rm = TRUE,
+        direction = directionConnectors,
+        max.overlaps = maxoverlapsConnectors)
 
     } else if (!drawConnectors && !is.null(selectLab)) {
 
@@ -916,10 +930,9 @@ EnhancedVolcano <- function(
           label = subset(toptable,
             !is.na(toptable[['lab']]))[['lab']]),
         size = labSize,
-        #check_overlap = TRUE,
-        hjust = labhjust,
-        vjust = labvjust,
         colour = labCol,
+        labhjust = 0.5,
+        labvjust = 0.0,
         fontface = labFace,
         parse = parseLabels,
         na.rm = TRUE)
@@ -934,9 +947,8 @@ EnhancedVolcano <- function(
           toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff)[['lab']]),
         size = labSize,
-        #check_overlap = TRUE,
-        hjust = labhjust,
-        vjust = labvjust,
+        labhjust = 0.5,
+        labvjust = 0.0,
         colour = labCol,
         fontface = labFace,
         parse = parseLabels,
@@ -974,6 +986,8 @@ EnhancedVolcano <- function(
         show.legend = FALSE,
         na.rm = TRUE)
   }
+
+  plot <- plot + coord_cartesian(clip = 'off')
 
   return(plot)
 }

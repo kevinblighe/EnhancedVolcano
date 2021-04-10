@@ -1,6 +1,10 @@
 CHANGES IN VERSION 1.10
 ------------------------
  - added functionality to parse expressions in labels via parseLabels (TRUE/FALSE)
+ - over-rides ggrepel's new default value for max.overlaps via introduction of
+   maxoverlapsConnectors = 15
+ - user can now specify a direction for connectors via directionConnectors
+ - removed labhjust and labvjust
 
 CHANGES IN VERSION 1.8
 ------------------------

@@ -265,9 +265,9 @@ To make these more visible, we will also remove the default gridlines.
       10e-20 * 10e-30,
       10e-20 * 10e-60,
       10e-20 * 10e-90),
-    hlineCol = c('pink', 'red', 'red2', 'red4'),
+    hlineCol = c('pink', 'hotpink', 'purple', 'black'),
     hlineType = c('solid', 'longdash', 'dotdash', 'dotted'),
-    hlineWidth = c(4, 3, 2, 1),
+    hlineWidth = c(1.0, 1.5, 2.0, 2.5),
     gridlines.major = FALSE,
     gridlines.minor = FALSE)
 

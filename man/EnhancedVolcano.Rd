@@ -31,8 +31,6 @@ EnhancedVolcano(
   labSize = 5,
   labCol = "black",
   labFace = "plain",
-  labhjust = 0.5,
-  labvjust = 1.5,
   boxedLabels = FALSE,
   parseLabels = FALSE,
   shape = 19,
@@ -66,6 +64,8 @@ EnhancedVolcano(
   endsConnectors = "first",
   lengthConnectors = unit(0.01, "npc"),
   colConnectors = "grey10",
+  maxoverlapsConnectors = 15,
+  directionConnectors = "both",
   arrowheads = TRUE,
   hline = NULL,
   hlineType = "longdash",
@@ -142,10 +142,6 @@ a single value or a vector of sizes.}
 \item{labCol}{Colour of labels for each variable.}
 
 \item{labFace}{Font face of labels for each variable.}
-
-\item{labhjust}{Horizontal adjustment of label for each variable.}
-
-\item{labvjust}{Vertical adjustment of label for each variable.}
 
 \item{boxedLabels}{Logical, indicating whether or not to draw labels in
 boxes.}
@@ -230,6 +226,12 @@ labels to their corresponding points by line connectors.}
 \item{lengthConnectors}{Length of the connectors.}
 
 \item{colConnectors}{Line colour of connectors.}
+
+\item{maxoverlapsConnectors}{Equivalent of max.overlaps in ggrepel. Set to
+'Inf' to always display all labels when drawConnectors = TRUE.}
+
+\item{directionConnectors}{direction in which to draw connectors.
+'both', 'x', or 'y'.}
 
 \item{arrowheads}{Logical, indicating whether or not to draw arrow heads or
 or just have straight lines.}

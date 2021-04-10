@@ -7,7 +7,7 @@ test_that('datatypes', {
   expect_type(EnhancedVolcano(xlab, ylab, title, subtitle, caption,
     cutoffLineType, cutoffLineCol, legendPosition, shadeFill,
     typeConnectors, endsConnectors, colConnectors, hlineType,
-    hlineCol, vlineType, vlineCol, border, borderColour),
+    hlineCol, vlineType, vlineCol, border, borderColour, directionConnectors),
     c('language', 'character'))
   expect_type(EnhancedVolcano(boxedLabels, drawConnectors, arrowheads,
     gridlines.major, gridlines.minor, parseLabels),
@@ -17,8 +17,8 @@ test_that('datatypes', {
     labSize, labhjust, labvjust, shape,
     colAlpha, colGradientBreaks, colGradientLimits, legendLabSize,
     legendIconSize, encircleSize, encircleAlpha, shadeAlpha, shadeSize,
-    shadeBins, widthConnectors, lengthConnectors, hline, hlineWidth, vline,
-    vlineWidth, borderWidth), c('integer', 'double'))
+    shadeBins, widthConnectors, lengthConnectors, maxoverlapsConnectors, hline,
+    hlineWidth, vline, vlineWidth, borderWidth), c('integer', 'double'))
   expect_gt(EnhancedVolcano(subtitleLabSize, captionLabSize, pCutoff,
     cutoffLineWidth, FCcutoff, labhjust, labvjust,
     shape, colAlpha, legendLabSize, legendIconSize, encircleSize, encircleAlpha,
