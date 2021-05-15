@@ -23,6 +23,7 @@ EnhancedVolcano(
   subtitleLabSize = 14,
   captionLabSize = 14,
   pCutoff = 1e-05,
+  pCutoffCol = y,
   FCcutoff = 1,
   cutoffLineType = "longdash",
   cutoffLineCol = "black",
@@ -123,6 +124,12 @@ p-values.}
 
 \item{pCutoff}{Cut-off for statistical significance. A horizontal line
 will be drawn at -log10(pCutoff).}
+
+\item{pCutoffCol}{Column name of statistical significance values to be used as
+the cut-off. A typical usage situation would be to pass nominal [un-adjusted]
+p-values as 'y', but adjusted p-values as pCutoffCol. In this way, a
+plot is generated via -log10(unadjusted p-value), but cut-offs based on
+adjusted p-values.}
 
 \item{FCcutoff}{Cut-off for absolute log2 fold-change. Vertical lines will
 be drawn at the negative and positive values of log2FCcutoff.}

@@ -5,6 +5,7 @@ CHANGES IN VERSION 1.10
    maxoverlapsConnectors = 15
  - user can now specify a direction for connectors via directionConnectors
  - removed labhjust and labvjust
+ - added pCutoffCol (via Andrea Grioni)
 
 CHANGES IN VERSION 1.8
 ------------------------

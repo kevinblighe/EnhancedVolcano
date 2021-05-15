@@ -23,7 +23,11 @@
 #' @param captionLabSize Size of plot caption.
 #' @param pCutoff Cut-off for statistical significance. A horizontal line
 #'   will be drawn at -log10(pCutoff).
-#' @param pCutoffCol col name of statistical significance values.
+#' @param pCutoffCol Column name of statistical significance values to be used as
+#'   the cut-off. A typical usage situation would be to pass nominal [un-adjusted]
+#'   p-values as 'y', but adjusted p-values as pCutoffCol. In this way, a
+#'   plot is generated via -log10(unadjusted p-value), but cut-offs based on
+#'   adjusted p-values.
 #' @param FCcutoff Cut-off for absolute log2 fold-change. Vertical lines will
 #'   be drawn at the negative and positive values of log2FCcutoff.
 #' @param cutoffLineType Line type for \code{FCcutoff} and \code{pCutoff}

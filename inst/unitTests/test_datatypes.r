@@ -1,8 +1,8 @@
 test_that('datatypes', {
   expect_type(EnhancedVolcano(toptable),
     c('S4', 'list'))
-  expect_type(EnhancedVolcano(lab, x, y, selectLab, shapeCustom, col,
-    colCustom, colGradient, colGradientLabels, legendLabels, encircle,
+  expect_type(EnhancedVolcano(lab, x, y, pCutoffCol, selectLab, shapeCustom,
+    col, colCustom, colGradient, colGradientLabels, legendLabels, encircle,
     encircleFill, encircleCol, shade), c('character'))
   expect_type(EnhancedVolcano(xlab, ylab, title, subtitle, caption,
     cutoffLineType, cutoffLineCol, legendPosition, shadeFill,
