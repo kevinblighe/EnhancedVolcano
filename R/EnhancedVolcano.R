@@ -23,6 +23,7 @@
 #' @param captionLabSize Size of plot caption.
 #' @param pCutoff Cut-off for statistical significance. A horizontal line
 #'   will be drawn at -log10(pCutoff).
+#' @param pCutoffCol col name of statistical significance values.
 #' @param FCcutoff Cut-off for absolute log2 fold-change. Vertical lines will
 #'   be drawn at the negative and positive values of log2FCcutoff.
 #' @param cutoffLineType Line type for \code{FCcutoff} and \code{pCutoff}
@@ -191,6 +192,7 @@ EnhancedVolcano <- function(
   subtitleLabSize = 14,
   captionLabSize = 14,
   pCutoff = 10e-6,
+  pCutoffCol = y,
   FCcutoff = 1.0,
   cutoffLineType = 'longdash',
   cutoffLineCol = 'black',
@@ -254,7 +256,7 @@ EnhancedVolcano <- function(
     stop(paste(x, ' is not numeric!', sep=''))
   }
 
-  if(!is.numeric(toptable[[y]])) {
+  if(!is.numeric(toptable[[pCutoffCol]])) {
     stop(paste(y, ' is not numeric!', sep=''))
   }
   
@@ -267,12 +269,21 @@ EnhancedVolcano <- function(
   toptable <- as.data.frame(toptable)
   toptable$Sig <- 'NS'
   toptable$Sig[(abs(toptable[[x]]) > FCcutoff)] <- 'FC'
-  toptable$Sig[(toptable[[y]] < pCutoff)] <- 'P'
-  toptable$Sig[(toptable[[y]] < pCutoff) &
+
+  toptable$Sig[(toptable[[pCutoffCol]] < pCutoff)] <- 'P'
+  toptable$Sig[(toptable[[pCutoffCol]] < pCutoff) &
     (abs(toptable[[x]]) > FCcutoff)] <- 'FC_P'
   toptable$Sig <- factor(toptable$Sig,
     levels=c('NS','FC','P','FC_P'))
-
+  # reset pCutoff to corresponding value on y
+  # allowing to draw hline at the correct
+  # threshold
+  if (pCutoffCol != y) {
+    pCutoff = max(
+      toptable[which(
+        toptable[pCutoffCol] <= pCutoff), y]
+      )
+  }
   # some software programs return 0 for very low p-values
   # These throw an error in EnhancedVolcano
   # Detect these, issue warning, and convert these to
