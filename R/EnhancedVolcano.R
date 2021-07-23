@@ -89,10 +89,13 @@
 #' @param typeConnectors Have the arrow head open ('open') or filled ('closed')?
 #' @param endsConnectors Which end of connectors to draw arrow head? ('last',
 #'   'first', 'both').
-#' @param lengthConnectors Length of the connectors.
-#' @param colConnectors Line colour of connectors.
-#' @param maxoverlapsConnectors Equivalent of max.overlaps in ggrepel. Set to
+#' @param lengthConnectors Length (size) of the connector arrowheads.
+#' @param colConnectors Line colour of connectors and line segments.
+#' @param max.overlaps Equivalent of max.overlaps in ggrepel. Set to
 #'   'Inf' to always display all labels when drawConnectors = TRUE.
+#' @param maxoverlapsConnectors See max.overlaps.
+#' @param min.segment.length When drawConnectors = TRUE, specifies the minimum
+#'   length of the connector line segments.
 #' @param directionConnectors direction in which to draw connectors.
 #'   'both', 'x', or 'y'.
 #' @param arrowheads Logical, indicating whether or not to draw arrow heads or
@@ -238,7 +241,9 @@ EnhancedVolcano <- function(
   endsConnectors = 'first',
   lengthConnectors = unit(0.01, 'npc'),
   colConnectors = 'grey10',
-  maxoverlapsConnectors = 15,
+  max.overlaps = 15,
+  maxoverlapsConnectors = NULL,
+  min.segment.length = 0,
   directionConnectors = 'both',
   arrowheads = TRUE,
   hline = NULL,
@@ -266,6 +271,10 @@ EnhancedVolcano <- function(
   
   if (raster) {
     geom_point <- geom_point_rast
+  }
+
+  if (!is.null(maxoverlapsConnectors)) {
+    max.overlaps <- maxoverlapsConnectors
   }
 
   i <- xvals <- yvals <- Sig <- NULL
@@ -806,7 +815,8 @@ EnhancedVolcano <- function(
         parse = parseLabels,
         na.rm = TRUE,
         direction = directionConnectors,
-        max.overlaps = maxoverlapsConnectors)
+        max.overlaps = max.overlaps,
+        min.segment.length = min.segment.length)
 
     } else if (drawConnectors && !is.null(selectLab)) {
 
@@ -833,7 +843,8 @@ EnhancedVolcano <- function(
         parse = parseLabels,
         na.rm = TRUE,
         direction = directionConnectors,
-        max.overlaps = maxoverlapsConnectors)
+        max.overlaps = max.overlaps,
+        min.segment.length = min.segment.length)
 
     } else if (!drawConnectors && !is.null(selectLab)) {
 
@@ -843,8 +854,6 @@ EnhancedVolcano <- function(
         aes(
           label = subset(toptable,
             !is.na(toptable[['lab']]))[['lab']]),
-        xlim = c(NA, NA),
-        ylim = c(NA, NA),
         size = labSize,
         check_overlap = TRUE,
         colour = labCol,
@@ -861,8 +870,6 @@ EnhancedVolcano <- function(
         aes(label = subset(toptable,
           toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff)[['lab']]),
-        xlim = c(NA, NA),
-        ylim = c(NA, NA),
         size = labSize,
         check_overlap = TRUE,
         colour = labCol,
@@ -903,7 +910,8 @@ EnhancedVolcano <- function(
         parse = parseLabels,
         na.rm = TRUE,
         direction = directionConnectors,
-        max.overlaps = maxoverlapsConnectors)
+        max.overlaps = max.overlaps,
+        min.segment.length = min.segment.length)
 
     } else if (drawConnectors && !is.null(selectLab)) {
 
@@ -930,7 +938,8 @@ EnhancedVolcano <- function(
         parse = parseLabels,
         na.rm = TRUE,
         direction = directionConnectors,
-        max.overlaps = maxoverlapsConnectors)
+        max.overlaps = max.overlaps,
+        min.segment.length = min.segment.length)
 
     } else if (!drawConnectors && !is.null(selectLab)) {
 

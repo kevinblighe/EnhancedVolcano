@@ -2,7 +2,7 @@ EnhancedVolcano: publication-ready volcano plots with enhanced colouring
 and labeling
 ================
 Kevin Blighe, Sharmila Rana, Myles Lewis
-2021-05-15
+2021-07-23
 
 # Introduction
 
@@ -206,22 +206,19 @@ Reference: shape](http://sape.inf.usi.ch/quick-reference/ggplot2/shape)
 
 ![Adjust shape of plotted points.](README_files/figure-gfm/ex4b-1.png)
 
-## Adjust p-value cut-off
+## Adjust cut-off lines and add extra threshold lines
 
 The lines that are drawn to indicate cut-off points are also modifiable.
 The parameter ‘cutoffLineType’ accepts the following values: “blank”,
 “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, and “twodash”. The
 colour and thickness of these can also be modified with ‘cutoffLineCol’
-and ‘cutoffLineWidth’, respectively. To disable the lines, set either
+and ‘cutoffLineWidth’. To disable the lines, set either
 cutoffLineType=“blank” or cutoffLineWidth=0.
 
-Also, by using pCutoffCol=‘padj’, we instruct *EnhancedVolcano* to
-generate a traditonal volcano using nominal / un-adjusted p-values (or
-whatever is passed as ‘y’), but using adjusted p-values as the cut-off.
-
 Extra lines can also be added via ‘hline’ and ‘vline’ to display other
-custom cut-offs. To make these more visible, we will also remove the
-default gridlines (gridlines.major and gridlines.minor).
+cut-offs.
+
+To make these more visible, we will also remove the default gridlines.
 
 ``` r
   EnhancedVolcano(res,
@@ -230,24 +227,21 @@ default gridlines (gridlines.major and gridlines.minor).
     y = 'pvalue',
     xlim = c(-6, 6),
     title = 'N061011 versus N61311',
-    subtitle = paste0('p-value cutoff (red line) drawn ',
-      'at equivalent of adjusted p=0.0001'),
-    pCutoff = 0.0001,
-    pCutoffCol = 'padj',
+    pCutoff = 10e-12,
     FCcutoff = 1.5,
     pointSize = 3.0,
     labSize = 6.0,
     colAlpha = 1,
-    cutoffLineType = 'solid',
-    cutoffLineCol = 'red2',
-    cutoffLineWidth = 2.5,
+    cutoffLineType = 'blank',
+    cutoffLineCol = 'black',
+    cutoffLineWidth = 0.8,
     hline = c(10e-20,
       10e-20 * 10e-30,
       10e-20 * 10e-60,
       10e-20 * 10e-90),
-    hlineCol = c('black', 'black', 'black', 'black'),
-    hlineType = c('longdash', 'longdash', 'dotdash', 'dotdash'),
-    hlineWidth = c(0.4, 0.4, 0.8, 0.8),
+    hlineCol = c('pink', 'hotpink', 'purple', 'black'),
+    hlineType = c('solid', 'longdash', 'dotdash', 'dotted'),
+    hlineWidth = c(1.0, 1.5, 2.0, 2.5),
     gridlines.major = FALSE,
     gridlines.minor = FALSE)
 ```
@@ -279,6 +273,9 @@ legend text, label size, and icon size can also be modified.
     legendLabSize = 16,
     legendIconSize = 5.0)
 ```
+
+![Adjust legend position, size, and
+text.](README_files/figure-gfm/ex6-1.png)
 
 Note: to make the legend completely invisible, specify:
 
@@ -349,8 +346,9 @@ labelled.
 
 ## Draw labels in boxes
 
-To improve label clarity, we can draw simple boxes around the plots
-labels. This works much better when drawConnectors is also TRUE.
+To improve label clarity, we can draw simple boxes around the plot’s
+labels via *boxedLabels*. This works much better when drawConnectors is
+also TRUE.
 
 ``` r
   EnhancedVolcano(res,
@@ -759,7 +757,7 @@ and suggestions from:
   - Emir Turkes
   - Benjamin Ostendorf
   - Cristian (github.com/ccruizm)
-  - Andrea Grioni
+  - Quan Le (Yale University)
 
 # Session info
 
@@ -796,76 +794,7 @@ sessionInfo()
     ## [11] Biobase_2.48.0              GenomicRanges_1.40.0       
     ## [13] GenomeInfoDb_1.24.2         IRanges_2.22.2             
     ## [15] S4Vectors_0.26.1            BiocGenerics_0.34.0        
-    ## [17] EnhancedVolcano_1.9.13      ggrepel_0.9.1              
-    ## [19] ggplot2_3.3.3               knitr_1.31                 
-    ## 
-    ## loaded via a namespace (and not attached):
-    ##  [1] bitops_1.0-6           bit64_4.0.5            ash_1.0-15            
-    ##  [4] RColorBrewer_1.1-2     tools_4.0.3            R6_2.5.0              
-    ##  [7] KernSmooth_2.23-18     vipor_0.4.5            DBI_1.1.1             
-    ## [10] colorspace_2.0-0       withr_2.4.1            tidyselect_1.1.0      
-    ## [13] ggrastr_0.2.3          ggalt_0.4.0            bit_4.0.4             
-    ## [16] compiler_4.0.3         extrafontdb_1.0        isoband_0.2.3         
-    ## [19] labeling_0.4.2         scales_1.1.1           proj4_1.0-10.1        
-    ## [22] genefilter_1.70.0      stringr_1.4.0          digest_0.6.27         
-    ## [25] rmarkdown_2.6          XVector_0.28.0         pkgconfig_2.0.3       
-    ## [28] htmltools_0.5.1.1      extrafont_0.17         fastmap_1.1.0         
-    ## [31] highr_0.8              maps_3.3.0             rlang_0.4.10          
-    ## [34] RSQLite_2.2.3          generics_0.1.0         farver_2.0.3          
-    ## [37] BiocParallel_1.22.0    dplyr_1.0.3            RCurl_1.98-1.2        
-    ## [40] GenomeInfoDbData_1.2.3 Matrix_1.3-2           Rcpp_1.0.6            
-    ## [43] ggbeeswarm_0.6.0       munsell_0.5.0          lifecycle_0.2.0       
-    ## [46] stringi_1.5.3          yaml_2.2.1             MASS_7.3-53           
-    ## [49] zlibbioc_1.34.0        blob_1.2.1             crayon_1.3.4          
-    ## [52] lattice_0.20-41        splines_4.0.3          annotate_1.66.0       
-    ## [55] locfit_1.5-9.4         pillar_1.4.7           geneplotter_1.66.0    
-    ## [58] XML_3.99-0.5           glue_1.4.2             evaluate_0.14         
-    ## [61] vctrs_0.3.6            Rttf2pt1_1.3.8         gtable_0.3.0          
-    ## [64] purrr_0.3.4            assertthat_0.2.1       cachem_1.0.1          
-    ## [67] xfun_0.20              xtable_1.8-4           survival_3.2-7        
-    ## [70] tibble_3.0.1           beeswarm_0.2.3         memoise_2.0.0         
-    ## [73] ellipsis_0.3.1
-
-# References
-
-Blighe, Rana, and Lewis (2018)
-
-# Session info
-
-``` r
-sessionInfo()
-```
-
-    ## R version 4.0.3 (2020-10-10)
-    ## Platform: x86_64-pc-linux-gnu (64-bit)
-    ## Running under: Ubuntu 16.04.7 LTS
-    ## 
-    ## Matrix products: default
-    ## BLAS:   /usr/lib/atlas-base/atlas/libblas.so.3.0
-    ## LAPACK: /usr/lib/atlas-base/atlas/liblapack.so.3.0
-    ## 
-    ## locale:
-    ##  [1] LC_CTYPE=pt_BR.UTF-8       LC_NUMERIC=C              
-    ##  [3] LC_TIME=en_GB.UTF-8        LC_COLLATE=pt_BR.UTF-8    
-    ##  [5] LC_MONETARY=en_GB.UTF-8    LC_MESSAGES=pt_BR.UTF-8   
-    ##  [7] LC_PAPER=en_GB.UTF-8       LC_NAME=C                 
-    ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
-    ## [11] LC_MEASUREMENT=en_GB.UTF-8 LC_IDENTIFICATION=C       
-    ## 
-    ## attached base packages:
-    ##  [1] grid      parallel  stats4    stats     graphics  grDevices utils    
-    ##  [8] datasets  methods   base     
-    ## 
-    ## other attached packages:
-    ##  [1] pasilla_1.16.0              gridExtra_2.3              
-    ##  [3] DESeq2_1.28.1               org.Hs.eg.db_3.11.4        
-    ##  [5] AnnotationDbi_1.53.0        magrittr_2.0.1             
-    ##  [7] airway_1.8.0                SummarizedExperiment_1.18.2
-    ##  [9] DelayedArray_0.14.1         matrixStats_0.57.0         
-    ## [11] Biobase_2.48.0              GenomicRanges_1.40.0       
-    ## [13] GenomeInfoDb_1.24.2         IRanges_2.22.2             
-    ## [15] S4Vectors_0.26.1            BiocGenerics_0.34.0        
-    ## [17] EnhancedVolcano_1.9.13      ggrepel_0.9.1              
+    ## [17] EnhancedVolcano_1.11.3      ggrepel_0.9.1              
     ## [19] ggplot2_3.3.3               knitr_1.31                 
     ## 
     ## loaded via a namespace (and not attached):

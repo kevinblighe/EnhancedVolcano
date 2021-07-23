@@ -65,7 +65,9 @@ EnhancedVolcano(
   endsConnectors = "first",
   lengthConnectors = unit(0.01, "npc"),
   colConnectors = "grey10",
-  maxoverlapsConnectors = 15,
+  max.overlaps = 15,
+  maxoverlapsConnectors = NULL,
+  min.segment.length = 0,
   directionConnectors = "both",
   arrowheads = TRUE,
   hline = NULL,
@@ -230,12 +232,17 @@ labels to their corresponding points by line connectors.}
 \item{endsConnectors}{Which end of connectors to draw arrow head? ('last',
 'first', 'both').}
 
-\item{lengthConnectors}{Length of the connectors.}
+\item{lengthConnectors}{Length (size) of the connector arrowheads.}
 
-\item{colConnectors}{Line colour of connectors.}
+\item{colConnectors}{Line colour of connectors and line segments.}
 
-\item{maxoverlapsConnectors}{Equivalent of max.overlaps in ggrepel. Set to
+\item{max.overlaps}{Equivalent of max.overlaps in ggrepel. Set to
 'Inf' to always display all labels when drawConnectors = TRUE.}
+
+\item{maxoverlapsConnectors}{See max.overlaps.}
+
+\item{min.segment.length}{When drawConnectors = TRUE, specifies the minimum
+length of the connector line segments.}
 
 \item{directionConnectors}{direction in which to draw connectors.
 'both', 'x', or 'y'.}

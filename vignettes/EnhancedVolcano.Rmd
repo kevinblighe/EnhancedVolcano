@@ -232,25 +232,20 @@ For more information on shape encoding search online at
 
 ```
 
-## Adjust p-value cut-off
+## Adjust cut-off lines and add extra threshold lines
 
 The lines that are drawn to indicate cut-off points are also modifiable. The
 parameter 'cutoffLineType' accepts the following values: "blank", "solid",
 "dashed", "dotted", "dotdash", "longdash", and "twodash". The colour and
 thickness of these can also be modified with 'cutoffLineCol' and
-'cutoffLineWidth', respectively. To disable the lines, set either
-cutoffLineType="blank" or cutoffLineWidth=0.
+'cutoffLineWidth'. To disable the lines, set either cutoffLineType="blank"
+or cutoffLineWidth=0.
 
-Also, by using pCutoffCol='padj', we instruct *EnhancedVolcano* to generate
-a traditonal volcano using nominal / un-adjusted p-values (or whatever is
-passed as 'y'), but using adjusted p-values as the cut-off.
+Extra lines can also be added via 'hline' and 'vline' to display other cut-offs.
 
-Extra lines can also be added via 'hline' and 'vline' to display other custom
-cut-offs. To make these more visible, we will also remove the default gridlines
-(gridlines.major and gridlines.minor).
+To make these more visible, we will also remove the default gridlines.
 
-
-```{r ex5, fig.height = 8.5, fig.width = 7, fig.cap = "Adjust cut-off and add extra threshold lines."}
+```{r ex5, fig.height = 8.5, fig.width = 7, fig.cap = "Adjust cut-off lines and add extra threshold lines."}
 
   EnhancedVolcano(res,
     lab = rownames(res),
@@ -258,24 +253,21 @@ cut-offs. To make these more visible, we will also remove the default gridlines
     y = 'pvalue',
     xlim = c(-6, 6),
     title = 'N061011 versus N61311',
-    subtitle = paste0('p-value cutoff (red line) drawn ',
-      'at equivalent of adjusted p=0.0001'),
-    pCutoff = 0.0001,
-    pCutoffCol = 'padj',
+    pCutoff = 10e-12,
     FCcutoff = 1.5,
     pointSize = 3.0,
     labSize = 6.0,
     colAlpha = 1,
-    cutoffLineType = 'solid',
-    cutoffLineCol = 'red2',
-    cutoffLineWidth = 2.5,
+    cutoffLineType = 'blank',
+    cutoffLineCol = 'black',
+    cutoffLineWidth = 0.8,
     hline = c(10e-20,
       10e-20 * 10e-30,
       10e-20 * 10e-60,
       10e-20 * 10e-90),
-    hlineCol = c('black', 'black', 'black', 'black'),
-    hlineType = c('longdash', 'longdash', 'dotdash', 'dotdash'),
-    hlineWidth = c(0.4, 0.4, 0.8, 0.8),
+    hlineCol = c('pink', 'hotpink', 'purple', 'black'),
+    hlineType = c('solid', 'longdash', 'dotdash', 'dotted'),
+    hlineWidth = c(1.0, 1.5, 2.0, 2.5),
     gridlines.major = FALSE,
     gridlines.minor = FALSE)
 
@@ -287,7 +279,7 @@ The position of the legend can also be changed to "left" or "right"
 (and stacked vertically), or 'top' or "bottom" (stacked horizontally). The
 legend text, label size, and icon size can also be modified.
 
-```{r ex6, eval = FALSE, fig.height = 8.5, fig.width = 10, fig.cap = "Adjust legend position, size, and text."}
+```{r ex6, fig.height = 8.5, fig.width = 10, fig.cap = "Adjust legend position, size, and text."}
 
   EnhancedVolcano(res,
     lab = rownames(res),
@@ -382,8 +374,8 @@ be labelled.
 
 ## Draw labels in boxes
 
-To improve label clarity, we can draw simple boxes around the plots
-labels. This works much better when drawConnectors is also TRUE.
+To improve label clarity, we can draw simple boxes around the plot's
+labels via *boxedLabels*. This works much better when drawConnectors is also TRUE.
 
 ```{r ex9, fig.height = 8.5, fig.width = 10, fig.cap = "Draw labels in boxes."}
 
@@ -793,19 +785,7 @@ and suggestions from:
 * Emir Turkes
 * Benjamin Ostendorf
 * Cristian (github.com/ccruizm)
-* Andrea Grioni
-
-# Session info
-
-```{r}
-
-sessionInfo()
-
-```
-
-# References
-
-@EnhancedVolcano
+* Quan Le (Yale University)
 
 # Session info
 

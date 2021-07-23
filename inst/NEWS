@@ -1,3 +1,10 @@
+
+CHANGES IN VERSION 1.12
+------------------------
+ - added max.overlaps and min.segment.length to provide further control over
+   connectors. max.overlaps replaces maxoverlapsConnectors, but both can still
+   be used for legacy purposes
+
 CHANGES IN VERSION 1.10
 ------------------------
  - added functionality to parse expressions in labels via parseLabels (TRUE/FALSE)
