@@ -322,9 +322,7 @@ connectors.](README_files/figure-gfm/ex7-1.png)
 In many situations, people may only wish to label their key variables /
 variables of interest. One can therefore supply a vector of these
 variables via the ‘selectLab’ parameter, the contents of which have to
-also be present in the vector passed to ‘lab’. In addition, only those
-variables that pass both the cutoff for log2FC and P value will be
-labelled.
+also be present in the vector passed to ‘lab’.
 
 ``` r
   EnhancedVolcano(res,
