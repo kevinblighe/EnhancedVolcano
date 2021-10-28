@@ -3,4 +3,4 @@
 export(EnhancedVolcano)
 import(ggplot2)
 import(ggrepel)
-importFrom("methods", "is")
+importFrom(methods,is)

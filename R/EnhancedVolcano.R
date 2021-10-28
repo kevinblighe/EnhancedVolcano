@@ -184,6 +184,7 @@
 #'
 #' @import ggplot2
 #' @import ggrepel
+#' @importFrom methods is
 #' 
 #' @export
 EnhancedVolcano <- function(

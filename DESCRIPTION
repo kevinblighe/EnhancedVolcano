@@ -1,7 +1,7 @@
 Package: EnhancedVolcano
 Type: Package
 Title: Publication-ready volcano plots with enhanced colouring and labeling
-Version: 1.11.5
+Version: 1.13.1
 Authors@R: c(
     person("Kevin", "Blighe", role = c("aut", "cre"), email = "kevin@clinicalbioinformatics.co.uk"),
     person("Sharmila", "Rana", role = c("aut")),
@@ -34,4 +34,4 @@ URL: https://github.com/kevinblighe/EnhancedVolcano
 biocViews: RNASeq, GeneExpression, Transcription, DifferentialExpression, ImmunoOncology
 VignetteBuilder:
   knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
