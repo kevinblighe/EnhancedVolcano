@@ -1,7 +1,7 @@
 Package: EnhancedVolcano
 Type: Package
 Title: Publication-ready volcano plots with enhanced colouring and labeling
-Version: 1.15.1
+Version: 1.13.2
 Authors@R: c(
     person("Kevin", "Blighe", role = c("aut", "cre"), email = "kevin@clinicalbioinformatics.co.uk"),
     person("Sharmila", "Rana", role = c("aut")),
