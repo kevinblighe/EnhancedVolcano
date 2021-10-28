@@ -3,5 +3,4 @@
 export(EnhancedVolcano)
 import(ggplot2)
 import(ggrepel)
-importFrom(ggalt,geom_encircle)
-importFrom(ggrastr,geom_point_rast)
+importFrom("methods", "is")

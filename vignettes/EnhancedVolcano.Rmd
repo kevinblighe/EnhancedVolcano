@@ -612,6 +612,8 @@ This feature works best for shading just 1 or 2 key variables. It is
 expected that the user can use the 'shapeCustom' parameter for more in depth
 identification of different types of variables.
 
+The encircling feature relies on package `ggalt` being installed.
+
 ```{r eval = TRUE}
 
   # define different cell-types that will be shaded
@@ -622,11 +624,13 @@ identification of different types of variables.
 
 ```{r ex13, fig.height = 8.5, fig.width = 10, fig.cap = "Shade certain variables."}
 
+  has_ggalt <- ! is(try(find.package("ggalt")), "try-error")
+
   EnhancedVolcano(res,
     lab = rownames(res),
     x = 'log2FoldChange',
     y = 'pvalue',
-    selectLab = c(celltype1, celltype2),
+    selectLab = c(if (has_ggalt) celltype1 else NULL, celltype2),
     xlab = bquote(~Log[2]~ 'fold change'),
     title = 'Shading cell-type 1|2',
     pCutoff = 10e-14,
@@ -643,7 +647,7 @@ identification of different types of variables.
     legendLabSize = 20,
     legendIconSize = 20.0,
     # encircle
-      encircle = celltype1,
+      encircle = if (has_ggalt) celltype1 else NULL,
       encircleCol = 'black',
       encircleSize = 2.5,
       encircleFill = 'pink',

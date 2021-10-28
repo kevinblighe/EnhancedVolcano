@@ -16,9 +16,10 @@ Depends:
   ggplot2,
   ggrepel
 Imports:
-  ggalt,
-  ggrastr
+  methods
 Suggests:
+  ggalt,
+  ggrastr,
   RUnit,
   BiocGenerics,
   knitr,

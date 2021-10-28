@@ -1,4 +1,11 @@
-#' Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots [@EnhancedVolcano]. \code{EnhancedVolcano} will attempt to fit as many variable names in the plot window as possible, thus avoiding 'clogging' up the plot with labels that could not otherwise have been read.
+#' Publication-ready volcano plots with enhanced colouring and labeling.
+#'
+#' Volcano plots represent a useful way to visualise the results of
+#' differential expression analyses. Here, we present a highly-configurable
+#' function that produces publication-ready volcano plots [@EnhancedVolcano].
+#' \code{EnhancedVolcano} will attempt to fit as many variable names in
+#' the plot window as possible, thus avoiding 'clogging' up the plot with
+#' labels that could not otherwise have been read.
 #'
 #' @param toptable A data-frame of test statistics (if not, a data frame,
 #'   an attempt will be made to convert it to one). Requires at least
@@ -71,7 +78,8 @@
 #' @param legendLabSize Size of plot legend text.
 #' @param legendIconSize Size of plot legend icons / symbols.
 #' @param legendDropLevels Logical, drop unused factor levels from legend.
-#' @param encircle A vector of variable names to encircle.
+#' @param encircle A vector of variable names to encircle. Requires installation
+#'   of package \code{\link[ggalt:geom_encircle]{ggalt}}.
 #' @param encircleCol Colour of the encircled line.
 #' @param encircleFill Colour fill of the encircled region.
 #' @param encircleAlpha Alpha for purposes of controlling colour transparency of
@@ -123,6 +131,7 @@
 #' @param borderWidth Width of the border on the x and y axes.
 #' @param borderColour Colour of the border on the x and y axes. 
 #' @param raster Logical, indicating whether to rasterize the geom_point layer. 
+#'   Requires installation of \code{\link[ggrastr:geom_point_rast]{ggrastr}}.
 #'
 #' @details
 #' Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots [@EnhancedVolcano]. \code{EnhancedVolcano} will attempt to fit as many variable names in the plot window as possible, thus avoiding 'clogging' up the plot with labels that could not otherwise have been read.
@@ -176,9 +185,6 @@
 #' @import ggplot2
 #' @import ggrepel
 #' 
-#' @importFrom ggalt geom_encircle
-#' @importFrom ggrastr geom_point_rast
-#'
 #' @export
 EnhancedVolcano <- function(
   toptable,
@@ -270,7 +276,14 @@ EnhancedVolcano <- function(
   }
   
   if (raster) {
-    geom_point <- geom_point_rast
+
+    has_ggrastr <- ! is(try(find.package("ggrastr"), silent=TRUE), "try-error")
+
+    if (has_ggrastr) {
+      geom_point <- ggrastr::geom_point_rast
+    } else {
+      warning("raster disabled, required package \"ggrastr\" not installed")
+    }
   }
 
   if (!is.null(maxoverlapsConnectors)) {
@@ -975,8 +988,13 @@ EnhancedVolcano <- function(
 
   # encircle
   if (!is.null(encircle)) {
+
+    if (is(try(find.package("ggalt"), silent=TRUE), "try-error")) {
+      stop("Please install package \"ggalt\" to access the \"encircle\" features")
+    }
+
     plot <- plot + 
-      geom_encircle(
+      ggalt::geom_encircle(
         data = subset(toptable,
           rownames(toptable) %in% encircle),
         colour = encircleCol,
