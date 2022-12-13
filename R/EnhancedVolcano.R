@@ -803,12 +803,12 @@ EnhancedVolcano <- function(
     arr <- NULL
   }
 
-  if (is.null(selectLab)) {
-    lab_data <- subset(toptable,
-          toptable[[y]] < pCutoff &
+  lab_data <- if (is.null(selectLab)) {
+    subset(toptable, toptable[[y]] < pCutoff &
             abs(toptable[[x]]) > FCcutoff)
   } else {
-    lab_data = subset(toptable, !is.na(toptable[['lab']]))
+    table_sel <- subset(toptable, !is.na(toptable$lab))
+    table_sel[order(factor(table_sel$lab, levels = selectLab)),]
   }
 
   geom_volcano_lab <- function(fn, fn_repel, data){
