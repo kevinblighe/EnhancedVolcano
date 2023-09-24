@@ -756,6 +756,7 @@ and suggestions from:
   - Benjamin Ostendorf
   - Cristian (github.com/ccruizm)
   - Quan Le (Yale University)
+  - Tianyi Shi (github.com/TianyiShi2001)
 
 # Session info
 

@@ -796,123 +796,26 @@ EnhancedVolcano <- function(
     plot <- plot + theme(panel.grid.minor = element_blank())
   }
 
-  # user has specified to draw with geom_text or geom_label?
-  if (!boxedLabels) {
-
-    # For labeling with geom_[text|label]_repel and
-    # geom_[text|label] with check_overlap = TRUE, 4 possible
-    # scenarios can arise
-    if (drawConnectors && is.null(selectLab)) {
-
-      if (arrowheads) {
-        arr <- arrow(length = lengthConnectors,
-          type = typeConnectors, ends = endsConnectors)
-      } else {
-        arr <- NULL
-      }
-
-      plot <- plot + geom_text_repel(
-        data = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff),
-        aes(label = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[["lab"]]),
-        xlim = c(NA, NA),
-        ylim = c(NA, NA),
-        size = labSize,
-        segment.color = colConnectors,
-        segment.size = widthConnectors,
-        arrow = arr,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE,
-        direction = directionConnectors,
-        max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length)
-
-    } else if (drawConnectors && !is.null(selectLab)) {
-
-      if (arrowheads) {
-        arr <- arrow(length = lengthConnectors,
-          type = typeConnectors, ends = endsConnectors)
-      } else {
-        arr <- NULL
-      }
-
-      plot <- plot + geom_text_repel(
-        data = subset(toptable,
-          !is.na(toptable[['lab']])),
-        aes(label = subset(toptable,
-          !is.na(toptable[['lab']]))[['lab']]),
-        xlim = c(NA, NA),
-        ylim = c(NA, NA),
-        size = labSize,
-        segment.color = colConnectors,
-        segment.size = widthConnectors,
-        arrow = arr,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE,
-        direction = directionConnectors,
-        max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length)
-
-    } else if (!drawConnectors && !is.null(selectLab)) {
-
-      plot <- plot + geom_text(
-        data = subset(toptable,
-          !is.na(toptable[['lab']])),
-        aes(
-          label = subset(toptable,
-            !is.na(toptable[['lab']]))[['lab']]),
-        size = labSize,
-        check_overlap = TRUE,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE)
-
-    } else if (!drawConnectors && is.null(selectLab)) {
-
-      plot <- plot + geom_text(
-        data = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff),
-        aes(label = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[['lab']]),
-        size = labSize,
-        check_overlap = TRUE,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE)
-    }
-
+  if (arrowheads) {
+    arr <- arrow(length = lengthConnectors,
+      type = typeConnectors, ends = endsConnectors)
   } else {
+    arr <- NULL
+  }
 
-    # For labeling with geom_[text|label]_repel and
-    # geom_[text|label] with check_overlap = TRUE, 4 possible
-    # scenarios can arise
-    if (drawConnectors && is.null(selectLab)) {
+  lab_data <- if (is.null(selectLab)) {
+    subset(toptable, toptable[[y]] < pCutoff &
+            abs(toptable[[x]]) > FCcutoff)
+  } else {
+    table_sel <- subset(toptable, !is.na(toptable$lab))
+    table_sel[order(factor(table_sel$lab, levels = selectLab)),]
+  }
 
-      if (arrowheads) {
-        arr <- arrow(length = lengthConnectors,
-          type = typeConnectors, ends = endsConnectors)
-      } else {
-        arr <- NULL
-      }
-
-      plot <- plot + geom_label_repel(
-        data = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff),
-        aes(label = subset(toptable,
-          toptable[[y]]<pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[['lab']]),
+  geom_volcano_lab <- function(fn, fn_repel, data){
+    if (drawConnectors) {
+      fn_repel(
+        data = lab_data,
+        aes(label = lab),
         xlim = c(NA, NA),
         ylim = c(NA, NA),
         size = labSize,
@@ -926,65 +829,24 @@ EnhancedVolcano <- function(
         direction = directionConnectors,
         max.overlaps = max.overlaps,
         min.segment.length = min.segment.length)
-
-    } else if (drawConnectors && !is.null(selectLab)) {
-
-      if (arrowheads) {
-        arr <- arrow(length = lengthConnectors,
-          type = typeConnectors, ends = endsConnectors)
-      } else {
-        arr <- NULL
-      }
-
-      plot <- plot + geom_label_repel(
-        data = subset(toptable,
-          !is.na(toptable[['lab']])),
-        aes(label = subset(toptable,
-          !is.na(toptable[['lab']]))[['lab']]),
-        xlim = c(NA, NA),
-        ylim = c(NA, NA),
+    } else {
+      fn(
+        data = lab_data,
+        aes(label = lab),
         size = labSize,
-        segment.color = colConnectors,
-        segment.size = widthConnectors,
-        arrow = arr,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE,
-        direction = directionConnectors,
-        max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length)
-
-    } else if (!drawConnectors && !is.null(selectLab)) {
-
-      plot <- plot + geom_label(
-        data = subset(toptable,
-          !is.na(toptable[["lab"]])),
-        aes(
-          label = subset(toptable,
-            !is.na(toptable[['lab']]))[['lab']]),
-        size = labSize,
+        check_overlap = TRUE,
         colour = labCol,
         fontface = labFace,
         parse = parseLabels,
         na.rm = TRUE)
-
-    } else if (!drawConnectors && is.null(selectLab)) {
-
-      plot <- plot + geom_label(
-        data = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff),
-        aes(label = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[['lab']]),
-        size = labSize,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE)
-
     }
+  }
+  
+  # user has specified to draw with geom_text or geom_label?
+  plot <- plot + if (!boxedLabels) {
+    geom_volcano_lab(geom_text, geom_text_repel)
+  } else {
+     geom_volcano_lab(geom_label, geom_label_repel)
   }
 
   # encircle
