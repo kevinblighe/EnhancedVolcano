@@ -34,6 +34,7 @@ EnhancedVolcano(
   labFace = "plain",
   boxedLabels = FALSE,
   parseLabels = FALSE,
+  box.padding = 0.25,
   shape = 19,
   shapeCustom = NULL,
   col = c("grey30", "forestgreen", "royalblue", "red2"),
@@ -157,6 +158,9 @@ boxes.}
 
 \item{parseLabels}{Logical, indicating whether or not to parse expressions
 in labels}
+
+\item{box.padding}{Padding around the text label. If 
+\code{drawConnectors = TRUE}, this will increases the length of connectors.}
 
 \item{shape}{Shape of the plotted points. Either a single value for
 all points, or 4 values corresponding to the default 4 legend labels

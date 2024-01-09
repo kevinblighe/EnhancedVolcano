@@ -104,7 +104,8 @@
 #' @param maxoverlapsConnectors See max.overlaps.
 #' @param min.segment.length When drawConnectors = TRUE, specifies the minimum
 #'   length of the connector line segments.
-#' @param directionConnectors direction in which to draw connectors.
+#' @param box.padding Padding around the text label.
+#' @param directionConnectors Direction in which to draw connectors.
 #'   'both', 'x', or 'y'.
 #' @param arrowheads Logical, indicating whether or not to draw arrow heads or
 #'   or just have straight lines.
@@ -830,7 +831,8 @@ EnhancedVolcano <- function(
         na.rm = TRUE,
         direction = directionConnectors,
         max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length)
+        min.segment.length = min.segment.length,
+        box.padding = box.padding)
 
     } else if (drawConnectors && !is.null(selectLab)) {
 
@@ -858,7 +860,8 @@ EnhancedVolcano <- function(
         na.rm = TRUE,
         direction = directionConnectors,
         max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length)
+        min.segment.length = min.segment.length,
+        box.padding = box.padding)
 
     } else if (!drawConnectors && !is.null(selectLab)) {
 
@@ -925,7 +928,8 @@ EnhancedVolcano <- function(
         na.rm = TRUE,
         direction = directionConnectors,
         max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length)
+        min.segment.length = min.segment.length,
+        box.padding = box.padding)
 
     } else if (drawConnectors && !is.null(selectLab)) {
 
@@ -953,7 +957,8 @@ EnhancedVolcano <- function(
         na.rm = TRUE,
         direction = directionConnectors,
         max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length)
+        min.segment.length = min.segment.length,
+        box.padding = box.padding)
 
     } else if (!drawConnectors && !is.null(selectLab)) {
 

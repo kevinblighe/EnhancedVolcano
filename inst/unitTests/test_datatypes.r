@@ -18,8 +18,8 @@ test_that('datatypes', {
     colAlpha, colGradientBreaks, colGradientLimits, legendLabSize,
     legendIconSize, encircleSize, encircleAlpha, shadeAlpha, shadeSize,
     shadeBins, widthConnectors, lengthConnectors, maxoverlapsConnectors, hline,
-    hlineWidth, vline, vlineWidth, borderWidth, max.overlaps, min.segment.length),
-    c('integer', 'double'))
+    hlineWidth, vline, vlineWidth, borderWidth, max.overlaps,
+    min.segment.length, box.padding), c('integer', 'double'))
   expect_gt(EnhancedVolcano(subtitleLabSize, captionLabSize, pCutoff,
     cutoffLineWidth, FCcutoff, labhjust, labvjust,
     shape, colAlpha, legendLabSize, legendIconSize, encircleSize, encircleAlpha,
