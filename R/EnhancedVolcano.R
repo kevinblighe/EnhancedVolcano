@@ -218,6 +218,7 @@ EnhancedVolcano <- function(
   labFace = 'plain',
   boxedLabels = FALSE,
   parseLabels = FALSE,
+  box.padding = 0.25,
   shape = 19,
   shapeCustom = NULL,
   col = c('grey30', 'forestgreen', 'royalblue', 'red2'),
