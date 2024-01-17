@@ -50,6 +50,12 @@
 #'   boxes.
 #' @param parseLabels Logical, indicating whether or not to parse expressions
 #'   in labels
+#' @param box.padding Padding around the text label. If
+#'   \code{drawConnectors = TRUE}, this will increase the length of connectors
+#'   so that the connectors still attach to the shifted boxes.
+#' @param matchLabelColorsToSig Logical, indicating whether or not to match the
+#'   color of the text of the labels to the corresponding significance level of
+#'   the point being labeled.
 #' @param shape Shape of the plotted points. Either a single value for
 #'   all points, or 4 values corresponding to the default 4 legend labels
 #'   specified by \code{legendLabels}.
@@ -104,7 +110,6 @@
 #' @param maxoverlapsConnectors See max.overlaps.
 #' @param min.segment.length When drawConnectors = TRUE, specifies the minimum
 #'   length of the connector line segments.
-#' @param box.padding Padding around the text label.
 #' @param directionConnectors Direction in which to draw connectors.
 #'   'both', 'x', or 'y'.
 #' @param arrowheads Logical, indicating whether or not to draw arrow heads or
@@ -219,6 +224,7 @@ EnhancedVolcano <- function(
   boxedLabels = FALSE,
   parseLabels = FALSE,
   box.padding = 0.25,
+  matchLabelColorsToSig = FALSE,
   shape = 19,
   shapeCustom = NULL,
   col = c('grey30', 'forestgreen', 'royalblue', 'red2'),
@@ -798,198 +804,412 @@ EnhancedVolcano <- function(
     plot <- plot + theme(panel.grid.minor = element_blank())
   }
 
-  # user has specified to draw with geom_text or geom_label?
-  if (!boxedLabels) {
+  # user has specified to color text labels by significance or not?
+  if (matchLabelColorsToSig) {
+    # user has specified to draw with geom_text or geom_label?
+    if (!boxedLabels) {
 
-    # For labeling with geom_[text|label]_repel and
-    # geom_[text|label] with check_overlap = TRUE, 4 possible
-    # scenarios can arise
-    if (drawConnectors && is.null(selectLab)) {
+      # For labeling with geom_[text|label]_repel and
+      # geom_[text|label] with check_overlap = TRUE, 4 possible
+      # scenarios can arise
+      if (drawConnectors && is.null(selectLab)) {
 
-      if (arrowheads) {
-        arr <- arrow(length = lengthConnectors,
-          type = typeConnectors, ends = endsConnectors)
-      } else {
-        arr <- NULL
+        if (arrowheads) {
+          arr <- arrow(length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors)
+        } else {
+          arr <- NULL
+        }
+
+        plot <- plot + geom_text_repel(
+          data = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff),
+          aes(label = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff)[["lab"]], 
+              colour = Sig),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
+          size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding)
+        
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+
+      } else if (drawConnectors && !is.null(selectLab)) {
+
+        if (arrowheads) {
+          arr <- arrow(length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors)
+        } else {
+          arr <- NULL
+        }
+
+        plot <- plot + geom_text_repel(
+          data = subset(toptable,
+            !is.na(toptable[['lab']])),
+          aes(label = subset(toptable,
+            !is.na(toptable[['lab']]))[['lab']],
+            colour = Sig),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
+          size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding)
+        
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+
+      } else if (!drawConnectors && !is.null(selectLab)) {
+
+        plot <- plot + geom_text(
+          data = subset(toptable,
+            !is.na(toptable[['lab']])),
+          aes(
+            label = subset(toptable,
+              !is.na(toptable[['lab']]))[['lab']],
+            colour = Sig),
+          size = labSize,
+          check_overlap = TRUE,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE)
+        
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+
+      } else if (!drawConnectors && is.null(selectLab)) {
+
+        plot <- plot + geom_text(
+          data = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff),
+          aes(label = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff)[['lab']],
+              colour = Sig),
+          size = labSize,
+          check_overlap = TRUE,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE)
+
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
       }
 
-      plot <- plot + geom_text_repel(
-        data = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff),
-        aes(label = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[["lab"]]),
-        xlim = c(NA, NA),
-        ylim = c(NA, NA),
-        size = labSize,
-        segment.color = colConnectors,
-        segment.size = widthConnectors,
-        arrow = arr,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE,
-        direction = directionConnectors,
-        max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length,
-        box.padding = box.padding)
+    } else {
 
-    } else if (drawConnectors && !is.null(selectLab)) {
+      # For labeling with geom_[text|label]_repel and
+      # geom_[text|label] with check_overlap = TRUE, 4 possible
+      # scenarios can arise
+      if (drawConnectors && is.null(selectLab)) {
 
-      if (arrowheads) {
-        arr <- arrow(length = lengthConnectors,
-          type = typeConnectors, ends = endsConnectors)
-      } else {
-        arr <- NULL
+        if (arrowheads) {
+          arr <- arrow(length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors)
+        } else {
+          arr <- NULL
+        }
+
+        plot <- plot + geom_label_repel(
+          data = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff),
+          aes(label = subset(toptable,
+            toptable[[y]]<pCutoff &
+              abs(toptable[[x]]) > FCcutoff)[['lab']],
+              colour = Sig),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
+          size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding)
+        
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+
+      } else if (drawConnectors && !is.null(selectLab)) {
+
+        if (arrowheads) {
+          arr <- arrow(length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors)
+        } else {
+          arr <- NULL
+        }
+
+        plot <- plot + geom_label_repel(
+          data = subset(toptable,
+            !is.na(toptable[['lab']])),
+          aes(label = subset(toptable,
+            !is.na(toptable[['lab']]))[['lab']],
+            colour = Sig),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
+          size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding)
+        
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+
+      } else if (!drawConnectors && !is.null(selectLab)) {
+
+        plot <- plot + geom_label(
+          data = subset(toptable,
+            !is.na(toptable[["lab"]])),
+          aes(
+            label = subset(toptable,
+              !is.na(toptable[['lab']]))[['lab']],
+              colour = Sig),
+          size = labSize,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE)
+        
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+
+      } else if (!drawConnectors && is.null(selectLab)) {
+
+        plot <- plot + geom_label(
+          data = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff),
+          aes(label = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff)[['lab']],
+              colour = Sig),
+          size = labSize,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE)
+
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+
       }
-
-      plot <- plot + geom_text_repel(
-        data = subset(toptable,
-          !is.na(toptable[['lab']])),
-        aes(label = subset(toptable,
-          !is.na(toptable[['lab']]))[['lab']]),
-        xlim = c(NA, NA),
-        ylim = c(NA, NA),
-        size = labSize,
-        segment.color = colConnectors,
-        segment.size = widthConnectors,
-        arrow = arr,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE,
-        direction = directionConnectors,
-        max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length,
-        box.padding = box.padding)
-
-    } else if (!drawConnectors && !is.null(selectLab)) {
-
-      plot <- plot + geom_text(
-        data = subset(toptable,
-          !is.na(toptable[['lab']])),
-        aes(
-          label = subset(toptable,
-            !is.na(toptable[['lab']]))[['lab']]),
-        size = labSize,
-        check_overlap = TRUE,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE)
-
-    } else if (!drawConnectors && is.null(selectLab)) {
-
-      plot <- plot + geom_text(
-        data = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff),
-        aes(label = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[['lab']]),
-        size = labSize,
-        check_overlap = TRUE,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE)
     }
-
   } else {
+    # user has specified to draw with geom_text or geom_label?
+    if (!boxedLabels) {
 
-    # For labeling with geom_[text|label]_repel and
-    # geom_[text|label] with check_overlap = TRUE, 4 possible
-    # scenarios can arise
-    if (drawConnectors && is.null(selectLab)) {
+      # For labeling with geom_[text|label]_repel and
+      # geom_[text|label] with check_overlap = TRUE, 4 possible
+      # scenarios can arise
+      if (drawConnectors && is.null(selectLab)) {
 
-      if (arrowheads) {
-        arr <- arrow(length = lengthConnectors,
-          type = typeConnectors, ends = endsConnectors)
-      } else {
-        arr <- NULL
-      }
+        if (arrowheads) {
+          arr <- arrow(length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors)
+        } else {
+          arr <- NULL
+        }
 
-      plot <- plot + geom_label_repel(
-        data = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff),
-        aes(label = subset(toptable,
-          toptable[[y]]<pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[['lab']]),
-        xlim = c(NA, NA),
-        ylim = c(NA, NA),
-        size = labSize,
-        segment.color = colConnectors,
-        segment.size = widthConnectors,
-        arrow = arr,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE,
-        direction = directionConnectors,
-        max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length,
-        box.padding = box.padding)
+        plot <- plot + geom_text_repel(
+          data = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff),
+          aes(label = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff)[["lab"]]),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
+          size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
+          colour = labCol,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding)
 
-    } else if (drawConnectors && !is.null(selectLab)) {
+      } else if (drawConnectors && !is.null(selectLab)) {
 
-      if (arrowheads) {
-        arr <- arrow(length = lengthConnectors,
-          type = typeConnectors, ends = endsConnectors)
-      } else {
-        arr <- NULL
-      }
+        if (arrowheads) {
+          arr <- arrow(length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors)
+        } else {
+          arr <- NULL
+        }
 
-      plot <- plot + geom_label_repel(
-        data = subset(toptable,
-          !is.na(toptable[['lab']])),
-        aes(label = subset(toptable,
-          !is.na(toptable[['lab']]))[['lab']]),
-        xlim = c(NA, NA),
-        ylim = c(NA, NA),
-        size = labSize,
-        segment.color = colConnectors,
-        segment.size = widthConnectors,
-        arrow = arr,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE,
-        direction = directionConnectors,
-        max.overlaps = max.overlaps,
-        min.segment.length = min.segment.length,
-        box.padding = box.padding)
-
-    } else if (!drawConnectors && !is.null(selectLab)) {
-
-      plot <- plot + geom_label(
-        data = subset(toptable,
-          !is.na(toptable[["lab"]])),
-        aes(
-          label = subset(toptable,
+        plot <- plot + geom_text_repel(
+          data = subset(toptable,
+            !is.na(toptable[['lab']])),
+          aes(label = subset(toptable,
             !is.na(toptable[['lab']]))[['lab']]),
-        size = labSize,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE)
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
+          size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
+          colour = labCol,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding)
 
-    } else if (!drawConnectors && is.null(selectLab)) {
+      } else if (!drawConnectors && !is.null(selectLab)) {
 
-      plot <- plot + geom_label(
-        data = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff),
-        aes(label = subset(toptable,
-          toptable[[y]] < pCutoff &
-            abs(toptable[[x]]) > FCcutoff)[['lab']]),
-        size = labSize,
-        colour = labCol,
-        fontface = labFace,
-        parse = parseLabels,
-        na.rm = TRUE)
+        plot <- plot + geom_text(
+          data = subset(toptable,
+            !is.na(toptable[['lab']])),
+          aes(
+            label = subset(toptable,
+              !is.na(toptable[['lab']]))[['lab']]),
+          size = labSize,
+          check_overlap = TRUE,
+          colour = labCol,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE)
 
+      } else if (!drawConnectors && is.null(selectLab)) {
+
+        plot <- plot + geom_text(
+          data = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff),
+          aes(label = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff)[['lab']]),
+          size = labSize,
+          check_overlap = TRUE,
+          colour = labCol,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE)
+      }
+
+    } else {
+
+      # For labeling with geom_[text|label]_repel and
+      # geom_[text|label] with check_overlap = TRUE, 4 possible
+      # scenarios can arise
+      if (drawConnectors && is.null(selectLab)) {
+
+        if (arrowheads) {
+          arr <- arrow(length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors)
+        } else {
+          arr <- NULL
+        }
+
+        plot <- plot + geom_label_repel(
+          data = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff),
+          aes(label = subset(toptable,
+            toptable[[y]]<pCutoff &
+              abs(toptable[[x]]) > FCcutoff)[['lab']]),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
+          size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
+          colour = labCol,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding)
+
+      } else if (drawConnectors && !is.null(selectLab)) {
+
+        if (arrowheads) {
+          arr <- arrow(length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors)
+        } else {
+          arr <- NULL
+        }
+
+        plot <- plot + geom_label_repel(
+          data = subset(toptable,
+            !is.na(toptable[['lab']])),
+          aes(label = subset(toptable,
+            !is.na(toptable[['lab']]))[['lab']]),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
+          size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
+          colour = labCol,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding)
+
+      } else if (!drawConnectors && !is.null(selectLab)) {
+
+        plot <- plot + geom_label(
+          data = subset(toptable,
+            !is.na(toptable[["lab"]])),
+          aes(
+            label = subset(toptable,
+              !is.na(toptable[['lab']]))[['lab']]),
+          size = labSize,
+          colour = labCol,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE)
+
+      } else if (!drawConnectors && is.null(selectLab)) {
+
+        plot <- plot + geom_label(
+          data = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff),
+          aes(label = subset(toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff)[['lab']]),
+          size = labSize,
+          colour = labCol,
+          fontface = labFace,
+          parse = parseLabels,
+          na.rm = TRUE)
+
+      }
     }
   }
 
