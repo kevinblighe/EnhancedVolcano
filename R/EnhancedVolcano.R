@@ -70,7 +70,7 @@
 #' @param colAlpha Alpha for purposes of controlling colour transparency of
 #'   variable points.
 #' @param colGradient If activated, over-rides the default discrete colour scheme
-#'   and replaces it with a continous scheme that shades based on nominal or 
+#'   and replaces it with a continous scheme that shades based on nominal or
 #'   adjusted p-value specified by \code{y}. For example, c('red2', 'blue2').
 #' @param colGradientBreaks Break-points for the two colours specified by
 #'   colGradient.
@@ -135,8 +135,8 @@
 #' @param border Add a border for just the x and y axes ('partial') or the
 #'   entire plot grid ('full')?
 #' @param borderWidth Width of the border on the x and y axes.
-#' @param borderColour Colour of the border on the x and y axes. 
-#' @param raster Logical, indicating whether to rasterize the geom_point layer. 
+#' @param borderColour Colour of the border on the x and y axes.
+#' @param raster Logical, indicating whether to rasterize the geom_point layer.
 #'   Requires installation of \code{\link[ggrastr:geom_point_rast]{ggrastr}}.
 #'
 #' @details
@@ -147,146 +147,153 @@
 #' @author Kevin Blighe <kevin@clinicalbioinformatics.co.uk>
 #'
 #' @examples
-#' library('pasilla')
-#' pasCts <- system.file('extdata', 'pasilla_gene_counts.tsv',
-#'   package='pasilla', mustWork=TRUE)
-#' pasAnno <- system.file('extdata', 'pasilla_sample_annotation.csv',
-#'   package='pasilla', mustWork=TRUE)
-#' cts <- as.matrix(read.csv(pasCts,sep='\t',row.names='gene_id'))
-#' coldata <- read.csv(pasAnno, row.names=1)
-#' coldata <- coldata[,c('condition','type')]
-#' rownames(coldata) <- sub('fb', '', rownames(coldata))
+#' library("pasilla")
+#' pasCts <- system.file("extdata", "pasilla_gene_counts.tsv",
+#'   package = "pasilla", mustWork = TRUE
+#' )
+#' pasAnno <- system.file("extdata", "pasilla_sample_annotation.csv",
+#'   package = "pasilla", mustWork = TRUE
+#' )
+#' cts <- as.matrix(read.csv(pasCts, sep = "\t", row.names = "gene_id"))
+#' coldata <- read.csv(pasAnno, row.names = 1)
+#' coldata <- coldata[, c("condition", "type")]
+#' rownames(coldata) <- sub("fb", "", rownames(coldata))
 #' cts <- cts[, rownames(coldata)]
-#' library('DESeq2')
-#' dds <- DESeqDataSetFromMatrix(countData = cts,
+#' library("DESeq2")
+#' dds <- DESeqDataSetFromMatrix(
+#'   countData = cts,
 #'   colData = coldata,
-#'   design = ~ condition)
-#' 
-#' featureData <- data.frame(gene=rownames(cts))
+#'   design = ~condition
+#' )
+#'
+#' featureData <- data.frame(gene = rownames(cts))
 #' mcols(dds) <- DataFrame(mcols(dds), featureData)
 #' dds <- DESeq(dds)
 #' res <- results(dds)
-#' 
+#'
 #' EnhancedVolcano(res,
 #'   lab = rownames(res),
-#'   x = 'log2FoldChange',
-#'   y = 'pvalue',
+#'   x = "log2FoldChange",
+#'   y = "pvalue",
 #'   pCutoff = 10e-4,
 #'   FCcutoff = 1.333,
 #'   xlim = c(-5.5, 5.5),
 #'   ylim = c(0, -log10(10e-12)),
 #'   pointSize = 1.5,
 #'   labSize = 2.5,
-#'   title = 'DESeq2 results',
-#'   subtitle = 'Differential expression',
-#'   caption = 'FC cutoff, 1.333; p-value cutoff, 10e-4',
+#'   title = "DESeq2 results",
+#'   subtitle = "Differential expression",
+#'   caption = "FC cutoff, 1.333; p-value cutoff, 10e-4",
 #'   legendPosition = "right",
 #'   legendLabSize = 14,
-#'   col = c('grey30', 'forestgreen', 'royalblue', 'red2'),
+#'   col = c("grey30", "forestgreen", "royalblue", "red2"),
 #'   colAlpha = 0.9,
 #'   drawConnectors = TRUE,
 #'   hline = c(10e-8),
-#'   widthConnectors = 0.5)
+#'   widthConnectors = 0.5
+#' )
 #'
 #' @import ggplot2
 #' @import ggrepel
 #' @importFrom methods is
-#' 
+#'
 #' @export
 EnhancedVolcano <- function(
-  toptable,
-  lab,
-  x,
-  y,
-  selectLab = NULL,
-  xlim = c(min(toptable[[x]], na.rm=TRUE) - 1.5,
-    max(toptable[[x]], na.rm=TRUE) + 1.5),
-  ylim = c(0, max(-log10(toptable[[y]]), na.rm=TRUE) + 5),
-  xlab = bquote(~Log[2]~ "fold change"),
-  ylab = bquote(~-Log[10]~italic(P)),
-  axisLabSize = 18,
-  title = 'Volcano plot',
-  subtitle = bquote(italic(EnhancedVolcano)),
-  caption = paste0('total = ', nrow(toptable), ' variables'),
-  titleLabSize = 18,
-  subtitleLabSize = 14,
-  captionLabSize = 14,
-  pCutoff = 10e-6,
-  pCutoffCol = y,
-  FCcutoff = 1.0,
-  cutoffLineType = 'longdash',
-  cutoffLineCol = 'black',
-  cutoffLineWidth = 0.4,
-  pointSize = 2.0,
-  labSize = 5.0,
-  labCol = 'black',
-  labFace = 'plain',
-  boxedLabels = FALSE,
-  parseLabels = FALSE,
-  box.padding = 0.25,
-  matchLabelColorsToSig = FALSE,
-  shape = 19,
-  shapeCustom = NULL,
-  col = c('grey30', 'forestgreen', 'royalblue', 'red2'),
-  colCustom = NULL,
-  colAlpha = 1/2,
-  colGradient = NULL,
-  colGradientBreaks = c(pCutoff, 1.0),
-  colGradientLabels = c('0', '1.0'),
-  colGradientLimits = c(0, 1.0),
-  legendLabels = c('NS', expression(Log[2]~FC),
-    'p-value', expression(p-value~and~log[2]~FC)),
-  legendPosition = 'top',
-  legendLabSize = 14,
-  legendIconSize = 5.0,
-  legendDropLevels = TRUE,
-  encircle = NULL,
-  encircleCol = 'black',
-  encircleFill = 'pink',
-  encircleAlpha = 3/4,
-  encircleSize = 2.5,
-  shade = NULL,
-  shadeFill = 'grey',
-  shadeAlpha = 1/2,
-  shadeSize = 0.01,
-  shadeBins = 2,
-  drawConnectors = FALSE,
-  widthConnectors = 0.5,
-  typeConnectors = 'closed',
-  endsConnectors = 'first',
-  lengthConnectors = unit(0.01, 'npc'),
-  colConnectors = 'grey10',
-  max.overlaps = 15,
-  maxoverlapsConnectors = NULL,
-  min.segment.length = 0,
-  directionConnectors = 'both',
-  arrowheads = TRUE,
-  hline = NULL,
-  hlineType = 'longdash',
-  hlineCol = 'black',
-  hlineWidth = 0.4,
-  vline = NULL,
-  vlineType = 'longdash',
-  vlineCol = 'black',
-  vlineWidth = 0.4,
-  gridlines.major = TRUE,
-  gridlines.minor = TRUE,
-  border = 'partial',
-  borderWidth = 0.8,
-  borderColour = 'black', 
-  raster = FALSE)
-{
-  if(!is.numeric(toptable[[x]])) {
-    stop(paste(x, ' is not numeric!', sep=''))
+    toptable,
+    lab,
+    x,
+    y,
+    selectLab = NULL,
+    xlim = c(
+      min(toptable[[x]], na.rm = TRUE) - 1.5,
+      max(toptable[[x]], na.rm = TRUE) + 1.5
+    ),
+    ylim = c(0, max(-log10(toptable[[y]]), na.rm = TRUE) + 5),
+    xlab = bquote(~ Log[2] ~ "fold change"),
+    ylab = bquote(~ -Log[10] ~ italic(P)),
+    axisLabSize = 18,
+    title = "Volcano plot",
+    subtitle = bquote(italic(EnhancedVolcano)),
+    caption = paste0("total = ", nrow(toptable), " variables"),
+    titleLabSize = 18,
+    subtitleLabSize = 14,
+    captionLabSize = 14,
+    pCutoff = 10e-6,
+    pCutoffCol = y,
+    FCcutoff = 1.0,
+    cutoffLineType = "longdash",
+    cutoffLineCol = "black",
+    cutoffLineWidth = 0.4,
+    pointSize = 2.0,
+    labSize = 5.0,
+    labCol = "black",
+    labFace = "plain",
+    boxedLabels = FALSE,
+    parseLabels = FALSE,
+    box.padding = 0.25,
+    matchLabelColorsToSig = FALSE,
+    shape = 19,
+    shapeCustom = NULL,
+    col = c("grey30", "forestgreen", "royalblue", "red2"),
+    colCustom = NULL,
+    colAlpha = 1 / 2,
+    colGradient = NULL,
+    colGradientBreaks = c(pCutoff, 1.0),
+    colGradientLabels = c("0", "1.0"),
+    colGradientLimits = c(0, 1.0),
+    legendLabels = c(
+      "NS", expression(Log[2] ~ FC),
+      "p-value", expression(p - value ~ and ~ log[2] ~ FC)
+    ),
+    legendPosition = "top",
+    legendLabSize = 14,
+    legendIconSize = 5.0,
+    legendDropLevels = TRUE,
+    encircle = NULL,
+    encircleCol = "black",
+    encircleFill = "pink",
+    encircleAlpha = 3 / 4,
+    encircleSize = 2.5,
+    shade = NULL,
+    shadeFill = "grey",
+    shadeAlpha = 1 / 2,
+    shadeSize = 0.01,
+    shadeBins = 2,
+    drawConnectors = FALSE,
+    widthConnectors = 0.5,
+    typeConnectors = "closed",
+    endsConnectors = "first",
+    lengthConnectors = unit(0.01, "npc"),
+    colConnectors = "grey10",
+    max.overlaps = 15,
+    maxoverlapsConnectors = NULL,
+    min.segment.length = 0,
+    directionConnectors = "both",
+    arrowheads = TRUE,
+    hline = NULL,
+    hlineType = "longdash",
+    hlineCol = "black",
+    hlineWidth = 0.4,
+    vline = NULL,
+    vlineType = "longdash",
+    vlineCol = "black",
+    vlineWidth = 0.4,
+    gridlines.major = TRUE,
+    gridlines.minor = TRUE,
+    border = "partial",
+    borderWidth = 0.8,
+    borderColour = "black",
+    raster = FALSE) {
+  if (!is.numeric(toptable[[x]])) {
+    stop(paste(x, " is not numeric!", sep = ""))
   }
 
-  if(!is.numeric(toptable[[pCutoffCol]])) {
-    stop(paste(y, ' is not numeric!', sep=''))
+  if (!is.numeric(toptable[[pCutoffCol]])) {
+    stop(paste(y, " is not numeric!", sep = ""))
   }
-  
+
   if (raster) {
-
-    has_ggrastr <- ! is(try(find.package("ggrastr"), silent=TRUE), "try-error")
+    has_ggrastr <- !is(try(find.package("ggrastr"), silent = TRUE), "try-error")
 
     if (has_ggrastr) {
       geom_point <- ggrastr::geom_point_rast
@@ -302,22 +309,24 @@ EnhancedVolcano <- function(
   i <- xvals <- yvals <- Sig <- NULL
 
   toptable <- as.data.frame(toptable)
-  toptable$Sig <- 'NS'
-  toptable$Sig[(abs(toptable[[x]]) > FCcutoff)] <- 'FC'
+  toptable$Sig <- "NS"
+  toptable$Sig[(abs(toptable[[x]]) > FCcutoff)] <- "FC"
 
-  toptable$Sig[(toptable[[pCutoffCol]] < pCutoff)] <- 'P'
+  toptable$Sig[(toptable[[pCutoffCol]] < pCutoff)] <- "P"
   toptable$Sig[(toptable[[pCutoffCol]] < pCutoff) &
-    (abs(toptable[[x]]) > FCcutoff)] <- 'FC_P'
+    (abs(toptable[[x]]) > FCcutoff)] <- "FC_P"
   toptable$Sig <- factor(toptable$Sig,
-    levels=c('NS','FC','P','FC_P'))
+    levels = c("NS", "FC", "P", "FC_P")
+  )
   # reset pCutoff to corresponding value on y
   # allowing to draw hline at the correct
   # threshold
   if (pCutoffCol != y) {
-    pCutoff = max(
+    pCutoff <- max(
       toptable[which(
-        toptable[pCutoffCol] <= pCutoff), y]
-      )
+        toptable[pCutoffCol] <= pCutoff
+      ), y]
+    )
   }
   # some software programs return 0 for very low p-values
   # These throw an error in EnhancedVolcano
@@ -326,19 +335,24 @@ EnhancedVolcano <- function(
   #####
   # New functionality in > v1.2:
   # Now convert to 10^-1 lower than lowest non-zero p-value
-  if (min(toptable[[y]], na.rm=TRUE) == 0) {
+  if (min(toptable[[y]], na.rm = TRUE) == 0) {
     # <= v1.2
-    #warning(paste("One or more P values is 0.",
+    # warning(paste("One or more P values is 0.",
     #  "Converting to minimum possible value..."),
     #  call. = FALSE)
-    #toptable[which(toptable[[y]] == 0), y] <- .Machine$double.xmin
-    warning(paste('One or more p-values is 0.',
-      'Converting to 10^-1 * current',
-      'lowest non-zero p-value...'),
-      call. = FALSE)
+    # toptable[which(toptable[[y]] == 0), y] <- .Machine$double.xmin
+    warning(
+      paste(
+        "One or more p-values is 0.",
+        "Converting to 10^-1 * current",
+        "lowest non-zero p-value..."
+      ),
+      call. = FALSE
+    )
     toptable[which(toptable[[y]] == 0), y] <- min(
       toptable[which(toptable[[y]] != 0), y],
-      na.rm = TRUE) * 10^-1
+      na.rm = TRUE
+    ) * 10^-1
   }
 
   toptable$lab <- lab
@@ -364,49 +378,58 @@ EnhancedVolcano <- function(
       plot.title = element_text(
         angle = 0,
         size = titleLabSize,
-        face = 'bold',
-        vjust = 1),
+        face = "bold",
+        vjust = 1
+      ),
       plot.subtitle = element_text(
         angle = 0,
         size = subtitleLabSize,
-        face = 'plain',
-        vjust = 1),
+        face = "plain",
+        vjust = 1
+      ),
       plot.caption = element_text(
         angle = 0,
         size = captionLabSize,
-        face = 'plain',
-        vjust = 1),
+        face = "plain",
+        vjust = 1
+      ),
 
       # axis text
       axis.text.x = element_text(
         angle = 0,
         size = axisLabSize,
-        vjust = 1),
+        vjust = 1
+      ),
       axis.text.y = element_text(
         angle = 0,
         size = axisLabSize,
-        vjust = 0.5),
+        vjust = 0.5
+      ),
       axis.title = element_text(
-        size = axisLabSize),
+        size = axisLabSize
+      ),
 
       # legend
       legend.position = legendPosition,
       legend.key = element_blank(),
-      legend.key.size = unit(0.5, 'cm'),
+      legend.key.size = unit(0.5, "cm"),
       legend.text = element_text(
-        size = legendLabSize),
+        size = legendLabSize
+      ),
       title = element_text(
-        size = legendLabSize),
-      legend.title = element_blank())
+        size = legendLabSize
+      ),
+      legend.title = element_blank()
+    )
 
-  # Create the plot object differently based on whether colCustom 
+  # Create the plot object differently based on whether colCustom
   # and shapeCustom are NULL or not. This helps to avoid messing up
   # the legend.
   #
   # 1, both colCustom and shapeCustom are activated
   if (!is.null(colCustom) & !is.null(shapeCustom)) {
-
-    plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
+    plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) +
+      th +
 
       # over-ride legend icon sizes for colour and shape.
       # guide_legends are separate for colour and shape;
@@ -415,29 +438,35 @@ EnhancedVolcano <- function(
         colour = guide_legend(
           order = 1,
           override.aes = list(
-            size = legendIconSize)),
+            size = legendIconSize
+          )
+        ),
         shape = guide_legend(
           order = 2,
           override.aes = list(
-            size = legendIconSize))) +
+            size = legendIconSize
+          )
+        )
+      ) +
 
       # include new shape and colour encodings as aes
       geom_point(
         aes(
           color = factor(names(colCustom)),
-          shape = factor(names(shapeCustom))),
+          shape = factor(names(shapeCustom))
+        ),
         alpha = colAlpha,
         size = pointSize,
-        na.rm = TRUE) +
+        na.rm = TRUE
+      ) +
 
       # specify the colour and shape with the supplied encoding
       scale_color_manual(values = colCustom) +
       scale_shape_manual(values = shapeCustom)
 
-  # 2, only colCustom is activated and 'shape' has just a single value
+    # 2, only colCustom is activated and 'shape' has just a single value
   } else if (!is.null(colCustom) & is.null(shapeCustom) & length(shape) == 1) {
-
-    plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
+    plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
 
       # over-ride legend icon sizes for colour and shape.
       # guide_legends are separate for colour and shape;
@@ -447,21 +476,28 @@ EnhancedVolcano <- function(
         colour = guide_legend(
           order = 1,
           override.aes = list(
-            size = legendIconSize)),
+            size = legendIconSize
+          )
+        ),
         shape = guide_legend(
           order = 2,
           override.aes = list(
-            size = legendIconSize))) +
+            size = legendIconSize
+          )
+        )
+      ) +
 
       # include new colour encodings as aes.
       # 'shape' is included, but outside aes
       geom_point(
         aes(
-          color = factor(names(colCustom))),
+          color = factor(names(colCustom))
+        ),
         alpha = colAlpha,
         shape = shape,
         size = pointSize,
-        na.rm = TRUE) +
+        na.rm = TRUE
+      ) +
 
       # specify the colour with the supplied encoding
       scale_color_manual(values = colCustom) +
@@ -470,10 +506,9 @@ EnhancedVolcano <- function(
       # here will result in legends merging
       scale_shape_manual(guide = TRUE)
 
-  # 3, only colCustom is activated and 'shape' has 4 values
+    # 3, only colCustom is activated and 'shape' has 4 values
   } else if (!is.null(colCustom) & is.null(shapeCustom) & length(shape) == 4) {
-
-    plot <- ggplot(toptable, aes(x=xvals, y=-log10(yvals))) + th +
+    plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
 
       # over-ride legend icon sizes for colour and shape.
       # guide_legends are separate for colour and shape;
@@ -482,11 +517,16 @@ EnhancedVolcano <- function(
         colour = guide_legend(
           order = 1,
           override.aes = list(
-            size = legendIconSize)),
+            size = legendIconSize
+          )
+        ),
         shape = guide_legend(
           order = 2,
           override.aes = list(
-            size = legendIconSize))) +
+            size = legendIconSize
+          )
+        )
+      ) +
 
       # include new colour encodings as aes.
       # 'shape' is included in aes and mapped to 4
@@ -494,10 +534,12 @@ EnhancedVolcano <- function(
       geom_point(
         aes(
           color = factor(names(colCustom)),
-          shape = Sig),
+          shape = Sig
+        ),
         alpha = colAlpha,
         size = pointSize,
-        na.rm = TRUE) +
+        na.rm = TRUE
+      ) +
 
       # specify the colour with the supplied encoding
       scale_color_manual(values = colCustom) +
@@ -510,20 +552,21 @@ EnhancedVolcano <- function(
           NS = shape[1],
           FC = shape[2],
           P = shape[3],
-          FC_P = shape[4]),
+          FC_P = shape[4]
+        ),
         labels = c(
           NS = legendLabels[1],
           FC = legendLabels[2],
           P = legendLabels[3],
-          FC_P = legendLabels[4]),
+          FC_P = legendLabels[4]
+        ),
         guide = TRUE,
-        drop = legendDropLevels)
+        drop = legendDropLevels
+      )
 
-  # 4, only shapeCustom is activated
+    # 4, only shapeCustom is activated
   } else if (is.null(colCustom) & !is.null(shapeCustom)) {
-
     if (is.null(colGradient)) {
-
       plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
 
         # over-ride legend icon sizes for colour and shape.
@@ -533,11 +576,16 @@ EnhancedVolcano <- function(
           colour = guide_legend(
             order = 1,
             override.aes = list(
-              size = legendIconSize)),
+              size = legendIconSize
+            )
+          ),
           shape = guide_legend(
             order = 2,
             override.aes = list(
-              size = legendIconSize))) +
+              size = legendIconSize
+            )
+          )
+        ) +
 
         # include new shape encodings as aes.
         # Standard colour for NS, FC, P, FC_P,
@@ -545,10 +593,12 @@ EnhancedVolcano <- function(
         geom_point(
           aes(
             color = Sig,
-            shape = factor(names(shapeCustom))),
+            shape = factor(names(shapeCustom))
+          ),
           alpha = colAlpha,
           size = pointSize,
-          na.rm = TRUE) +
+          na.rm = TRUE
+        ) +
 
         # as it is included as aes, a separate legend
         # for 'colour' will be drawn. Here, over-ride that
@@ -558,20 +608,22 @@ EnhancedVolcano <- function(
             NS = col[1],
             FC = col[2],
             P = col[3],
-            FC_P = col[4]),
+            FC_P = col[4]
+          ),
           labels = c(
             NS = legendLabels[1],
             FC = legendLabels[2],
             P = legendLabels[3],
-            FC_P = legendLabels[4]),
-          drop = legendDropLevels) +
+            FC_P = legendLabels[4]
+          ),
+          drop = legendDropLevels
+        ) +
 
         # specify the shape with the supplied encoding
         scale_shape_manual(values = shapeCustom)
-
     } else {
-
-      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
+      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) +
+        th +
 
         # over-ride legend icon sizes for colour and shape.
         # guide_legends are separate for colour and shape;
@@ -580,7 +632,10 @@ EnhancedVolcano <- function(
           shape = guide_legend(
             order = 2,
             override.aes = list(
-              size = legendIconSize))) +
+              size = legendIconSize
+            )
+          )
+        ) +
 
         # include new shape encodings as aes.
         # Standard colour for NS, FC, P, FC_P,
@@ -588,30 +643,30 @@ EnhancedVolcano <- function(
         geom_point(
           aes(
             color = Sig,
-            shape = factor(names(shapeCustom))),
+            shape = factor(names(shapeCustom))
+          ),
           alpha = colAlpha,
           size = pointSize,
-          na.rm = TRUE) +
-
+          na.rm = TRUE
+        ) +
         scale_colour_gradient(
           low = colGradient[1],
           high = colGradient[2],
           limits = colGradientLimits,
           breaks = colGradientBreaks,
-          labels = colGradientLabels)
+          labels = colGradientLabels
+        )
 
-        # specify the shape with the supplied encoding
-        scale_shape_manual(values = shapeCustom)
-
+      # specify the shape with the supplied encoding
+      scale_shape_manual(values = shapeCustom)
     }
 
-  # 5, both colCustom and shapeCustom are null;
-  # only a single shape value specified
+    # 5, both colCustom and shapeCustom are null;
+    # only a single shape value specified
   } else if (is.null(colCustom) & is.null(shapeCustom) & length(shape) == 1) {
-
     if (is.null(colGradient)) {
-
-      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
+      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) +
+        th +
 
         # over-ride legend icon sizes for colour and shape.
         # including 'shape' in the colour guide_legend here
@@ -620,53 +675,56 @@ EnhancedVolcano <- function(
           order = 1,
           override.aes = list(
             shape = shape,
-            size = legendIconSize))) +
-
+            size = legendIconSize
+          )
+        )) +
         geom_point(
           aes(color = Sig),
           alpha = colAlpha,
           shape = shape,
           size = pointSize,
-          na.rm = TRUE) +
-
+          na.rm = TRUE
+        ) +
         scale_color_manual(
           values = c(
             NS = col[1],
             FC = col[2],
             P = col[3],
-            FC_P = col[4]),
+            FC_P = col[4]
+          ),
           labels = c(
             NS = legendLabels[1],
             FC = legendLabels[2],
             P = legendLabels[3],
-            FC_P = legendLabels[4]),
-          drop = legendDropLevels)
-
+            FC_P = legendLabels[4]
+          ),
+          drop = legendDropLevels
+        )
     } else {
-
-      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
-
+      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) +
+        th +
         geom_point(
           aes(color = yvals),
           alpha = colAlpha,
           shape = shape,
           size = pointSize,
-          na.rm = TRUE) +
-
+          na.rm = TRUE
+        ) +
         scale_colour_gradient(
           low = colGradient[1],
           high = colGradient[2],
           limits = colGradientLimits,
           breaks = colGradientBreaks,
-          labels = colGradientLabels)
+          labels = colGradientLabels
+        )
     }
 
-  # 6, both colCustom and shapeCustom are null;
-  # four shape values are specified
+    # 6, both colCustom and shapeCustom are null;
+    # four shape values are specified
   } else if (is.null(colCustom) & is.null(shapeCustom) & length(shape) == 4) {
-
     if (is.null(colGradient)) {
-      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
+      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) +
+        th +
 
         # over-ride legend icon sizes for colour and shape.
         # including 'shape' in the colour guide_legend here
@@ -678,67 +736,74 @@ EnhancedVolcano <- function(
               NS = shape[1],
               FC = shape[2],
               P = shape[3],
-              FC_P = shape[4]),
-            size = legendIconSize))) +
-
+              FC_P = shape[4]
+            ),
+            size = legendIconSize
+          )
+        )) +
         geom_point(
           aes(
             color = Sig,
-            shape = Sig),
+            shape = Sig
+          ),
           alpha = colAlpha,
           size = pointSize,
-          na.rm = TRUE) +
-
+          na.rm = TRUE
+        ) +
         scale_color_manual(
           values = c(
             NS = col[1],
             FC = col[2],
             P = col[3],
-            FC_P = col[4]),
+            FC_P = col[4]
+          ),
           labels = c(
             NS = legendLabels[1],
             FC = legendLabels[2],
             P = legendLabels[3],
-            FC_P = legendLabels[4]),
-          drop = legendDropLevels) +
-
+            FC_P = legendLabels[4]
+          ),
+          drop = legendDropLevels
+        ) +
         scale_shape_manual(
           values = c(
             NS = shape[1],
             FC = shape[2],
             P = shape[3],
-            FC_P = shape[4]),
+            FC_P = shape[4]
+          ),
           guide = FALSE,
-          drop = legendDropLevels)
-
+          drop = legendDropLevels
+        )
     } else {
-
-      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) + th +
-
+      plot <- ggplot(toptable, aes(x = xvals, y = -log10(yvals))) +
+        th +
         geom_point(
           aes(
             color = yvals,
-            shape = Sig),
+            shape = Sig
+          ),
           alpha = colAlpha,
           size = pointSize,
-          na.rm = TRUE) +
-
+          na.rm = TRUE
+        ) +
         scale_colour_gradient(
           low = colGradient[1],
           high = colGradient[2],
           limits = colGradientLimits,
           breaks = colGradientBreaks,
-          labels = colGradientLabels) +
-
+          labels = colGradientLabels
+        ) +
         scale_shape_manual(
           values = c(
             NS = shape[1],
             FC = shape[2],
             P = shape[3],
-            FC_P = shape[4]),
+            FC_P = shape[4]
+          ),
           guide = FALSE,
-          drop = legendDropLevels)
-
+          drop = legendDropLevels
+        )
     }
   }
 
@@ -751,45 +816,59 @@ EnhancedVolcano <- function(
     xlim(xlim[1], xlim[2]) +
     ylim(ylim[1], ylim[2]) +
 
-    geom_vline(xintercept = c(-FCcutoff, FCcutoff),
+    geom_vline(
+      xintercept = c(-FCcutoff, FCcutoff),
       linetype = cutoffLineType,
       colour = cutoffLineCol,
-      size = cutoffLineWidth) +
+      size = cutoffLineWidth
+    ) +
 
-    geom_hline(yintercept = -log10(pCutoff),
+    geom_hline(
+      yintercept = -log10(pCutoff),
       linetype = cutoffLineType,
       colour = cutoffLineCol,
-      size = cutoffLineWidth)
+      size = cutoffLineWidth
+    )
 
   # add elements to the plot for title, subtitle, caption
-  plot <- plot + labs(title = title, 
-    subtitle = subtitle, caption = caption)
+  plot <- plot + labs(
+    title = title,
+    subtitle = subtitle, caption = caption
+  )
 
   # add elements to the plot for vlines and hlines
   if (!is.null(vline)) {
-    plot <- plot + geom_vline(xintercept = vline,
+    plot <- plot + geom_vline(
+      xintercept = vline,
       linetype = vlineType,
       colour = vlineCol,
-      size = vlineWidth)
+      size = vlineWidth
+    )
   }
   if (!is.null(hline)) {
-    plot <- plot + geom_hline(yintercept = -log10(hline),
+    plot <- plot + geom_hline(
+      yintercept = -log10(hline),
       linetype = hlineType,
       colour = hlineCol,
-      size = hlineWidth)
+      size = hlineWidth
+    )
   }
 
   # Border around plot
-  if (border == 'full') {
+  if (border == "full") {
     plot <- plot + theme(panel.border = element_rect(
-      colour = borderColour, fill = NA, size = borderWidth))
-  } else if (border == 'partial') {
-    plot <- plot + theme(axis.line = element_line(
-      size = borderWidth, colour = borderColour),
+      colour = borderColour, fill = NA, size = borderWidth
+    ))
+  } else if (border == "partial") {
+    plot <- plot + theme(
+      axis.line = element_line(
+        size = borderWidth, colour = borderColour
+      ),
       panel.border = element_blank(),
-      panel.background = element_blank())
+      panel.background = element_blank()
+    )
   } else {
-    stop('Unrecognised value passed to \'border\'. Must be \'full\' or \'partial\'')
+    stop("Unrecognised value passed to 'border'. Must be 'full' or 'partial'")
   }
 
   # Gridlines
@@ -808,237 +887,293 @@ EnhancedVolcano <- function(
   if (matchLabelColorsToSig) {
     # user has specified to draw with geom_text or geom_label?
     if (!boxedLabels) {
-
       # For labeling with geom_[text|label]_repel and
       # geom_[text|label] with check_overlap = TRUE, 4 possible
       # scenarios can arise
       if (drawConnectors && is.null(selectLab)) {
-
         if (arrowheads) {
-          arr <- arrow(length = lengthConnectors,
-            type = typeConnectors, ends = endsConnectors)
+          arr <- arrow(
+            length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors
+          )
         } else {
           arr <- NULL
         }
 
         plot <- plot + geom_text_repel(
-          data = subset(toptable,
+          data = subset(
+            toptable,
             toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff),
-          aes(label = subset(toptable,
-            toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff)[["lab"]], 
-              colour = Sig),
-          xlim = c(NA, NA),
-          ylim = c(NA, NA),
-          size = labSize,
-          segment.color = colConnectors,
-          segment.size = widthConnectors,
-          arrow = arr,
-          fontface = labFace,
-          parse = parseLabels,
-          na.rm = TRUE,
-          direction = directionConnectors,
-          max.overlaps = max.overlaps,
-          min.segment.length = min.segment.length,
-          box.padding = box.padding)
-        
-        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
-
-      } else if (drawConnectors && !is.null(selectLab)) {
-
-        if (arrowheads) {
-          arr <- arrow(length = lengthConnectors,
-            type = typeConnectors, ends = endsConnectors)
-        } else {
-          arr <- NULL
-        }
-
-        plot <- plot + geom_text_repel(
-          data = subset(toptable,
-            !is.na(toptable[['lab']])),
-          aes(label = subset(toptable,
-            !is.na(toptable[['lab']]))[['lab']],
-            colour = Sig),
-          xlim = c(NA, NA),
-          ylim = c(NA, NA),
-          size = labSize,
-          segment.color = colConnectors,
-          segment.size = widthConnectors,
-          arrow = arr,
-          fontface = labFace,
-          parse = parseLabels,
-          na.rm = TRUE,
-          direction = directionConnectors,
-          max.overlaps = max.overlaps,
-          min.segment.length = min.segment.length,
-          box.padding = box.padding)
-        
-        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
-
-      } else if (!drawConnectors && !is.null(selectLab)) {
-
-        plot <- plot + geom_text(
-          data = subset(toptable,
-            !is.na(toptable[['lab']])),
+              abs(toptable[[x]]) > FCcutoff
+          ),
           aes(
-            label = subset(toptable,
-              !is.na(toptable[['lab']]))[['lab']],
-            colour = Sig),
+            label = subset(
+              toptable,
+              toptable[[y]] < pCutoff &
+                abs(toptable[[x]]) > FCcutoff
+            )[["lab"]],
+            colour = Sig
+          ),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
           size = labSize,
-          check_overlap = TRUE,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
           fontface = labFace,
           parse = parseLabels,
-          na.rm = TRUE)
-        
+          show.legend = FALSE,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding
+        )
+
         plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+      } else if (drawConnectors && !is.null(selectLab)) {
+        if (arrowheads) {
+          arr <- arrow(
+            length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors
+          )
+        } else {
+          arr <- NULL
+        }
 
-      } else if (!drawConnectors && is.null(selectLab)) {
+        plot <- plot + geom_text_repel(
+          data = subset(
+            toptable,
+            !is.na(toptable[["lab"]])
+          ),
+          aes(
+            label = subset(
+              toptable,
+              !is.na(toptable[["lab"]])
+            )[["lab"]],
+            colour = Sig
+          ),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
+          size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
+          fontface = labFace,
+          parse = parseLabels,
+          show.legend = FALSE,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding
+        )
 
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+      } else if (!drawConnectors && !is.null(selectLab)) {
         plot <- plot + geom_text(
-          data = subset(toptable,
-            toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff),
-          aes(label = subset(toptable,
-            toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff)[['lab']],
-              colour = Sig),
+          data = subset(
+            toptable,
+            !is.na(toptable[["lab"]])
+          ),
+          aes(
+            label = subset(
+              toptable,
+              !is.na(toptable[["lab"]])
+            )[["lab"]],
+            colour = Sig
+          ),
           size = labSize,
           check_overlap = TRUE,
           fontface = labFace,
           parse = parseLabels,
-          na.rm = TRUE)
+          show.legend = FALSE,
+          na.rm = TRUE
+        )
+
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+      } else if (!drawConnectors && is.null(selectLab)) {
+        plot <- plot + geom_text(
+          data = subset(
+            toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff
+          ),
+          aes(
+            label = subset(
+              toptable,
+              toptable[[y]] < pCutoff &
+                abs(toptable[[x]]) > FCcutoff
+            )[["lab"]],
+            colour = Sig
+          ),
+          size = labSize,
+          check_overlap = TRUE,
+          fontface = labFace,
+          parse = parseLabels,
+          show.legend = FALSE,
+          na.rm = TRUE
+        )
 
         plot <- plot + scale_color_manual(values = col, labels = legendLabels)
       }
-
     } else {
-
       # For labeling with geom_[text|label]_repel and
       # geom_[text|label] with check_overlap = TRUE, 4 possible
       # scenarios can arise
       if (drawConnectors && is.null(selectLab)) {
-
         if (arrowheads) {
-          arr <- arrow(length = lengthConnectors,
-            type = typeConnectors, ends = endsConnectors)
+          arr <- arrow(
+            length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors
+          )
         } else {
           arr <- NULL
         }
 
         plot <- plot + geom_label_repel(
-          data = subset(toptable,
+          data = subset(
+            toptable,
             toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff),
-          aes(label = subset(toptable,
-            toptable[[y]]<pCutoff &
-              abs(toptable[[x]]) > FCcutoff)[['lab']],
-              colour = Sig),
-          xlim = c(NA, NA),
-          ylim = c(NA, NA),
-          size = labSize,
-          segment.color = colConnectors,
-          segment.size = widthConnectors,
-          arrow = arr,
-          fontface = labFace,
-          parse = parseLabels,
-          na.rm = TRUE,
-          direction = directionConnectors,
-          max.overlaps = max.overlaps,
-          min.segment.length = min.segment.length,
-          box.padding = box.padding)
-        
-        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
-
-      } else if (drawConnectors && !is.null(selectLab)) {
-
-        if (arrowheads) {
-          arr <- arrow(length = lengthConnectors,
-            type = typeConnectors, ends = endsConnectors)
-        } else {
-          arr <- NULL
-        }
-
-        plot <- plot + geom_label_repel(
-          data = subset(toptable,
-            !is.na(toptable[['lab']])),
-          aes(label = subset(toptable,
-            !is.na(toptable[['lab']]))[['lab']],
-            colour = Sig),
-          xlim = c(NA, NA),
-          ylim = c(NA, NA),
-          size = labSize,
-          segment.color = colConnectors,
-          segment.size = widthConnectors,
-          arrow = arr,
-          fontface = labFace,
-          parse = parseLabels,
-          na.rm = TRUE,
-          direction = directionConnectors,
-          max.overlaps = max.overlaps,
-          min.segment.length = min.segment.length,
-          box.padding = box.padding)
-        
-        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
-
-      } else if (!drawConnectors && !is.null(selectLab)) {
-
-        plot <- plot + geom_label(
-          data = subset(toptable,
-            !is.na(toptable[["lab"]])),
+              abs(toptable[[x]]) > FCcutoff
+          ),
           aes(
-            label = subset(toptable,
-              !is.na(toptable[['lab']]))[['lab']],
-              colour = Sig),
+            label = subset(
+              toptable,
+              toptable[[y]] < pCutoff &
+                abs(toptable[[x]]) > FCcutoff
+            )[["lab"]],
+            colour = Sig
+          ),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
           size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
           fontface = labFace,
           parse = parseLabels,
-          na.rm = TRUE)
-        
+          show.legend = FALSE,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding
+        )
+
         plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+      } else if (drawConnectors && !is.null(selectLab)) {
+        if (arrowheads) {
+          arr <- arrow(
+            length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors
+          )
+        } else {
+          arr <- NULL
+        }
 
-      } else if (!drawConnectors && is.null(selectLab)) {
+        plot <- plot + geom_label_repel(
+          data = subset(
+            toptable,
+            !is.na(toptable[["lab"]])
+          ),
+          aes(
+            label = subset(
+              toptable,
+              !is.na(toptable[["lab"]])
+            )[["lab"]],
+            colour = Sig
+          ),
+          xlim = c(NA, NA),
+          ylim = c(NA, NA),
+          size = labSize,
+          segment.color = colConnectors,
+          segment.size = widthConnectors,
+          arrow = arr,
+          fontface = labFace,
+          parse = parseLabels,
+          show.legend = FALSE,
+          na.rm = TRUE,
+          direction = directionConnectors,
+          max.overlaps = max.overlaps,
+          min.segment.length = min.segment.length,
+          box.padding = box.padding
+        )
 
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+      } else if (!drawConnectors && !is.null(selectLab)) {
         plot <- plot + geom_label(
-          data = subset(toptable,
-            toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff),
-          aes(label = subset(toptable,
-            toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff)[['lab']],
-              colour = Sig),
+          data = subset(
+            toptable,
+            !is.na(toptable[["lab"]])
+          ),
+          aes(
+            label = subset(
+              toptable,
+              !is.na(toptable[["lab"]])
+            )[["lab"]],
+            colour = Sig
+          ),
           size = labSize,
           fontface = labFace,
           parse = parseLabels,
-          na.rm = TRUE)
+          show.legend = FALSE,
+          na.rm = TRUE
+        )
 
         plot <- plot + scale_color_manual(values = col, labels = legendLabels)
+      } else if (!drawConnectors && is.null(selectLab)) {
+        plot <- plot + geom_label(
+          data = subset(
+            toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff
+          ),
+          aes(
+            label = subset(
+              toptable,
+              toptable[[y]] < pCutoff &
+                abs(toptable[[x]]) > FCcutoff
+            )[["lab"]],
+            colour = Sig
+          ),
+          size = labSize,
+          fontface = labFace,
+          parse = parseLabels,
+          show.legend = FALSE,
+          na.rm = TRUE
+        )
 
+        plot <- plot + scale_color_manual(values = col, labels = legendLabels)
       }
     }
   } else {
     # user has specified to draw with geom_text or geom_label?
     if (!boxedLabels) {
-
       # For labeling with geom_[text|label]_repel and
       # geom_[text|label] with check_overlap = TRUE, 4 possible
       # scenarios can arise
       if (drawConnectors && is.null(selectLab)) {
-
         if (arrowheads) {
-          arr <- arrow(length = lengthConnectors,
-            type = typeConnectors, ends = endsConnectors)
+          arr <- arrow(
+            length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors
+          )
         } else {
           arr <- NULL
         }
 
         plot <- plot + geom_text_repel(
-          data = subset(toptable,
+          data = subset(
+            toptable,
             toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff),
-          aes(label = subset(toptable,
+              abs(toptable[[x]]) > FCcutoff
+          ),
+          aes(label = subset(
+            toptable,
             toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff)[["lab"]]),
+              abs(toptable[[x]]) > FCcutoff
+          )[["lab"]]),
           xlim = c(NA, NA),
           ylim = c(NA, NA),
           size = labSize,
@@ -1052,22 +1187,27 @@ EnhancedVolcano <- function(
           direction = directionConnectors,
           max.overlaps = max.overlaps,
           min.segment.length = min.segment.length,
-          box.padding = box.padding)
-
+          box.padding = box.padding
+        )
       } else if (drawConnectors && !is.null(selectLab)) {
-
         if (arrowheads) {
-          arr <- arrow(length = lengthConnectors,
-            type = typeConnectors, ends = endsConnectors)
+          arr <- arrow(
+            length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors
+          )
         } else {
           arr <- NULL
         }
 
         plot <- plot + geom_text_repel(
-          data = subset(toptable,
-            !is.na(toptable[['lab']])),
-          aes(label = subset(toptable,
-            !is.na(toptable[['lab']]))[['lab']]),
+          data = subset(
+            toptable,
+            !is.na(toptable[["lab"]])
+          ),
+          aes(label = subset(
+            toptable,
+            !is.na(toptable[["lab"]])
+          )[["lab"]]),
           xlim = c(NA, NA),
           ylim = c(NA, NA),
           size = labSize,
@@ -1081,61 +1221,72 @@ EnhancedVolcano <- function(
           direction = directionConnectors,
           max.overlaps = max.overlaps,
           min.segment.length = min.segment.length,
-          box.padding = box.padding)
-
+          box.padding = box.padding
+        )
       } else if (!drawConnectors && !is.null(selectLab)) {
-
         plot <- plot + geom_text(
-          data = subset(toptable,
-            !is.na(toptable[['lab']])),
+          data = subset(
+            toptable,
+            !is.na(toptable[["lab"]])
+          ),
           aes(
-            label = subset(toptable,
-              !is.na(toptable[['lab']]))[['lab']]),
+            label = subset(
+              toptable,
+              !is.na(toptable[["lab"]])
+            )[["lab"]]
+          ),
           size = labSize,
           check_overlap = TRUE,
           colour = labCol,
           fontface = labFace,
           parse = parseLabels,
-          na.rm = TRUE)
-
+          na.rm = TRUE
+        )
       } else if (!drawConnectors && is.null(selectLab)) {
-
         plot <- plot + geom_text(
-          data = subset(toptable,
+          data = subset(
+            toptable,
             toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff),
-          aes(label = subset(toptable,
+              abs(toptable[[x]]) > FCcutoff
+          ),
+          aes(label = subset(
+            toptable,
             toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff)[['lab']]),
+              abs(toptable[[x]]) > FCcutoff
+          )[["lab"]]),
           size = labSize,
           check_overlap = TRUE,
           colour = labCol,
           fontface = labFace,
           parse = parseLabels,
-          na.rm = TRUE)
+          na.rm = TRUE
+        )
       }
-
     } else {
-
       # For labeling with geom_[text|label]_repel and
       # geom_[text|label] with check_overlap = TRUE, 4 possible
       # scenarios can arise
       if (drawConnectors && is.null(selectLab)) {
-
         if (arrowheads) {
-          arr <- arrow(length = lengthConnectors,
-            type = typeConnectors, ends = endsConnectors)
+          arr <- arrow(
+            length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors
+          )
         } else {
           arr <- NULL
         }
 
         plot <- plot + geom_label_repel(
-          data = subset(toptable,
+          data = subset(
+            toptable,
             toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff),
-          aes(label = subset(toptable,
-            toptable[[y]]<pCutoff &
-              abs(toptable[[x]]) > FCcutoff)[['lab']]),
+              abs(toptable[[x]]) > FCcutoff
+          ),
+          aes(label = subset(
+            toptable,
+            toptable[[y]] < pCutoff &
+              abs(toptable[[x]]) > FCcutoff
+          )[["lab"]]),
           xlim = c(NA, NA),
           ylim = c(NA, NA),
           size = labSize,
@@ -1149,22 +1300,27 @@ EnhancedVolcano <- function(
           direction = directionConnectors,
           max.overlaps = max.overlaps,
           min.segment.length = min.segment.length,
-          box.padding = box.padding)
-
+          box.padding = box.padding
+        )
       } else if (drawConnectors && !is.null(selectLab)) {
-
         if (arrowheads) {
-          arr <- arrow(length = lengthConnectors,
-            type = typeConnectors, ends = endsConnectors)
+          arr <- arrow(
+            length = lengthConnectors,
+            type = typeConnectors, ends = endsConnectors
+          )
         } else {
           arr <- NULL
         }
 
         plot <- plot + geom_label_repel(
-          data = subset(toptable,
-            !is.na(toptable[['lab']])),
-          aes(label = subset(toptable,
-            !is.na(toptable[['lab']]))[['lab']]),
+          data = subset(
+            toptable,
+            !is.na(toptable[["lab"]])
+          ),
+          aes(label = subset(
+            toptable,
+            !is.na(toptable[["lab"]])
+          )[["lab"]]),
           xlim = c(NA, NA),
           ylim = c(NA, NA),
           size = labSize,
@@ -1178,77 +1334,89 @@ EnhancedVolcano <- function(
           direction = directionConnectors,
           max.overlaps = max.overlaps,
           min.segment.length = min.segment.length,
-          box.padding = box.padding)
-
+          box.padding = box.padding
+        )
       } else if (!drawConnectors && !is.null(selectLab)) {
-
         plot <- plot + geom_label(
-          data = subset(toptable,
-            !is.na(toptable[["lab"]])),
+          data = subset(
+            toptable,
+            !is.na(toptable[["lab"]])
+          ),
           aes(
-            label = subset(toptable,
-              !is.na(toptable[['lab']]))[['lab']]),
+            label = subset(
+              toptable,
+              !is.na(toptable[["lab"]])
+            )[["lab"]]
+          ),
           size = labSize,
           colour = labCol,
           fontface = labFace,
           parse = parseLabels,
-          na.rm = TRUE)
-
+          na.rm = TRUE
+        )
       } else if (!drawConnectors && is.null(selectLab)) {
-
         plot <- plot + geom_label(
-          data = subset(toptable,
+          data = subset(
+            toptable,
             toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff),
-          aes(label = subset(toptable,
+              abs(toptable[[x]]) > FCcutoff
+          ),
+          aes(label = subset(
+            toptable,
             toptable[[y]] < pCutoff &
-              abs(toptable[[x]]) > FCcutoff)[['lab']]),
+              abs(toptable[[x]]) > FCcutoff
+          )[["lab"]]),
           size = labSize,
           colour = labCol,
           fontface = labFace,
           parse = parseLabels,
-          na.rm = TRUE)
-
+          na.rm = TRUE
+        )
       }
     }
   }
 
   # encircle
   if (!is.null(encircle)) {
-
-    if (is(try(find.package("ggalt"), silent=TRUE), "try-error")) {
+    if (is(try(find.package("ggalt"), silent = TRUE), "try-error")) {
       stop("Please install package \"ggalt\" to access the \"encircle\" features")
     }
 
-    plot <- plot + 
+    plot <- plot +
       ggalt::geom_encircle(
-        data = subset(toptable,
-          rownames(toptable) %in% encircle),
+        data = subset(
+          toptable,
+          rownames(toptable) %in% encircle
+        ),
         colour = encircleCol,
         fill = encircleFill,
         alpha = encircleAlpha,
         size = encircleSize,
         show.legend = FALSE,
-        na.rm = TRUE)
+        na.rm = TRUE
+      )
   }
 
   # shade
   if (!is.null(shade)) {
-    plot <- plot + 
+    plot <- plot +
       stat_density2d(
-        data = subset(toptable,
-          rownames(toptable) %in% shade),
+        data = subset(
+          toptable,
+          rownames(toptable) %in% shade
+        ),
         fill = shadeFill,
         alpha = shadeAlpha,
-        geom = 'polygon',
+        geom = "polygon",
         contour = TRUE,
         size = shadeSize,
         bins = shadeBins,
         show.legend = FALSE,
-        na.rm = TRUE)
+        na.rm = TRUE
+      )
   }
 
-  plot <- plot + coord_cartesian(clip = 'off')
+  plot <- plot + coord_cartesian(clip = "off")
 
   return(plot)
 }
