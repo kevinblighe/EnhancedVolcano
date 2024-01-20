@@ -34,6 +34,8 @@ EnhancedVolcano(
   labFace = "plain",
   boxedLabels = FALSE,
   parseLabels = FALSE,
+  box.padding = 0.25,
+  matchLabelColorsToSig = FALSE,
   shape = 19,
   shapeCustom = NULL,
   col = c("grey30", "forestgreen", "royalblue", "red2"),
@@ -157,6 +159,14 @@ boxes.}
 
 \item{parseLabels}{Logical, indicating whether or not to parse expressions
 in labels}
+
+\item{box.padding}{Padding around the text label. If 
+\code{drawConnectors = TRUE}, this will increase the length of connectors so
+that the connectors still attach to the shifted boxes.}
+
+\item{matchLabelColorsToSig}{Logical, indicating whether or not to match the
+color of the text of the labels to the corresponding significance level of the
+point being labeled.}
 
 \item{shape}{Shape of the plotted points. Either a single value for
 all points, or 4 values corresponding to the default 4 legend labels
