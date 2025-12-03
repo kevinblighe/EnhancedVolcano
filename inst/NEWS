@@ -1,3 +1,7 @@
+CHANGES IN VERSION 1.28
+------------------------
+ - removed `ggalt` package dependency by incorporating custom `geom_encircle` function
+   directly into EnhancedVolcano as `ggalt` is no longer on CRAN
 
 CHANGES IN VERSION 1.12
 ------------------------
