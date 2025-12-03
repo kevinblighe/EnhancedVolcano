@@ -43,8 +43,8 @@ EnhancedVolcano(
   colGradientBreaks = c(pCutoff, 1),
   colGradientLabels = c("0", "1.0"),
   colGradientLimits = c(0, 1),
-  legendLabels = c("NS", expression(Log[2] ~ FC), "p-value", expression(p - value ~ and
-    ~ log[2] ~ FC)),
+  legendLabels = c("NS", expression(Log[2] ~ FC), "p-value", expression(p - value ~ and ~
+    log[2] ~ FC)),
   legendPosition = "top",
   legendLabSize = 14,
   legendIconSize = 5,
@@ -200,8 +200,7 @@ colGradient, i.e., max and min possible p-values.}
 
 \item{legendDropLevels}{Logical, drop unused factor levels from legend.}
 
-\item{encircle}{A vector of variable names to encircle. Requires installation
-of package \code{\link[ggalt:geom_encircle]{ggalt}}.}
+\item{encircle}{A vector of variable names to encircle.}
 
 \item{encircleCol}{Colour of the encircled line.}
 

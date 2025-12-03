@@ -78,8 +78,7 @@
 #' @param legendLabSize Size of plot legend text.
 #' @param legendIconSize Size of plot legend icons / symbols.
 #' @param legendDropLevels Logical, drop unused factor levels from legend.
-#' @param encircle A vector of variable names to encircle. Requires installation
-#'   of package \code{\link[ggalt:geom_encircle]{ggalt}}.
+#' @param encircle A vector of variable names to encircle. 
 #' @param encircleCol Colour of the encircled line.
 #' @param encircleFill Colour fill of the encircled region.
 #' @param encircleAlpha Alpha for purposes of controlling colour transparency of
@@ -990,12 +989,8 @@ EnhancedVolcano <- function(
   # encircle
   if (!is.null(encircle)) {
 
-    if (is(try(find.package("ggalt"), silent=TRUE), "try-error")) {
-      stop("Please install package \"ggalt\" to access the \"encircle\" features")
-    }
-
     plot <- plot + 
-      ggalt::geom_encircle(
+      geom_encircle(
         data = subset(toptable,
           rownames(toptable) %in% encircle),
         colour = encircleCol,
