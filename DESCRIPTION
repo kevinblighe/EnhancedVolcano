@@ -1,10 +1,10 @@
 Package: EnhancedVolcano
 Type: Package
 Title: Publication-ready volcano plots with enhanced colouring and labeling
-Version: 1.28.0
+Version: 1.28.1
 Authors@R: c(
     person("Kevin", "Blighe", role = c("aut")),
-    person("Jared", "Andrews", email = "jared.andrews07@gmail.com", role = c("cre", "aut"), comment = c(ORCID = "0000-0002-0780-6248"))
+    person("Jared", "Andrews", email = "jared.andrews07@gmail.com", role = c("cre", "ctb"), comment = c(ORCID = "0000-0002-0780-6248")),
     person("Sharmila", "Rana", role = c("aut")),
     person("Emir", "Turkes", role = c("ctb")),
     person("Benjamin", "Ostendorf", role = c("ctb")),
@@ -13,15 +13,18 @@ Authors@R: c(
 Maintainer: Jared Andrews <jared.andrews07@gmail.com>
 Description: Volcano plots represent a useful way to visualise the results of differential expression analyses. Here, we present a highly-configurable function that produces publication-ready volcano plots. EnhancedVolcano will attempt to fit as many point labels in the plot window as possible, thus avoiding 'clogging' up the plot with labels that could not otherwise have been read. Other functionality allows the user to identify up to 4 different types of attributes in the same plot space via colour, shape, size, and shade parameter configurations.
 License: GPL-3
+Encoding: UTF-8
 Depends:
   ggplot2,
   ggrepel
 Imports:
-  methods
+  methods,
+  scales,
+  grid,
+  grDevices
 Suggests:
-  ggalt,
-  ggrastr,
   RUnit,
+  ggrastr,
   BiocGenerics,
   knitr,
   DESeq2,
@@ -35,4 +38,4 @@ URL: https://github.com/kevinblighe/EnhancedVolcano
 biocViews: RNASeq, GeneExpression, Transcription, DifferentialExpression, ImmunoOncology
 VignetteBuilder:
   knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.3.2
