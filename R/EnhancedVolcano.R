@@ -745,12 +745,12 @@ EnhancedVolcano <- function(
     geom_vline(xintercept = c(-FCcutoff, FCcutoff),
       linetype = cutoffLineType,
       colour = cutoffLineCol,
-      size = cutoffLineWidth) +
+      linewidth = cutoffLineWidth) +
 
     geom_hline(yintercept = -log10(pCutoff),
       linetype = cutoffLineType,
       colour = cutoffLineCol,
-      size = cutoffLineWidth)
+      linewidth = cutoffLineWidth)
 
   # add elements to the plot for title, subtitle, caption
   plot <- plot + labs(title = title, 
@@ -761,22 +761,22 @@ EnhancedVolcano <- function(
     plot <- plot + geom_vline(xintercept = vline,
       linetype = vlineType,
       colour = vlineCol,
-      size = vlineWidth)
+      linewidth = vlineWidth)
   }
   if (!is.null(hline)) {
     plot <- plot + geom_hline(yintercept = -log10(hline),
       linetype = hlineType,
       colour = hlineCol,
-      size = hlineWidth)
+      linewidth = hlineWidth)
   }
 
   # Border around plot
   if (border == 'full') {
     plot <- plot + theme(panel.border = element_rect(
-      colour = borderColour, fill = NA, size = borderWidth))
+      colour = borderColour, fill = NA, linewidth = borderWidth))
   } else if (border == 'partial') {
     plot <- plot + theme(axis.line = element_line(
-      size = borderWidth, colour = borderColour),
+      linewidth = borderWidth, colour = borderColour),
       panel.border = element_blank(),
       panel.background = element_blank())
   } else {
@@ -1011,7 +1011,7 @@ EnhancedVolcano <- function(
         alpha = shadeAlpha,
         geom = 'polygon',
         contour = TRUE,
-        size = shadeSize,
+        linewidth = shadeSize,
         bins = shadeBins,
         show.legend = FALSE,
         na.rm = TRUE)
